@@ -1,5 +1,6 @@
-import { Model } from 'pinia-orm'
-export default class User extends Model {
+import Base from './Base'
+
+export default class User extends Base {
   static entity = 'users'
   static fields () {
     return {
