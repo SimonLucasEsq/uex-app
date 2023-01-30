@@ -8,13 +8,33 @@ class RepositoryAPI extends Repository {
 }
 
 class QueryAPI extends Query {
-  /* Async function which makes calls to API instead of calling store using the already built queries as query params.
-  Also inserts the returned records from the API to the store*/
+  /* Async function which makes calls to API instead of calling store using the
+  already built queries as query params. Also inserts the returned records from the
+  API to the store.
+  Note: find() function is not compatible with this function, instead use the where()
+  query function an pass a number instead of an array. */
   async api() {
-    return await this.axios().get(this.model.constructor.entity, {params: this.normalizedQueryParams()}).then((response) => {
-      const entities = this.entityRepo().insert(response.data);
-      return entities;
-    });
+    debugger
+    return await this
+      .axios()
+      .get(this.buildGetPath(), {params: this.normalizedQueryParams()})
+      .then((response) => {
+        const entities = this.entityRepo().insert(response.data);
+        return entities;
+      });
+  }
+
+  /* Build path to get a collection of records or a single record depending if the id
+  is array or a number. */
+  buildGetPath() {
+    const id = this.normalizedQueryParams()["id"];
+    if (id && !isNaN(id)) {
+      // Remove unnecesary id from the query
+      this.wheres = this.wheres.filter((query) => { query.field != "id" })
+      return `${this.model.constructor.entity}/${id}`;
+    } else {
+      return this.model.constructor.entity;
+    }
   }
 
   axios() {
@@ -24,6 +44,7 @@ class QueryAPI extends Query {
   entityRepo() {
     return useRepo(this.model.constructor);
   }
+
 
   normalizedQueryParams() {
     const params = {};
