@@ -1,8 +1,13 @@
-<script setup>
+*<script setup>
   import ActivityType from "../../models/ActivityType";
-  import { useRepo } from 'pinia-orm'
+  import { useRepo,  } from '@/libs/pinia-orm-api';
+  import { ref } from 'vue'
+
   const activityTypeRepo = useRepo(ActivityType)
+  const activityTypes = ref({})
   // Getting all users with their todos as relation
+  
+  /*
   activityTypeRepo.save(
     [
       {
@@ -11,8 +16,10 @@
         description: "Cualquier tipo de proyecto"
       }
     ]
-  );
-  const activityTypes = activityTypeRepo.all()
+  );*/
+  activityTypeRepo.where("id", 1).api().then((response) => {
+    activityTypes.value = response;
+  });
 </script>
 
 <template>
