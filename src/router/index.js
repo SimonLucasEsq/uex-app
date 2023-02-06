@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import Examples from "../views/examples/ExamplesView.vue";
 import ActivityTypeIndex from "../views/activity-types/Index.vue";
 import ActivityTypeEdit from "../views/activity-types/Edit.vue";
 import ActivityTypeNew from "../views/activity-types/New.vue";
