@@ -22,11 +22,6 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
     },
     {
-      path: "/examples",
-      name: "examples",
-      component: Examples,
-    },
-    {
       path: "/activity_types",
       name: "ActivityTypeIndex",
       component: ActivityTypeIndex
