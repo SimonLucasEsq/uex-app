@@ -15,6 +15,10 @@
     })
   }
 
+  function cancel() {
+    router.push({ name: 'ActivityTypeIndex'})
+  }
+
   onMounted(async () => {
     if(props.id) {
       await store.api.find(props.id);
@@ -38,8 +42,11 @@
     <br>
     <label>{{ activityType.errors?.description?.[0] }}</label>
     <br>
+    <button @click="cancel">
+      Cancelar
+    </button>
     <button @click="submit">
-      Save
+      {{ store.isNew ? "Crear" : "Guardar" }}
     </button>
   </form>
 </template>
