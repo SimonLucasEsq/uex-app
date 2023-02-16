@@ -1,7 +1,7 @@
 <script setup>
-  import { useActivityTypeStore } from "@/stores/activity-type"
-  import { computed, onMounted, reactive } from 'vue'
-  import router from "../router";
+  import { useActivityTypeStore } from "@/stores/activity-type";
+import { computed, onMounted } from 'vue';
+import router from "../router";
 
   const props = defineProps(['id'])
   const store = useActivityTypeStore();
@@ -10,13 +10,13 @@
   function submit() {
     store.api.save().then(() => {
       if(store.isValid) {
-        router.push({ name: 'ActivityTypeIndex'})
+        router.push({ name: 'activity-types'})
       }
     })
   }
 
   function cancel() {
-    router.push({ name: 'ActivityTypeIndex'})
+    router.push({ name: 'activity-types'})
   }
 
   onMounted(async () => {
@@ -29,24 +29,72 @@
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit">
-    <label>Nombre</label>
-    <br>
-    <input v-model="activityType.name" placeholder="Name"/>
-    <br>
-    <label>{{ activityType.errors?.name?.[0] }}</label>
-    <br>
-    <label>Description</label>
-    <br>
-    <input v-model="activityType.description" placeholder="Description"/>
-    <br>
-    <label>{{ activityType.errors?.description?.[0] }}</label>
-    <br>
-    <button @click="cancel">
-      Cancelar
-    </button>
-    <button @click="submit">
-      {{ store.isNew ? "Crear" : "Guardar" }}
-    </button>
-  </form>
+  <VForm @submit.prevent="() => {}">
+    <VRow>
+      <VCol cols="12">
+        <VRow no-gutters>
+          <VCol
+            cols="12"
+            md="3"
+          >
+            <label for="name">Nombre</label>
+          </VCol>
+
+          <VCol
+            cols="12"
+            md="9"
+          >
+            <VTextField
+              id="name"
+              v-model="activityType.name"
+              placeholder="Nombre"
+              persistent-placeholder
+            />
+          </VCol>
+        </VRow>
+      </VCol>
+
+      <VCol cols="12">
+        <VRow no-gutters>
+          <VCol
+            cols="12"
+            md="3"
+          >
+            <label for="description">Description</label>
+          </VCol>
+
+          <VCol
+            cols="12"
+            md="9"
+          >
+            <VTextField
+              id="description"
+              v-model="activityType.description"
+              placeholder="Description"
+              persistent-placeholder
+            />
+          </VCol>
+        </VRow>
+      </VCol>
+
+      <VCol
+        offset-md="3"
+        cols="12"
+        md="9"
+        class="d-flex gap-4"
+      >
+        <VBtn type="submit" @click="submit">
+          {{ store.isNew ? "Crear" : "Guardar" }}
+        </VBtn>
+        <VBtn
+          color="secondary"
+          variant="tonal"
+          type="reset"
+          @click="cancel"
+        >
+          Cancelar
+        </VBtn>
+      </VCol>
+    </VRow>
+  </VForm>
 </template>
