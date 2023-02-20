@@ -16,10 +16,10 @@ export default class Api {
       }).catch((error) => {
         let errors = error.response.data?.["errors"];
         if (errors) {
-          this.data.record.errors = errors
+          this.data.record.errors = errors;
         }
 
-        console.log(`Fallo al crear ${this.recordKey}`)
+        console.log(`Fallo al crear ${this.recordKey}`);
       });
   }
 
@@ -51,8 +51,11 @@ export default class Api {
     return await this.axios
       .get(this.endpoint, {params: params})
       .then((response) => {
-        this.data.recordList = response.data[this.recordListKey]
-        return this.data.recordList;
+        this.data.recordList.records = response.data[this.recordListKey];
+        this.data.recordList.meta.perPage = response.data["meta"]["per_page"];
+        this.data.recordList.meta.totalPages = response.data["meta"]["total_pages"];
+        this.data.recordList.meta.totalObjects = response.data["meta"]["total_objects"];
+        return this.data.recordList.records;
       });
   }
 
@@ -69,13 +72,14 @@ export default class Api {
     return await this.axios
       .delete(`${this.endpoint}/${id}`)
       .then(() => {
-        this.data.recordList = this.data.recordList.filter((record) => { return record.id != id });
+        this.data.recordList.records = this.data.recordList.records.filter((record) => { return record.id != id });
+        this.data.recordList.meta.totalObjects -= 1;
       });
   }
 
   payload() {
-    let payload = {}
+    let payload = {};
     payload[this.recordKey] = this.data.record;
-    return payload 
+    return payload ;
   }
 }
