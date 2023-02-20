@@ -1,14 +1,12 @@
 <script setup>
-  import ActivityTypeForm from "../../components/ActivityTypeForm.vue";
+import ActivityTypeForm from "@/components/ActivityTypeForm.vue";
 </script>
 
 <template>
   <VCard
     class="mb-6"
-    title="Nueva Actividad"
+    title="Nuevo Tipo de Actividad"
   >
-  <VCardText class="d-flex align-center flex-wrap gap-4">
     <ActivityTypeForm />
-  </VCardText>
   </VCard>
 </template>
