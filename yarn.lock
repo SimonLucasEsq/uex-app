@@ -4799,6 +4799,11 @@
   "resolved" "https://registry.npmjs.org/vue-chartjs/-/vue-chartjs-4.1.2.tgz"
   "version" "4.1.2"
 
+"vue-debounce@^4.0.0":
+  "integrity" "sha512-+BrcKfLpyDpUJ58ZrAvI35irRCgYHFpnF3NJZwwaz8/kkKmEq6TWPXBIhLh2HQAsUZNwo52K/vQyiEFsJ/1RYA=="
+  "resolved" "https://registry.npmjs.org/vue-debounce/-/vue-debounce-4.0.0.tgz"
+  "version" "4.0.0"
+
 "vue-demi@*":
   "integrity" "sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A=="
   "resolved" "https://registry.npmjs.org/vue-demi/-/vue-demi-0.13.11.tgz"
@@ -4862,7 +4867,7 @@
     "@volar/vue-language-core" "1.0.10"
     "@volar/vue-typescript" "1.0.10"
 
-"vue@^2.6.12 || ^3.2.4", "vue@^2.6.14 || ^3.2.0", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.11", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.2.45", "vue@> 3.0.0", "vue@>=3", "vue@2 || 3", "vue@3.2.45":
+"vue@^2.6.12 || ^3.2.4", "vue@^2.6.14 || ^3.2.0", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.11", "vue@^3.2.0", "vue@^3.2.25", "vue@^3.2.45", "vue@> 3.0.0", "vue@>= 2.0.0", "vue@>=3", "vue@2 || 3", "vue@3.2.45":
   "integrity" "sha512-9Nx/Mg2b2xWlXykmCwiTUCWHbWIj53bnkizBxKai1g61f2Xit700A1ljowpTIM11e3uipOeiPcSqnmBg6gyiaA=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.2.45.tgz"
   "version" "3.2.45"
