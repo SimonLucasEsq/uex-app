@@ -1,7 +1,6 @@
-import { ref, reactive, computed } from "vue";
+import Api from '@/stores/api';
 import { defineStore } from "pinia";
-import { inject } from "vue";
-import Api from '@/stores/api'
+import { computed, inject, reactive } from "vue";
 
 export const useActivityTypeStore = defineStore('activityTypes', () => {
   const defaultRecord = {
@@ -9,25 +8,32 @@ export const useActivityTypeStore = defineStore('activityTypes', () => {
     name: null,
     description: null,
     errors: {}
-  }
+  };
 
   const apiConfig = {
     endpoint: "activity_types",
     recordKey: "activity_type",
     recordListKey: "activity_types"
-  }
+  };
 
   const data = reactive({
     record: { ...defaultRecord },
-    recordList: []
-  })
+    recordList: {
+      records: [],
+      meta: {
+        perPage: 0,
+        totalPages: 0,
+        totalObjects: 0
+      }
+    }
+  });
 
-  const isNew = computed(() => { return data.record.id == null })
-  const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 })
-  const isInvalid = computed(() => { return !isValid })
+  const isNew = computed(() => { return data.record.id == null });
+  const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 });
+  const isInvalid = computed(() => { return !isValid.value });
 
-  const axios = inject("axios")
-  const api = new Api(axios, data, apiConfig)
+  const axios = inject("axios");
+  const api = new Api(axios, data, apiConfig);
 
   function resetRecord() {
     this.data.record = { ...defaultRecord };
