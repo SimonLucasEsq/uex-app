@@ -1,15 +1,16 @@
 <script setup>
-import activityTypeForm from "@/components/ActivityTypeForm.vue";
+import ActivityTypeForm from "@/components/ActivityTypeForm.vue";
 import { useRoute } from 'vue-router';
-const route = useRoute();
-const id = route.params.id;
+
+const route = useRoute()
+const id = route.params.id
 </script>
 
 <template>
   <VCard
-  class="mb-6"
-  title="Editar Tipo de Actividad"
+    class="mb-6"
+    title="Editar Tipo de Actividad"
   >
-    <activityTypeForm :id="id"/>
+    <ActivityTypeForm :id="id" />
   </VCard>
-</template>
+</template> 
