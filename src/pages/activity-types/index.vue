@@ -1,4 +1,5 @@
 <script setup>
+import ConfirmModal from "@/components/ConfirmModal.vue";
 import { useActivityTypeStore } from "@/stores/activity-type";
 import { computed, onMounted } from "vue";
 import { debounce } from 'vue-debounce';
@@ -19,7 +20,7 @@ onMounted(async () => {
 });
 
 async function deleteActivityType() {
-  store.api.delete(activityTypeToDelete.value).then(() => {
+  store.api.delete(activityTypeToDelete.value.id).then(() => {
     loadActivities();
   })
   isDialogVisible.value = false;
@@ -130,7 +131,7 @@ const paginationText = computed(() => {
                   />
                 <VMenu activator="parent">
                   <VList>
-                    <VListItem @click="showModal(activityType.id)">
+                    <VListItem @click="showModal(activityType)">
                       <template #prepend>
                         <VIcon
                           size="24"
@@ -138,6 +139,7 @@ const paginationText = computed(() => {
                           icon="tabler-trash"
                         />
                       </template>
+                      <VListItemTitle>Eliminar</VListItemTitle>
                     </VListItem>
                   </VList>
                 </VMenu>
@@ -196,35 +198,13 @@ const paginationText = computed(() => {
       </VCardText>
       <!-- !SECTION -->
 
-          <!-- Confirmation Dialog -->
-    <VDialog
-    v-model="isDialogVisible"
-    persistent
-    class="v-dialog-sm"
-    >
-      <!-- Dialog close btn -->
-      <DialogCloseBtn @click="isDialogVisible = !isDialogVisible" />
-
-      <!-- Dialog Content -->
-      <VCard title="Use Google's location service?">
-        <VCardText>
-          Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
-        </VCardText>
-
-        <VCardText class="d-flex justify-end gap-3 flex-wrap">
-          <VBtn
-            color="secondary"
-            variant="tonal"
-            @click="isDialogVisible = false"
-          >
-            Cancelar
-          </VBtn>
-          <VBtn @click="deleteActivityType()">
-            Eliminar
-          </VBtn>
-        </VCardText>
-      </VCard>
-    </VDialog>
+      <!-- Confirmation Dialog -->
+      <ConfirmModal
+        v-model:isDialogVisible="isDialogVisible"
+        :title="`Eliminar Tipo de Actividad ${activityTypeToDelete?.name}?`"
+        body="Solo podrá ser eliminado si no se encuentra asociado a ninguna actividad"
+        @onConfirm="deleteActivityType()"
+      />
     </VCard>
 </template>
 

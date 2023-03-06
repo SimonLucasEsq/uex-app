@@ -63,7 +63,7 @@ export default class Api {
     return await this.axios
       .get(`${this.endpoint}/${id}`)
       .then((response) => {
-        this.data.record = response.data[this.recordKey];
+        this.data.record = {...response.data[this.recordKey], errors: []};
         return this.data.record;
       });
   }
