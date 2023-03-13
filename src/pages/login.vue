@@ -1,25 +1,61 @@
 <script setup>
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
+import router from "@/router"
+import { plainAxiosInstance as axios } from '@axios'
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
-import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
-import { themeConfig } from '@themeConfig'
-import {
-  emailValidator,
-  requiredValidator,
-} from '@validators'
 import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
 import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-login-illustration-bordered-light.png'
 import authV2LoginIllustrationDark from '@images/pages/auth-v2-login-illustration-dark.png'
 import authV2LoginIllustrationLight from '@images/pages/auth-v2-login-illustration-light.png'
 import authV2MaskDark from '@images/pages/misc-mask-dark.png'
 import authV2MaskLight from '@images/pages/misc-mask-light.png'
+import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
+import { themeConfig } from '@themeConfig'
+import {
+emailValidator,
+requiredValidator
+} from '@validators'
+import { onBeforeMount } from "vue"
+
+onBeforeMount(() => {
+  checkSignedIn()
+})
 
 const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 const isPasswordVisible = ref(false)
 const email = ref('admin@demo.com')
 const password = ref('admin')
-const rememberMe = ref(false)
+const errorMessage = ref('')
+function singin() {
+  axios.post('/signin', { email: email.value, password: password.value })
+    .then(response => signinSuccessful(response))
+    .catch(error => signinFailed(error))
+}
+
+function signinSuccessful(response) {
+  if (!response.data.csrf) {
+    this.signinFailed(response)
+    
+    return
+  }
+  localStorage.csrf = response.data.csrf
+  localStorage.user_id = response.data.user_id
+  localStorage.signedIn = true
+  router.push({ name: 'activity-types' })
+}
+
+function signinFailed(error) {
+  errorMessage.value = error.response?.data?.error
+  delete localStorage.csrf
+  delete localStorage.user_id
+  delete localStorage.signedIn
+}
+
+function checkSignedIn() {
+  if (localStorage.signedIn) {
+    router.push('/')
+  }
+}
 </script>
 
 <template>
@@ -64,22 +100,16 @@ const rememberMe = ref(false)
           />
 
           <h5 class="text-h5 font-weight-semibold mb-1">
-            Welcome to {{ themeConfig.app.title }}! 👋🏻
+            Bienvenido a {{ themeConfig.app.title }}! 👋🏻
           </h5>
-          <p class="mb-0">
-            Please sign-in to your account and start the adventure
-          </p>
         </VCardText>
-        <VCardText>
+        <VCardText v-if="errorMessage">
           <VAlert
-            color="primary"
+            color="error"
             variant="tonal"
           >
             <p class="text-caption mb-2">
-              Admin Email: <strong>admin@demo.com</strong> / Pass: <strong>admin</strong>
-            </p>
-            <p class="text-caption mb-0">
-              Client Email: <strong>client@demo.com</strong> / Pass: <strong>client</strong>
+              {{ errorMessage }}
             </p>
           </VAlert>
         </VCardText>
@@ -90,7 +120,7 @@ const rememberMe = ref(false)
               <VCol cols="12">
                 <VTextField
                   v-model="email"
-                  label="Email"
+                  label="Correo"
                   type="email"
                   :rules="[requiredValidator, emailValidator]"
                 />
@@ -100,62 +130,28 @@ const rememberMe = ref(false)
               <VCol cols="12">
                 <VTextField
                   v-model="password"
-                  label="Password"
+                  label="Contraseña"
                   :rules="[requiredValidator]"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
 
-                <div class="d-flex align-center flex-wrap justify-space-between mt-2 mb-4">
-                  <VCheckbox
-                    v-model="rememberMe"
-                    label="Remember me"
-                  />
+                <div class="d-flex flex-row-reverse mt-2 mb-4">
                   <a
                     class="text-primary ms-2 mb-1"
                     href="#"
                   >
-                    Forgot Password?
+                    Has olvidado tu contraseña?
                   </a>
                 </div>
-
                 <VBtn
+                  @click="singin"
                   block
                   type="submit"
                 >
-                  Login
+                  Iniciar Sesión
                 </VBtn>
-              </VCol>
-
-              <!-- create account -->
-              <VCol
-                cols="12"
-                class="text-center"
-              >
-                <span>New on our platform?</span>
-                <a
-                  class="text-primary ms-2"
-                  href="#"
-                >
-                  Create an account
-                </a>
-              </VCol>
-              <VCol
-                cols="12"
-                class="d-flex align-center"
-              >
-                <VDivider />
-                <span class="mx-4">or</span>
-                <VDivider />
-              </VCol>
-
-              <!-- auth providers -->
-              <VCol
-                cols="12"
-                class="text-center"
-              >
-                <AuthProvider />
               </VCol>
             </VRow>
           </VForm>
