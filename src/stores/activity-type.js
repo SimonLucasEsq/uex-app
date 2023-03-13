@@ -1,6 +1,6 @@
 import Api from '@/stores/api';
 import { defineStore } from "pinia";
-import { computed, inject, reactive } from "vue";
+import { computed, reactive } from "vue";
 
 export const useActivityTypeStore = defineStore('activityTypes', () => {
   const defaultRecord = {
@@ -32,8 +32,7 @@ export const useActivityTypeStore = defineStore('activityTypes', () => {
   const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 });
   const isInvalid = computed(() => { return !isValid.value });
 
-  const axios = inject("axios");
-  const api = new Api(axios, data, apiConfig);
+  const api = new Api(data, apiConfig);
 
   function resetRecord() {
     this.data.record = { ...defaultRecord };

@@ -1,6 +1,6 @@
 <script setup>
-import axios from '@axios'
-import { useThemeConfig } from '@core/composable/useThemeConfig'
+import { plainAxiosInstance as axios } from '@axios';
+import { useThemeConfig } from '@core/composable/useThemeConfig';
 
 const { appContentLayoutNav } = useThemeConfig()
 
