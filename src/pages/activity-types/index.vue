@@ -139,7 +139,7 @@ const paginationText = computed(() => {
                           icon="tabler-trash"
                         />
                       </template>
-                      <VListItemTitle>Eliminar</VListItemTitle>
+                      <VListItemTitle>Eliminar  </VListItemTitle>
                     </VListItem>
                   </VList>
                 </VMenu>
