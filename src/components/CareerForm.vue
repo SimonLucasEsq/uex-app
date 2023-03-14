@@ -20,15 +20,13 @@ async function submit() {
   }
 }
 
-function cancel() {
+function onCancel(){
   router.push({ name: 'careers' })
 }
 
 onMounted(async () => {
   if(props.id) {
-    console.log(props)
-    var a = await store.api.find(props.id)
-    console.log(a)
+    await store.api.find(props.id)
   } else {
     store.resetRecord()
   }
@@ -76,8 +74,7 @@ onMounted(async () => {
           <VBtn
             color="secondary"
             variant="tonal"
-            type="reset"
-            @click="cancel"
+            @click.prevent="onCancel"
           >
             Cancelar
           </VBtn>

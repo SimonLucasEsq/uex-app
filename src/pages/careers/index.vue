@@ -12,22 +12,22 @@ const currentPage = ref(1)
 const isDialogVisible = ref(false)
 const careerToDelete = ref(null)
 
-const debounceSearch = debounce(async function() { 
-  loadActivities()
+const debounceSearch = debounce(async function() {
+  loadCareers()
 }, 300)
 
 onMounted(async () => {
-  loadActivities()
+  loadCareers()
 })
 
 async function deleteCareer() {
   store.api.delete(careerToDelete.value).then(() => {
-    loadActivities()
+    loadCareers()
   })
   isDialogVisible.value = false
 }
 
-async function loadActivities() {
+async function loadCareers() {
   store.api.query({
     search: searchQuery.value,
     page: currentPage.value,
@@ -112,31 +112,6 @@ const paginationText = computed(() => {
                 icon="tabler-pencil"
               />
             </VBtn>
-
-            <VBtn
-              icon
-              variant="text"
-              color="default"
-              size="x-small"
-            >
-              <VIcon
-                :size="22"
-                icon="tabler-dots-vertical"
-              />
-              <VMenu activator="parent">
-                <VList>
-                  <VListItem @click="showModal(career.id)">
-                    <template #prepend>
-                      <VIcon
-                        size="24"
-                        class="me-3"
-                        icon="tabler-trash"
-                      />
-                    </template>
-                  </VListItem>
-                </VList>
-              </VMenu>
-            </VBtn>
           </td>
         </tr>
       </tbody>
@@ -170,7 +145,7 @@ const paginationText = computed(() => {
           v-model="rowPerPage"
           density="compact"
           :items="[10, 20, 30, 50]"
-          @update:modelValue="loadActivities"
+          @update:modelValue="loadCareers"
         />
       </div>
       <!-- 👉 Pagination meta -->
@@ -179,47 +154,17 @@ const paginationText = computed(() => {
       </span>
 
       <VSpacer />
-        
+
       <!-- 👉 Pagination -->
       <VPagination
         v-model="currentPage"
         size="small"
         :total-visible="5"
         :length="paginationData.totalPages"
-        @update:modelValue="loadActivities"
+        @update:modelValue="loadCareers"
       />
     </VCardText>
     <!-- !SECTION -->
-
-    <!-- Confirmation Dialog -->
-    <VDialog
-      v-model="isDialogVisible"
-      persistent
-      class="v-dialog-sm"
-    >
-      <!-- Dialog close btn -->
-      <DialogCloseBtn @click="isDialogVisible = !isDialogVisible" />
-
-      <!-- Dialog Content -->
-      <VCard title="Use Google's location service?">
-        <VCardText>
-          Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
-        </VCardText>
-
-        <VCardText class="d-flex justify-end gap-3 flex-wrap">
-          <VBtn
-            color="secondary"
-            variant="tonal"
-            @click="isDialogVisible = false"
-          >
-            Cancelar
-          </VBtn>
-          <VBtn @click="deleteCareer">
-            Eliminar
-          </VBtn>
-        </VCardText>
-      </VCard>
-    </VDialog>
   </VCard>
 </template>
 
@@ -230,4 +175,4 @@ const paginationText = computed(() => {
     inline-size: 15rem;
   }
 }
-</style>  
+</style>

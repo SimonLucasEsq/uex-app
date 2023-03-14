@@ -6,7 +6,6 @@ export const useCareerStore = defineStore('careers', () => {
   const defaultRecord = {
     id: null,
     name: null,
-    description: null,
     errors: {},
   }
 
