@@ -1,5 +1,22 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
+import router from "@/router";
+import { useUserStore } from "@/stores/user";
+import { securedAxiosInstance as axios } from '@axios';
+import { onMounted } from "vue";
+
+const store = useUserStore();
+const currentUser = ref({})
+onMounted(() => {
+  loadCurrentUser()
+})
+function logout() {
+  axios.delete('/signin').then(() => {
+    router.push("/login")
+  })
+}
+async function loadCurrentUser() {
+  currentUser.value = await store.api.currentUser();
+}
 </script>
 
 <template>
@@ -13,10 +30,13 @@ import avatar1 from '@images/avatars/avatar-1.png'
   >
     <VAvatar
       class="cursor-pointer"
-      color="primary"
-      variant="tonal"
+      color="secondary"
     >
-      <VImg :src="avatar1" />
+      <VIcon
+        color="white"
+        size="25"
+        icon="tabler-user"
+      />
 
       <!-- SECTION Menu -->
       <VMenu
@@ -37,20 +57,20 @@ import avatar1 from '@images/avatars/avatar-1.png'
                   offset-y="3"
                   color="success"
                 >
-                  <VAvatar
-                    color="primary"
-                    variant="tonal"
-                  >
-                    <VImg :src="avatar1" />
+                  <VAvatar color="secondary">
+                    <VIcon
+                      color="white"
+                      size="25"
+                      icon="tabler-user"
+                    />
                   </VAvatar>
                 </VBadge>
               </VListItemAction>
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              {{currentUser.email}}
             </VListItemTitle>
-            <VListItemSubtitle>Admin</VListItemSubtitle>
           </VListItem>
 
           <VDivider class="my-2" />
@@ -111,7 +131,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem @click="logout">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -120,7 +140,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
               />
             </template>
 
-            <VListItemTitle>Logout</VListItemTitle>
+            <VListItemTitle>Cerrar Sesión</VListItemTitle>
           </VListItem>
         </VList>
       </VMenu>

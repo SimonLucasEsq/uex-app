@@ -2,18 +2,23 @@ import Api from '@/stores/api';
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
 
-export const useActivityTypeStore = defineStore('activityTypes', () => {
+class UserApi extends Api {
+  async currentUser(id) {
+    return await this.find(localStorage.user_id)
+  }
+}
+
+export const useUserStore = defineStore('users', () => {
   const defaultRecord = {
     id: null,
-    name: null,
-    description: null,
+    email: null,
     errors: {}
   };
 
   const apiConfig = {
-    endpoint: "activity_types",
-    recordKey: "activity_type",
-    recordListKey: "activity_types"
+    endpoint: "users",
+    recordKey: "user",
+    recordListKey: "users"
   };
 
   const data = reactive({
@@ -32,7 +37,7 @@ export const useActivityTypeStore = defineStore('activityTypes', () => {
   const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 });
   const isInvalid = computed(() => { return !isValid.value });
 
-  const api = new Api(data, apiConfig);
+  const api = new UserApi(data, apiConfig);
 
   function resetRecord() {
     this.data.record = { ...defaultRecord };
