@@ -1,16 +1,17 @@
+import { securedAxiosInstance as axios } from '@axios';
 export default class Api {
-  constructor(axios, data, associations, apiConfig) {
+  constructor(data, associations, apiConfig) {
     this.data = data;
-    this.axios = axios;
     this.associations = associations;
     this.endpoint = apiConfig.endpoint;
     this.recordKey = apiConfig.recordKey;
-    this.recordListKey = apiConfig.recordListKey; 
+    this.recordListKey = apiConfig.recordListKey;
+    this.axios = axios;
   }
 
   async create() {
     return await this.axios
-      .post(this.endpoint, this.payload())
+      .post(`/api/${this.endpoint}`, this.payload())
       .then((response) => {
         this.data.record = {...response.data[this.recordKey], errors: {}};
         return this.data.record;
@@ -26,7 +27,7 @@ export default class Api {
 
   async update() {
     return await this.axios
-      .put(`${this.endpoint}/${this.data.record.id}`, this.payload())
+      .put(`/api/${this.endpoint}/${this.data.record.id}`, this.payload())
       .then((response) => {
         this.data.record = {...response.data[this.recordKey], errors: {}};
         return this.data.record;
@@ -50,7 +51,7 @@ export default class Api {
 
   async query(params) {
     return await this.axios
-      .get(this.endpoint, {params: params})
+      .get(`/api/${this.endpoint}`, {params: params})
       .then((response) => {
         this.data.recordList.meta.perPage = response.data["meta"]["per_page"];
         this.data.recordList.meta.totalPages = response.data["meta"]["total_pages"];
@@ -75,7 +76,7 @@ export default class Api {
 
   async find(id) {
     return await this.axios
-      .get(`${this.endpoint}/${id}`)
+      .get(`/api/${this.endpoint}/${id}`)
       .then((response) => {
         this.data.record = {...response.data[this.recordKey], errors: []};
 
@@ -95,7 +96,7 @@ export default class Api {
 
   async delete(id) {
     return await this.axios
-      .delete(`${this.endpoint}/${id}`)
+      .delete(`/api/${this.endpoint}/${id}`)
       .then(() => {
         this.data.recordList.records.delete(id);
         this.data.recordList.meta.totalObjects -= 1;

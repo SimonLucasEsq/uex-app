@@ -14,4 +14,9 @@ export default [
     to: { name: 'activity-types' },
     icon: { icon: 'tabler-file' },
   },
+  {
+    title: 'Careers',
+    to: { name: 'careers' },
+    icon: { icon: 'tabler-file' },
+  },
 ]
