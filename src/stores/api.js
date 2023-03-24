@@ -1,7 +1,8 @@
 export default class Api {
-  constructor(axios, data, apiConfig) {
+  constructor(axios, data, associations, apiConfig) {
     this.data = data;
     this.axios = axios;
+    this.associations = associations;
     this.endpoint = apiConfig.endpoint;
     this.recordKey = apiConfig.recordKey;
     this.recordListKey = apiConfig.recordListKey; 
@@ -51,10 +52,23 @@ export default class Api {
     return await this.axios
       .get(this.endpoint, {params: params})
       .then((response) => {
-        this.data.recordList.records = response.data[this.recordListKey];
         this.data.recordList.meta.perPage = response.data["meta"]["per_page"];
         this.data.recordList.meta.totalPages = response.data["meta"]["total_pages"];
         this.data.recordList.meta.totalObjects = response.data["meta"]["total_objects"];
+
+        if (response.data[this.recordListKey]?.length === 0) {
+          return;
+        }
+
+        response.data[this.recordListKey].forEach(record => {
+          this.data.recordList.records.set(record.id, record)
+          this.associations.belognsTo.forEach((store, entity) => {
+            if (record[entity]) {
+              store.insert(record[entity]);
+            }
+          });
+        })
+
         return this.data.recordList.records;
       });
   }
@@ -64,6 +78,17 @@ export default class Api {
       .get(`${this.endpoint}/${id}`)
       .then((response) => {
         this.data.record = {...response.data[this.recordKey], errors: []};
+
+        if (response.data[this.recordListKey]?.length === 0) {
+          return;
+        }
+
+        this.associations.belognsTo.forEach((store, entity) => {
+          if (this.data.record[entity]) {
+            store.insert(this.data.record[entity]);
+          }
+        });
+
         return this.data.record;
       });
   }
@@ -72,7 +97,7 @@ export default class Api {
     return await this.axios
       .delete(`${this.endpoint}/${id}`)
       .then(() => {
-        this.data.recordList.records = this.data.recordList.records.filter((record) => { return record.id != id });
+        this.data.recordList.records.delete(id);
         this.data.recordList.meta.totalObjects -= 1;
       });
   }
@@ -81,5 +106,14 @@ export default class Api {
     let payload = {};
     payload[this.recordKey] = this.data.record;
     return payload ;
+  }
+
+  toCamelCase(record) {
+    let camelCased = {};
+    Object.entries(record).forEach((key, value) => {
+      camelCased[ _.camelCase(key)] = value;
+    });
+
+    return camelCased;
   }
 }
