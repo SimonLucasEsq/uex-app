@@ -114,8 +114,8 @@ const paginationText = computed(() => {
             :key="student.id"
             style="height: 3.75rem;"
           >
-            <td>{{ student.person.id_card }}</td>
-            <td>{{ student.person.first_name }} {{ student.person.last_name }}</td>
+            <td>{{ student.person.idCard }}</td>
+            <td>{{ student.person.firstName }} {{ student.person.lastName }}</td>
             <td>{{ student.hours }}</td>
             <td>{{ student.person.email }}</td>
             <td>

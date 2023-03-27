@@ -1,13 +1,16 @@
 <script setup>
+import { useCareerStore } from "@/stores/career";
 import { useStudentStore } from "@/stores/student";
 import { requiredValidator } from '@validators';
-import { computed, onMounted } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 import router from "../router";
 
 const props = defineProps(['id'])
 const refForm = ref()
 const store = useStudentStore()
+const careerStore = useCareerStore()
 const student = computed(() => store.data.record )
+const careers = computed(() => careerStore.data.recordList.records )
 
 async function submit() {
   const { valid } = await refForm.value.validate()
@@ -24,12 +27,14 @@ function cancel() {
   router.push({ name: 'students' })
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
   if(props.id) {
     await store.api.find(props.id)
   } else {
     store.resetRecord()
   }
+  
+  await careerStore.api.query({})
 })
 </script>
 
@@ -40,11 +45,13 @@ onMounted(async () => {
       @submit.prevent="() => {}"
     >
       <VRow>
-        Datos Personales
+        <VCol cols="12 text-subtitle-1">
+          Datos Personales
+        </VCol>
         <VCol cols="12">
           <VTextField
             id="firstName"
-            v-model="student.person.first_name"
+            v-model="student.person.firstName"
             label="Nombres"
             placeholder="Nombres"
             :rules="[requiredValidator]"
@@ -54,7 +61,7 @@ onMounted(async () => {
         <VCol cols="12">
           <VTextField
             id="lastName"
-            v-model="student.person.last_name"
+            v-model="student.person.lastName"
             label="Apellidos"
             placeholder="Apellidos"
             :rules="[requiredValidator]"
@@ -63,14 +70,16 @@ onMounted(async () => {
 
         <VCol cols="12">
           <VTextField
-            id="id_card"
-            v-model="student.person.id_card"
+            id="idCard"
+            v-model="student.person.idCard"
             label="Nº C.I."
             placeholder="Nº C.I."
             :rules="[requiredValidator]"
           />
         </VCol>
-        Datos de Contacto
+        <VCol cols="12 text-subtitle-1">
+          Datos de Contacto
+        </VCol>
         <VCol cols="12">
           <VTextField
             id="email"
@@ -84,7 +93,7 @@ onMounted(async () => {
         <VCol cols="12">
           <VTextField
             id="phoneNumber"
-            v-model="student.person.phone_number"
+            v-model="student.person.phoneNumber"
             label="Celular"
             placeholder="Celular"
             :rules="[requiredValidator]"
@@ -100,15 +109,24 @@ onMounted(async () => {
             :rules="[requiredValidator]"
           />
         </VCol>
-        Datos Academicos
+        <VCol cols="12 text-subtitle-1">
+          Datos Academicos
+        </VCol>
+
         <VCol cols="12">
-          <VTextField
+          <v-select
             id="career_id"
-            v-model="student.career_id"
+            v-model="student.career"
+            :items="Array.from(careers.values())"
+            item-title="name"
+            item-value="id"
             label="Carrera"
-            placeholder="Carrera"
+            persistent-hint
+            return-object
+            single-line
             :rules="[requiredValidator]"
-          />
+            @update:modelValue="student.careerId = student.career.id"
+          ></v-select>
         </VCol>
         <VCol
           cols="12"
