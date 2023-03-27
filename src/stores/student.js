@@ -1,31 +1,36 @@
 import Api from '@/stores/api';
+import { usePersonStore } from "@/stores/person";
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
 
-class UserApi extends Api {
-  async currentUser(id) {
-    return await this.find(localStorage.user_id)
+export const useStudentStore = defineStore('students', () => {
+  const associations = {
+    belognsTo: new Map(
+      [
+        ["person", usePersonStore()]
+      ]
+    )
   }
-}
 
-export const useUserStore = defineStore('users', () => {
-  const associations = {}
   const defaultRecord = {
     id: null,
-    email: null,
+    hours: null,
+    submitted: false,
+    admissionYear: null,
+    person: {},
     errors: {}
   };
 
   const apiConfig = {
-    endpoint: "users",
-    recordKey: "user",
-    recordListKey: "users"
+    endpoint: "students",
+    recordKey: "student",
+    recordListKey: "students"
   };
 
   const data = reactive({
     record: { ...defaultRecord },
     recordList: {
-      records: [],
+      records: new Map(),
       meta: {
         perPage: 0,
         totalPages: 0,
@@ -38,11 +43,11 @@ export const useUserStore = defineStore('users', () => {
   const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 });
   const isInvalid = computed(() => { return !isValid.value });
 
-  const api = new UserApi(data, associations, apiConfig);
+  const api = new Api(data, associations, apiConfig);
 
   function resetRecord() {
-    this.data.record = { ...defaultRecord };
+    this.data.record = JSON.parse(JSON.stringify(defaultRecord));
   }
 
-  return { data, api, isNew, isValid, isInvalid, resetRecord }
+  return { data, api, isNew, isValid, isInvalid, resetRecord, associations }
 })

@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
 
 export const useActivityTypeStore = defineStore('activityTypes', () => {
+  const associations = {}
   const defaultRecord = {
     id: null,
     name: null,
@@ -19,7 +20,7 @@ export const useActivityTypeStore = defineStore('activityTypes', () => {
   const data = reactive({
     record: { ...defaultRecord },
     recordList: {
-      records: [],
+      records: new Map(),
       meta: {
         perPage: 0,
         totalPages: 0,
@@ -32,7 +33,7 @@ export const useActivityTypeStore = defineStore('activityTypes', () => {
   const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 });
   const isInvalid = computed(() => { return !isValid.value });
 
-  const api = new Api(data, apiConfig);
+  const api = new Api(data, associations, apiConfig);
 
   function resetRecord() {
     this.data.record = { ...defaultRecord };
