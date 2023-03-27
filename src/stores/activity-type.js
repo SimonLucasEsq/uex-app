@@ -20,7 +20,7 @@ export const useActivityTypeStore = defineStore('activityTypes', () => {
   const data = reactive({
     record: { ...defaultRecord },
     recordList: {
-      records: [],
+      records: new Map(),
       meta: {
         perPage: 0,
         totalPages: 0,

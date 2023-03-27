@@ -1,7 +1,7 @@
 import Api from '@/stores/api';
 import { usePersonStore } from "@/stores/person";
 import { defineStore } from "pinia";
-import { computed, inject, reactive } from "vue";
+import { computed, reactive } from "vue";
 
 export const useStudentStore = defineStore('students', () => {
   const associations = {
@@ -18,9 +18,6 @@ export const useStudentStore = defineStore('students', () => {
     submitted: false,
     admissionYear: null,
     person: {},
-    fullName: function() {
-      return this.person.first_name + " " + this.lastName.last_name;
-    },
     errors: {}
   };
 
@@ -46,8 +43,7 @@ export const useStudentStore = defineStore('students', () => {
   const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 });
   const isInvalid = computed(() => { return !isValid.value });
 
-  const axios = inject("axios");
-  const api = new Api(axios, data, associations, apiConfig);
+  const api = new Api(data, associations, apiConfig);
 
   function resetRecord() {
     this.data.record = JSON.parse(JSON.stringify(defaultRecord));

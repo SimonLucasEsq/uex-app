@@ -50,10 +50,10 @@ securedAxiosInstance.interceptors.response.use(null, error => {
 
         location.replace('/login')
         
-        return reject(error)
+        return Promise.reject(error)
       })
   } else {
-    return reject(error)
+    return Promise.reject(error)
   }
 })
 

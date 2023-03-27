@@ -1,8 +1,9 @@
 import Api from '@/stores/api';
 import { defineStore } from "pinia";
-import { computed, inject, reactive } from "vue";
+import { computed, reactive } from "vue";
 
 export const usePersonStore = defineStore('persons', () => {
+  const associations = {}
   const defaultRecord = {
     id: null,
     firstName: null,
@@ -36,8 +37,7 @@ export const usePersonStore = defineStore('persons', () => {
   const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 });
   const isInvalid = computed(() => { return !isValid.value });
 
-  const axios = inject("axios");
-  const api = new Api(axios, data, {}, apiConfig);
+  const api = new Api(data, associations, apiConfig);
 
   function resetRecord() {
     this.data.record = { ...defaultRecord };
