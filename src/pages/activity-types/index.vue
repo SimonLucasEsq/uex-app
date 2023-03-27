@@ -41,8 +41,8 @@ function showModal(activityTypeId) {
 
 // Computing pagination text
 const paginationText = computed(() => {
-  const firstIndex = activityTypes.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0;
-  const lastIndex = activityTypes.value.length + (currentPage.value - 1) * rowPerPage.value;
+  const firstIndex = activityTypes.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0;
+  const lastIndex = activityTypes.value.size + (currentPage.value - 1) * rowPerPage.value;
 
   return `Mostrando ${ firstIndex } a ${ lastIndex } de un total de ${ paginationData.value.totalObjects } registros`;
 });
@@ -99,7 +99,7 @@ const paginationText = computed(() => {
 
         <tbody>
           <tr
-            v-for="activityType in activityTypes"
+            v-for="activityType in activityTypes.values()"
             :key="activityType.id"
             style="height: 3.75rem;"
           >
@@ -148,7 +148,7 @@ const paginationText = computed(() => {
           </tr>
         </tbody>
         <!-- 👉 table footer  -->
-        <tfoot v-show="!activityTypes.length">
+        <tfoot v-show="!activityTypes.size">
           <tr>
             <td
               colspan="8"

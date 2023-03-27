@@ -1,4 +1,5 @@
 <script setup>
+import ConfirmModal from "@/components/ConfirmModal.vue";
 import { useCareerStore } from "@/stores/career";
 import { computed, onMounted } from "vue";
 import { debounce } from 'vue-debounce';
@@ -21,7 +22,7 @@ onMounted(async () => {
 })
 
 async function deleteCareer() {
-  store.api.delete(careerToDelete.value).then(() => {
+  store.api.delete(careerToDelete.value.id).then(() => {
     loadCareers()
   })
   isDialogVisible.value = false
@@ -42,8 +43,8 @@ function showModal(careerId) {
 
 // Computing pagination text
 const paginationText = computed(() => {
-  const firstIndex = careers.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
-  const lastIndex = careers.value.length + (currentPage.value - 1) * rowPerPage.value
+  const firstIndex = careers.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
+  const lastIndex = careers.value.size + (currentPage.value - 1) * rowPerPage.value
 
   return `Mostrando ${ firstIndex } a ${ lastIndex } de un total de ${ paginationData.value.totalObjects } registros`
 })
@@ -94,7 +95,7 @@ const paginationText = computed(() => {
 
       <tbody>
         <tr
-          v-for="career in careers"
+          v-for="career in careers.values()"
           :key="career.id"
           style="height: 3.75rem;"
         >
@@ -112,11 +113,36 @@ const paginationText = computed(() => {
                 icon="tabler-pencil"
               />
             </VBtn>
+            <VBtn
+                icon
+                variant="text"
+                color="default"
+                size="x-small"
+              >
+                <VIcon
+                    :size="22"
+                    icon="tabler-dots-vertical"
+                  />
+                <VMenu activator="parent">
+                  <VList>
+                    <VListItem @click="showModal(career)">
+                      <template #prepend>
+                        <VIcon
+                          size="24"
+                          class="me-3"
+                          icon="tabler-trash"
+                        />
+                      </template>
+                      <VListItemTitle>Eliminar</VListItemTitle>
+                    </VListItem>
+                  </VList>
+                </VMenu>
+              </VBtn>
           </td>
         </tr>
       </tbody>
       <!-- 👉 table footer  -->
-      <tfoot v-show="!careers.length">
+      <tfoot v-show="!careers.size">
         <tr>
           <td
             colspan="8"
@@ -165,6 +191,14 @@ const paginationText = computed(() => {
       />
     </VCardText>
     <!-- !SECTION -->
+
+    <!-- Confirmation Dialog -->
+    <ConfirmModal
+      v-model:isDialogVisible="isDialogVisible"
+      :title="`Eliminar Carrera ${careerToDelete?.name}?`"
+      body="Solo podrá ser eliminado si otras no se encuentra asociado a otras entidades"
+      @onConfirm="deleteCareer()"
+    />
   </VCard>
 </template>
 
