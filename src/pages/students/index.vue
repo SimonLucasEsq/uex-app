@@ -35,9 +35,9 @@ async function loadStudents() {
   });
 }
 
-function showModal(studentId) {
+function showModal(student) {
   isDialogVisible.value = true;
-  studentToDelete.value = studentId;
+  studentToDelete.value = student;
 }
 
 // Computing pagination text
@@ -214,7 +214,7 @@ const paginationText = computed(() => {
       <!-- Confirmation Dialog -->
       <ConfirmModal
         v-model:isDialogVisible="isDialogVisible"
-        :title="`Eliminar Alumno ${studentToDelete?.person.first_name}?`"
+        :title="`Eliminar Alumno ${studentToDelete?.person.firstName}?`"
         body="Solo podrá ser eliminado si no se encuentra asociado a ninguna actividad"
         @onConfirm="deleteStudent()"
       />
