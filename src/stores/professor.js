@@ -9,6 +9,11 @@ export const useProfessorStore = defineStore('professors', () => {
       [
         ["person", usePersonStore()]
       ]
+    ),
+    hasMany: new Map(
+      [
+        ["professorCareers", null]
+      ]
     )
   }
 

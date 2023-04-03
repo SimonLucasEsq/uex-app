@@ -16,14 +16,14 @@ const selectedCarreerIds = ref([])
 onBeforeMount(async () => {
   if(props.id) {
     await store.api.find(props.id)
-    selectedCarreerIds.value = professor.value.professorCareers.map((association)=> { return association.career_id })
+    selectedCarreerIds.value = professor.value.professorCareers.map((association)=> { return association.careerId })
   } else {
     store.resetRecord()
   }
 
   await careerStore.api.query({}).then((response) => {
     careers.value = Array.from(response.values()).map((record) => {
-      return {career_name: record.name, career_id: record.id};
+      return {careerName: record.name, careerId: record.id};
     })
   })
 })
@@ -35,7 +35,7 @@ function processSelectedCareersIds() {
   }
 
   persistedCareers.forEach(item => {
-    if (selectedCarreerIds.value.includes(item.career_id)) {
+    if (selectedCarreerIds.value.includes(item.careerId)) {
       return
     }
 
@@ -43,8 +43,8 @@ function processSelectedCareersIds() {
   })
 
   selectedCarreerIds.value.forEach(careerId => {
-    if (!persistedCareers.some(item => item.career_id === careerId)) {
-      persistedCareers.push({career_id: careerId})
+    if (!persistedCareers.some(item => item.careerId === careerId)) {
+      persistedCareers.push({careerId: careerId})
     }
   });
 }
@@ -147,8 +147,8 @@ function cancel() {
               v-model="selectedCarreerIds"
               :items="careers"
               closable-chips
-              item-title="career_name"
-              item-value="career_id"
+              item-title="careerName"
+              item-value="careerId"
               label="Carrera"
               multiple
               chips
