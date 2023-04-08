@@ -12,7 +12,7 @@ import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 import {
 emailValidator,
-requiredValidator
+requiredValidator,
 } from '@validators'
 import { onBeforeMount } from "vue"
 
@@ -24,7 +24,7 @@ const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 const isPasswordVisible = ref(false)
 const email = ref('admin@demo.com')
-const password = ref('admin')
+const password = ref('demo')
 const errorMessage = ref('')
 function singin() {
   axios.post('/signin', { email: email.value, password: password.value })
@@ -35,7 +35,7 @@ function singin() {
 function signinSuccessful(response) {
   if (!response.data.csrf) {
     this.signinFailed(response)
-    
+
     return
   }
   localStorage.csrf = response.data.csrf
@@ -146,9 +146,9 @@ function checkSignedIn() {
                   </a>
                 </div>
                 <VBtn
-                  @click="singin"
                   block
                   type="submit"
+                  @click="singin"
                 >
                   Iniciar Sesión
                 </VBtn>

@@ -15,6 +15,11 @@ export default [
     icon: { icon: 'tabler-file' },
   },
   {
+    title: 'Usuarios',
+    to: { name: 'users' },
+    icon: { icon: 'tabler-file' },
+  },
+  {
     title: 'Docentes',
     to: { name: 'professors' },
     icon: { icon: 'tabler-file' },
