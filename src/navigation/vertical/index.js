@@ -14,4 +14,9 @@ export default [
     to: { name: 'careers' },
     icon: { icon: 'tabler-file' },
   },
+  {
+    title: 'Usuarios',
+    to: { name: 'users' },
+    icon: { icon: 'tabler-file' },
+  },
 ]
