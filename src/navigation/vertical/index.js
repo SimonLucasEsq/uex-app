@@ -10,13 +10,18 @@ export default [
     icon: { icon: 'tabler-file' },
   },
   {
-    title: 'Tipos de Actividades',
-    to: { name: 'activity-types' },
+    title: 'Carreras',
+    to: { name: 'careers' },
     icon: { icon: 'tabler-file' },
   },
   {
-    title: 'Carreras',
-    to: { name: 'careers' },
+    title: 'Docentes',
+    to: { name: 'professors' },
+    icon: { icon: 'tabler-file' },
+  },
+  {
+    title: 'Tipos de Actividades',
+    to: { name: 'activity-types' },
     icon: { icon: 'tabler-file' },
   },
 ]

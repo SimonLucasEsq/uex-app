@@ -1,6 +1,8 @@
 import { securedAxiosInstance as axios } from '@axios';
 import _ from 'lodash';
 
+const RESERVED_WORDS = ["_destroy"]
+
 export default class Api {
   constructor(data, associations, apiConfig) {
     this.data = data;
@@ -71,6 +73,11 @@ export default class Api {
               store.insert(camelCasedRecord[entity]);
             }
           });
+          this.associations?.hasMany?.forEach((_store, entity) => {
+            if (camelCasedRecord[entity]) {
+              camelCasedRecord[entity] = camelCasedRecord[entity].map(item => { return this.toCamelCase(item) });
+            }
+          });
           this.data.recordList.records.set(camelCasedRecord.id, camelCasedRecord)
         })
 
@@ -95,6 +102,12 @@ export default class Api {
           }
         });
 
+        this.associations?.hasMany?.forEach((_store, entity) => {
+          if (this.data.record[entity]) {
+            this.data.record[entity] = this.data.record[entity].map(record => { return this.toCamelCase(record); })
+          }
+        });
+
         return this.data.record;
       });
   }
@@ -111,9 +124,17 @@ export default class Api {
   payload() {
     let payload = {};
     payload[this.recordKey] = JSON.parse(JSON.stringify(this.toSnakeCase(this.data.record)));
+
     this.associations?.belognsTo?.forEach((_store, entity) => {
       if (payload[this.recordKey][entity]) {
         payload[this.recordKey][entity] = this.toSnakeCase(payload[this.recordKey][entity]);
+      }
+    });
+
+    this.associations?.hasMany?.forEach((_store, entity) => {
+      let snakeCasedKey = _.snakeCase(entity)
+      if (payload[this.recordKey][snakeCasedKey]) {
+        payload[this.recordKey][snakeCasedKey] = payload[this.recordKey][snakeCasedKey].map(record => { return this.toSnakeCase(record) });
       }
     });
 
@@ -123,7 +144,7 @@ export default class Api {
   toCamelCase(record) {
     let camelCased = {};
     Object.entries(record).forEach(([key, value]) => {
-      camelCased[ _.camelCase(key)] = value;
+      camelCased[this.toCamelCaseText(key)] = value;
     });
 
     return camelCased;
@@ -132,9 +153,17 @@ export default class Api {
   toSnakeCase(record) {
     let snakeCased = {};
     Object.entries(record).forEach(([key, value]) => {
-      snakeCased[ _.snakeCase(key)] = value;
+      snakeCased[this.toSnakeCaseText(key)] = value;
     });
 
     return snakeCased;
+  }
+
+  toSnakeCaseText(text) {
+    return RESERVED_WORDS.includes(text) ? text : _.snakeCase(text);
+  }
+
+  toCamelCaseText(text) {
+    return RESERVED_WORDS.includes(text) ? text : _.camelCase(text);
   }
 }

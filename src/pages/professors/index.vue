@@ -1,33 +1,33 @@
 <script setup>
 import ConfirmModal from "@/components/ConfirmModal.vue";
-import { useStudentStore } from "@/stores/student";
+import { useProfessorStore } from "@/stores/professor";
 import { computed, onMounted } from "vue";
 import { debounce } from 'vue-debounce';
 
-const store = useStudentStore();
-const students = computed(() => store.data.recordList.records);
+const store = useProfessorStore();
+const professors = computed(() => store.data.recordList.records);
 
 const paginationData = computed(() => store.data.recordList.meta);
 const searchQuery = ref('');
 const rowPerPage = ref(10);
 const currentPage = ref(1);
 const isDialogVisible = ref(false);
-const studentToDelete = ref(null);
+const professorToDelete = ref(null);
 const debounceSearch = debounce(async function() { 
-  loadStudents();
+  loadProfessors();
  }, 300);
 onMounted(async () => {
-  loadStudents();
+  loadProfessors();
 });
 
-async function deleteStudent() {
-  store.api.delete(studentToDelete.value.id).then(() => {
-    loadStudents();
+async function deleteProfessor() {
+  store.api.delete(professorToDelete.value.id).then(() => {
+    loadProfessors();
   })
   isDialogVisible.value = false;
 }
 
-async function loadStudents() {
+async function loadProfessors() {
   store.api.query({
     search: searchQuery.value,
     page: currentPage.value,
@@ -35,15 +35,15 @@ async function loadStudents() {
   });
 }
 
-function showModal(student) {
+function showModal(professor) {
   isDialogVisible.value = true;
-  studentToDelete.value = student;
+  professorToDelete.value = professor;
 }
 
 // Computing pagination text
 const paginationText = computed(() => {
-  const firstIndex = students.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0;
-  const lastIndex = students.value.size + (currentPage.value - 1) * rowPerPage.value;
+  const firstIndex = professors.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0;
+  const lastIndex = professors.value.size + (currentPage.value - 1) * rowPerPage.value;
 
   return `Mostrando ${ firstIndex } a ${ lastIndex } de un total de ${ paginationData.value.totalObjects } registros`;
 });
@@ -52,8 +52,8 @@ const paginationText = computed(() => {
 <template>
     <VCard
     class="mb-6"
-    title="Alumnos"
-    id="student-list"
+    title="Docentes"
+    id="professor-list"
     >
       <VCardText class="d-flex align-center flex-wrap gap-4">
         <div class="d-flex align-center flex-wrap gap-4">
@@ -69,10 +69,10 @@ const paginationText = computed(() => {
         </div>
         <VSpacer />
         <div class="me-3">
-          <!-- Create Student -->
+          <!-- Create Professor -->
           <VBtn
             prepend-icon="tabler-plus"
-            :to="{ name: 'students-new' }"
+            :to="{ name: 'professors-new' }"
           >
             Agregar
           </VBtn>
@@ -110,21 +110,21 @@ const paginationText = computed(() => {
 
         <tbody>
           <tr
-            v-for="student in students.values()"
-            :key="student.id"
+            v-for="professor in professors.values()"
+            :key="professor.id"
             style="height: 3.75rem;"
           >
-            <td>{{ student.person.idCard }}</td>
-            <td>{{ student.person.firstName }} {{ student.person.lastName }}</td>
-            <td>{{ student.hours }}</td>
-            <td>{{ student.person.email }}</td>
+            <td>{{ professor.person.idCard }}</td>
+            <td>{{ professor.person.firstName }} {{ professor.person.lastName }}</td>
+            <td>{{ professor.hours }}</td>
+            <td>{{ professor.person.email }}</td>
             <td>
               <VBtn
                 icon
                 variant="text"
                 color="default"
                 size="x-small"
-                :to="{ name: 'students-id', params: { id: student.id }}"
+                :to="{ name: 'professors-id', params: { id: professor.id }}"
               >
                 <VIcon
                       :size="22"
@@ -144,7 +144,7 @@ const paginationText = computed(() => {
                   />
                 <VMenu activator="parent">
                   <VList>
-                    <VListItem @click="showModal(student)">
+                    <VListItem @click="showModal(professor)">
                       <template #prepend>
                         <VIcon
                           size="24"
@@ -161,7 +161,7 @@ const paginationText = computed(() => {
           </tr>
         </tbody>
         <!-- 👉 table footer  -->
-        <tfoot v-show="!students.size">
+        <tfoot v-show="!professors.size">
           <tr>
             <td
               colspan="8"
@@ -190,7 +190,7 @@ const paginationText = computed(() => {
             v-model="rowPerPage"
             density="compact"
             :items="[10, 20, 30, 50]"
-            @update:modelValue="loadStudents()"
+            @update:modelValue="loadProfessors()"
           />
         </div>
         <!-- 👉 Pagination meta -->
@@ -206,7 +206,7 @@ const paginationText = computed(() => {
           size="small"
           :total-visible="5"
           :length="paginationData.totalPages"
-          @update:modelValue="loadStudents()"
+          @update:modelValue="loadProfessors()"
         />
       </VCardText>
       <!-- !SECTION -->
@@ -214,16 +214,16 @@ const paginationText = computed(() => {
       <!-- Confirmation Dialog -->
       <ConfirmModal
         v-model:isDialogVisible="isDialogVisible"
-        :title="`Eliminar Alumno ${studentToDelete?.person.firstName}?`"
+        :title="`Eliminar Docente ${professorToDelete?.person.firstName}?`"
         body="Solo podrá ser eliminado si no se encuentra asociado a ninguna actividad"
-        @onConfirm="deleteStudent()"
+        @onConfirm="deleteProfessor()"
       />
     </VCard>
 </template>
 
 
 <style lang="scss">
-#student-list {
+#professor-list {
   .filter {
     inline-size: 15rem;
   }
