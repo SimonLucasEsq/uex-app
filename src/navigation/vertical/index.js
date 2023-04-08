@@ -5,8 +5,8 @@ export default [
     icon: { icon: 'tabler-smart-home' },
   },
   {
-    title: 'Tipos de Actividades',
-    to: { name: 'activity-types' },
+    title: 'Alumnos',
+    to: { name: 'students' },
     icon: { icon: 'tabler-file' },
   },
   {
@@ -17,6 +17,16 @@ export default [
   {
     title: 'Usuarios',
     to: { name: 'users' },
+    icon: { icon: 'tabler-file' },
+  },
+  {
+    title: 'Docentes',
+    to: { name: 'professors' },
+    icon: { icon: 'tabler-file' },
+  },
+  {
+    title: 'Tipos de Actividades',
+    to: { name: 'activity-types' },
     icon: { icon: 'tabler-file' },
   },
 ]

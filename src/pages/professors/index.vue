@@ -1,32 +1,33 @@
 <script setup>
 import ConfirmModal from "@/components/ConfirmModal.vue";
-import { useActivityTypeStore } from "@/stores/activity-type";
+import { useProfessorStore } from "@/stores/professor";
 import { computed, onMounted } from "vue";
 import { debounce } from 'vue-debounce';
 
-const store = useActivityTypeStore();
-const activityTypes = computed(() => store.data.recordList.records);
+const store = useProfessorStore();
+const professors = computed(() => store.data.recordList.records);
+
 const paginationData = computed(() => store.data.recordList.meta);
 const searchQuery = ref('');
 const rowPerPage = ref(10);
 const currentPage = ref(1);
 const isDialogVisible = ref(false);
-const activityTypeToDelete = ref(null);
+const professorToDelete = ref(null);
 const debounceSearch = debounce(async function() { 
-  loadActivities();
+  loadProfessors();
  }, 300);
 onMounted(async () => {
-  loadActivities();
+  loadProfessors();
 });
 
-async function deleteActivityType() {
-  store.api.delete(activityTypeToDelete.value.id).then(() => {
-    loadActivities();
+async function deleteProfessor() {
+  store.api.delete(professorToDelete.value.id).then(() => {
+    loadProfessors();
   })
   isDialogVisible.value = false;
 }
 
-async function loadActivities() {
+async function loadProfessors() {
   store.api.query({
     search: searchQuery.value,
     page: currentPage.value,
@@ -34,15 +35,15 @@ async function loadActivities() {
   });
 }
 
-function showModal(activityTypeId) {
+function showModal(professor) {
   isDialogVisible.value = true;
-  activityTypeToDelete.value = activityTypeId;
+  professorToDelete.value = professor;
 }
 
 // Computing pagination text
 const paginationText = computed(() => {
-  const firstIndex = activityTypes.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0;
-  const lastIndex = activityTypes.value.size + (currentPage.value - 1) * rowPerPage.value;
+  const firstIndex = professors.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0;
+  const lastIndex = professors.value.size + (currentPage.value - 1) * rowPerPage.value;
 
   return `Mostrando ${ firstIndex } a ${ lastIndex } de un total de ${ paginationData.value.totalObjects } registros`;
 });
@@ -51,8 +52,8 @@ const paginationText = computed(() => {
 <template>
     <VCard
     class="mb-6"
-    title="Tipos de Actividades"
-    id="activity-type-list"
+    title="Docentes"
+    id="professor-list"
     >
       <VCardText class="d-flex align-center flex-wrap gap-4">
         <div class="d-flex align-center flex-wrap gap-4">
@@ -68,10 +69,10 @@ const paginationText = computed(() => {
         </div>
         <VSpacer />
         <div class="me-3">
-          <!-- Create New Activity Type -->
+          <!-- Create Professor -->
           <VBtn
             prepend-icon="tabler-plus"
-            :to="{ name: 'activity-types-new' }"
+            :to="{ name: 'professors-new' }"
           >
             Agregar
           </VBtn>
@@ -82,13 +83,23 @@ const paginationText = computed(() => {
         <thead class="text-uppercase">
           <tr>
             <th scope="col">
+              C.I
+            </th>
+
+            <th scope="col">
               Nombre
             </th>
 
             <th
               scope="col"
             >
-              Descripcion
+              Horas
+            </th>
+
+            <th
+              scope="col"
+            >
+              Correo Electrónico
             </th>
 
             <th scope="col">
@@ -99,19 +110,21 @@ const paginationText = computed(() => {
 
         <tbody>
           <tr
-            v-for="activityType in activityTypes.values()"
-            :key="activityType.id"
+            v-for="professor in professors.values()"
+            :key="professor.id"
             style="height: 3.75rem;"
           >
-            <td>{{ activityType.name }}</td>
-            <td>{{ activityType.description }}</td>
+            <td>{{ professor.person.idCard }}</td>
+            <td>{{ professor.person.firstName }} {{ professor.person.lastName }}</td>
+            <td>{{ professor.hours }}</td>
+            <td>{{ professor.person.email }}</td>
             <td>
               <VBtn
                 icon
                 variant="text"
                 color="default"
                 size="x-small"
-                :to="{ name: 'activity-types-id', params: { id: activityType.id }}"
+                :to="{ name: 'professors-id', params: { id: professor.id }}"
               >
                 <VIcon
                       :size="22"
@@ -131,7 +144,7 @@ const paginationText = computed(() => {
                   />
                 <VMenu activator="parent">
                   <VList>
-                    <VListItem @click="showModal(activityType)">
+                    <VListItem @click="showModal(professor)">
                       <template #prepend>
                         <VIcon
                           size="24"
@@ -148,7 +161,7 @@ const paginationText = computed(() => {
           </tr>
         </tbody>
         <!-- 👉 table footer  -->
-        <tfoot v-show="!activityTypes.size">
+        <tfoot v-show="!professors.size">
           <tr>
             <td
               colspan="8"
@@ -177,7 +190,7 @@ const paginationText = computed(() => {
             v-model="rowPerPage"
             density="compact"
             :items="[10, 20, 30, 50]"
-            @update:modelValue="loadActivities()"
+            @update:modelValue="loadProfessors()"
           />
         </div>
         <!-- 👉 Pagination meta -->
@@ -193,7 +206,7 @@ const paginationText = computed(() => {
           size="small"
           :total-visible="5"
           :length="paginationData.totalPages"
-          @update:modelValue="loadActivities()"
+          @update:modelValue="loadProfessors()"
         />
       </VCardText>
       <!-- !SECTION -->
@@ -201,16 +214,16 @@ const paginationText = computed(() => {
       <!-- Confirmation Dialog -->
       <ConfirmModal
         v-model:isDialogVisible="isDialogVisible"
-        :title="`Eliminar Tipo de Actividad ${activityTypeToDelete?.name}?`"
+        :title="`Eliminar Docente ${professorToDelete?.person.firstName}?`"
         body="Solo podrá ser eliminado si no se encuentra asociado a ninguna actividad"
-        @onConfirm="deleteActivityType()"
+        @onConfirm="deleteProfessor()"
       />
     </VCard>
 </template>
 
 
 <style lang="scss">
-#activity-type-list {
+#professor-list {
   .filter {
     inline-size: 15rem;
   }

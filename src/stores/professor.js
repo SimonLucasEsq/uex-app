@@ -1,20 +1,33 @@
 import Api from '@/stores/api';
+import { usePersonStore } from "@/stores/person";
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
 
-export const useActivityTypeStore = defineStore('activityTypes', () => {
-  const associations = {}
+export const useProfessorStore = defineStore('professors', () => {
+  const associations = {
+    belognsTo: new Map(
+      [
+        ["person", usePersonStore()]
+      ]
+    ),
+    hasMany: new Map(
+      [
+        ["professorCareers", null]
+      ]
+    )
+  }
+
   const defaultRecord = {
     id: null,
-    name: null,
-    description: null,
+    person: {},
+    professorCareers: [],
     errors: {}
   };
 
   const apiConfig = {
-    endpoint: "activity_types",
-    recordKey: "activity_type",
-    recordListKey: "activity_types"
+    endpoint: "professors",
+    recordKey: "professor",
+    recordListKey: "professors"
   };
 
   const data = reactive({
@@ -36,8 +49,8 @@ export const useActivityTypeStore = defineStore('activityTypes', () => {
   const api = new Api(data, associations, apiConfig);
 
   function resetRecord() {
-    this.data.record = { ...defaultRecord };
+    this.data.record = JSON.parse(JSON.stringify(defaultRecord));
   }
 
-  return { data, api, isNew, isValid, isInvalid, resetRecord }
+  return { data, api, isNew, isValid, isInvalid, resetRecord, associations }
 })
