@@ -1,7 +1,8 @@
 import { defineThemeConfig } from '@core'
 import { RouteTransitions, Skins } from '@core/enums'
+
 // ❗ Logo SVG must be imported with ?raw suffix
-import logo from '@images/logo.svg?raw'
+import logo from '@images/UEX_logo.svg?raw'
 import { AppContentLayoutNav, ContentWidth, FooterType, NavbarType } from '@layouts/enums'
 import { breakpointsVuetify } from '@vueuse/core'
 import { VIcon } from 'vuetify/components'
