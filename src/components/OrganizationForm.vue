@@ -20,7 +20,7 @@ async function submit() {
   }
 }
 
-function cancel() {
+function onCancel() {
   router.push({ name: 'organizations' })
 }
 
@@ -62,11 +62,47 @@ onMounted(async () => {
         </VCol>
 
         <VCol cols="12">
-          <VTextField
+          <VTextarea
             id="address"
             v-model="organization.address"
             label="Dirección"
             placeholder="Dirección"
+          />
+        </VCol>
+        <VCol cols="12">
+          <VCheckbox
+            id="currentAgreement"
+            v-model="organization.currentAgreement"
+            label="Convenio Vigente"
+          />
+        </VCol>
+        <VCol cols="12 text-subtitle-1">
+          Datos de Contacto
+        </VCol>
+        <VCol cols="12">
+          <VTextField
+            id="contactName"
+            v-model="organization.contactName"
+            label="Encargado"
+            placeholder="Encargado"
+          />
+        </VCol>
+        <VCol cols="12">
+          <VTextField
+            id="contactEmail"
+            v-model="organization.contactEmail"
+            label="Correo electronico"
+            placeholder="Correo electronico"
+            :rules="[requiredValidator]"
+          />
+        </VCol>
+        <VCol cols="12">
+          <VTextField
+            id="contactPhonenumber"
+            v-model="organization.contactPhonenumber"
+            label="Celular"
+            placeholder="Celular"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -84,7 +120,7 @@ onMounted(async () => {
             color="secondary"
             variant="tonal"
             type="reset"
-            @click="cancel"
+            @click.prevent="onCancel"
           >
             Cancelar
           </VBtn>

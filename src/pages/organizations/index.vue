@@ -14,21 +14,21 @@ const isDialogVisible = ref(false)
 const organizationToDelete = ref(null)
 
 const debounceSearch = debounce(async function() {
-  loadOrganization()
+  loadOrganizations()
 }, 300)
 
 onMounted(async () => {
-  loadOrganization()
+  loadOrganizations()
 })
 
 async function deleteOrganization() {
   store.api.delete(organizationToDelete.value.id).then(() => {
-    loadOrganization()
+    loadOrganizations()
   })
   isDialogVisible.value = false
 }
 
-async function loadOrganization() {
+async function loadOrganizations() {
   store.api.query({
     search: searchQuery.value,
     page: currentPage.value,
@@ -110,15 +110,15 @@ const paginationText = computed(() => {
           style="height: 3.75rem;"
         >
           <td>{{ organization.name }}</td>
-          <td>{{ organization.contact_email }}</td>
-          <td>{{ organization.contact_phonenumber }}</td>
+          <td>{{ organization.contactEmail }}</td>
+          <td>{{ organization.contactPhonenumber }}</td>
           <td>
             <VBtn
               icon
               variant="text"
               color="default"
               size="x-small"
-              :to="{ name: 'organization-id', params: { id: organization.id }}"
+              :to="{ name: 'organizations-id', params: { id: organization.id }}"
             >
               <VIcon
                 :size="22"
