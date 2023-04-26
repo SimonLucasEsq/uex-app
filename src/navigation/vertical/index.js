@@ -5,6 +5,11 @@ export default [
     icon: { icon: 'tabler-smart-home' },
   },
   {
+    title: 'Actividades',
+    to: { name: 'activities' },
+    icon: { icon: 'tabler-file' },
+  },
+  {
     title: 'Alumnos',
     to: { name: 'students' },
     icon: { icon: 'tabler-file' },
