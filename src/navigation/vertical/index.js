@@ -12,26 +12,37 @@ export default [
   {
     title: 'Alumnos',
     to: { name: 'students' },
-    icon: { icon: 'tabler-file' },
-  },
-  {
-    title: 'Carreras',
-    to: { name: 'careers' },
-    icon: { icon: 'tabler-file' },
-  },
-  {
-    title: 'Usuarios',
-    to: { name: 'users' },
-    icon: { icon: 'tabler-file' },
+    icon: { icon: 'tabler-users' },
   },
   {
     title: 'Docentes',
     to: { name: 'professors' },
-    icon: { icon: 'tabler-file' },
+    icon: { icon: 'tabler-school' },
   },
   {
-    title: 'Tipos de Actividades',
-    to: { name: 'activity-types' },
-    icon: { icon: 'tabler-file' },
+    title: 'Organizaciones',
+    to: { name: 'organizations' },
+    icon: { icon: 'tabler-building' },
   },
+  {
+    title: 'Reportes',
+    icon: { icon: 'tabler-file-analytics' },
+  },
+  {
+    title: 'Configuraciones',
+    icon: { icon: 'tabler-settings' },
+    children: [
+      {
+        title: 'Carreras',
+        to: { name: 'careers' },
+        icon: { icon: 'tabler-point' },
+      },
+      {
+        title: 'Tipos de Actividades',
+        to: { name: 'activity-types' },
+        icon: { icon: 'tabler-point' },
+      },
+    ],
+  },
+
 ]

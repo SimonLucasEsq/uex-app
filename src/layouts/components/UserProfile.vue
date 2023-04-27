@@ -4,8 +4,9 @@ import { useUserStore } from "@/stores/user";
 import { securedAxiosInstance as axios } from '@axios';
 import { onMounted } from "vue";
 
-const store = useUserStore();
+const store = useUserStore()
 const currentUser = ref({})
+
 onMounted(() => {
   loadCurrentUser()
 })
@@ -15,7 +16,7 @@ function logout() {
   })
 }
 async function loadCurrentUser() {
-  currentUser.value = await store.api.currentUser();
+  currentUser.value = await store.api.currentUser()
 }
 </script>
 
@@ -69,14 +70,17 @@ async function loadCurrentUser() {
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              {{currentUser.email}}
+              {{ currentUser.email }}
             </VListItemTitle>
           </VListItem>
 
           <VDivider class="my-2" />
 
-          <!-- 👉 Profile -->
-          <VListItem link>
+          <!-- 👉 Usuarios -->
+          <VListItem
+            link
+            :to="{ name: 'users' }"
+          >
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -85,46 +89,7 @@ async function loadCurrentUser() {
               />
             </template>
 
-            <VListItemTitle>Profile</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Settings -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-settings"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Settings</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Pricing -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-currency-dollar"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Pricing</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 FAQ -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-help"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>FAQ</VListItemTitle>
+            <VListItemTitle>Usuarios</VListItemTitle>
           </VListItem>
 
           <!-- Divider -->
