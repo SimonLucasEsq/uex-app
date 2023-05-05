@@ -1,19 +1,22 @@
 import Api from '@/stores/api';
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
+import { useProfessorStore } from './professor';
 
 export const useActivityStore = defineStore('activities', () => {
   const associations = {
     belognsTo: new Map(
       [
-        ["organizingOrganization", "a"],
-        ["partnerOrganization", "b"],
-        ["beneficiaryDetail", "c"] // hasOne
+        ["organizingOrganization", null],
+        ["partnerOrganization", null],
+        ["professor", useProfessorStore()],
+        ["beneficiaryDetail", null] // hasOne
       ]
     ),
     hasMany: new Map(
       [
         ["activityCareers", null],
+        ["activityTypes", null],
         ["activityWeeks", null]
       ]
     )
@@ -21,19 +24,19 @@ export const useActivityStore = defineStore('activities', () => {
   const defaultRecord = {
     id: null,
     name: null,
-    activity_type_id: null,
+    activityTypeId: null,
     status: null,
     address: null,
-    virtual_participation: false,
-    organizing_organization_id: null,
-    parther_organization_id: null,
-    project_link: null,
+    virtualParticipation: false,
+    organizingOrganizationId: null,
+    partnerOrganizationId: null,
+    projectLink: null,
     hours: null,
-    ods_vinculation: null,
-    institutional_program: null,
-    institutional_extension_line: null,
-    start_date: null,
-    end_date: null,
+    odsVinculation: null,
+    institutionalProgram: null,
+    institutionalExtensionLine: 0,
+    startDate: null,
+    endDate: null,
     beneficiaryDetail: {
       numberOfMen: 0,
       numberOfWomen: 0
@@ -60,6 +63,10 @@ export const useActivityStore = defineStore('activities', () => {
     }
   });
 
+
+
+  const api = new Api(data, associations, apiConfig);
+
   const totalBeneficiaries = computed(() => {
     let numberOfMen = parseInt(data.record.beneficiaryDetail.numberOfMen)
     let numberOfWomen = parseInt(data.record.beneficiaryDetail.numberOfWomen)
@@ -71,11 +78,11 @@ export const useActivityStore = defineStore('activities', () => {
     return numberOfMen + numberOfWomen
   });
 
-  const api = new Api(data, associations, apiConfig);
-
   function resetRecord() {
     this.data.record = { ...defaultRecord };
   }
 
-  return { data, api, resetRecord, totalBeneficiaries }
+  const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 });
+
+  return { data, api, resetRecord, totalBeneficiaries, isValid }
 })

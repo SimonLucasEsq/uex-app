@@ -1,119 +1,145 @@
 <script setup>
 import ConfirmModal from "@/components/ConfirmModal.vue";
-import { useCareerStore } from "@/stores/career";
+import { useActivityStore } from "@/stores/activity";
 import { computed, onMounted } from "vue";
 import { debounce } from 'vue-debounce';
 
-const store = useCareerStore()
-const careers = computed(() => store.data.recordList.records)
-const paginationData = computed(() => store.data.recordList.meta)
-const searchQuery = ref('')
-const rowPerPage = ref(10)
-const currentPage = ref(1)
-const isDialogVisible = ref(false)
-const careerToDelete = ref(null)
+const store = useActivityStore();
+const activities = computed(() => store.data.recordList.records);
 
-const debounceSearch = debounce(async function() {
-  loadCareers()
-}, 300)
-
+const paginationData = computed(() => store.data.recordList.meta);
+const searchQuery = ref('');
+const rowPerPage = ref(10);
+const currentPage = ref(1);
+const isDialogVisible = ref(false);
+const activityToDelete = ref(null);
+const debounceSearch = debounce(async function() { 
+  loadActivities();
+ }, 300);
 onMounted(async () => {
-  loadCareers()
-})
+  loadActivities();
+});
 
-async function deleteCareer() {
-  store.api.delete(careerToDelete.value.id).then(() => {
-    loadCareers()
+async function deleteActivity() {
+  store.api.delete(activityToDelete.value.id).then(() => {
+    loadActivities();
   })
-  isDialogVisible.value = false
+  isDialogVisible.value = false;
 }
 
-async function loadCareers() {
+async function loadActivities() {
   store.api.query({
     search: searchQuery.value,
     page: currentPage.value,
-    per_page: rowPerPage.value,
-  })
+    per_page: rowPerPage.value
+  });
 }
 
-function showModal(careerId) {
-  isDialogVisible.value = true
-  careerToDelete.value = careerId
+function showModal(activity) {
+  isDialogVisible.value = true;
+  activityToDelete.value = activity;
 }
 
 // Computing pagination text
 const paginationText = computed(() => {
-  const firstIndex = careers.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
-  const lastIndex = careers.value.size + (currentPage.value - 1) * rowPerPage.value
+  const firstIndex = activities.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0;
+  const lastIndex = activities.value.size + (currentPage.value - 1) * rowPerPage.value;
 
-  return `Mostrando ${ firstIndex } a ${ lastIndex } de un total de ${ paginationData.value.totalObjects } registros`
-})
+  return `Mostrando ${ firstIndex } a ${ lastIndex } de un total de ${ paginationData.value.totalObjects } registros`;
+});
 </script>
 
 <template>
-  <VCard
-    id="career-list"
+    <VCard
     class="mb-6"
-    title="Carreras"
-  >
-    <VCardText class="d-flex align-center flex-wrap gap-4">
-      <div class="d-flex align-center flex-wrap gap-4">
-        <!-- 👉 Search  -->
-        <div class="filter">
-          <VTextField
-            v-model="searchQuery"
-            placeholder="Buscar"
-            density="compact"
-            @update:modelValue="debounceSearch"
-          />
+    title="Docentes"
+    id="activity-list"
+    >
+      <VCardText class="d-flex align-center flex-wrap gap-4">
+        <div class="d-flex align-center flex-wrap gap-4">
+          <!-- 👉 Search  -->
+          <div class="filter">
+            <VTextField
+              v-model="searchQuery"
+              placeholder="Buscar"
+              density="compact"
+              @update:modelValue="debounceSearch"
+            />
+          </div>
         </div>
-      </div>
-      <VSpacer />
-      <div class="me-3">
-        <!-- Create New Activity -->
-        <VBtn
-          prepend-icon="tabler-plus"
-          :to="{ name: 'activities-new' }"
-        >
-          Agregar
-        </VBtn>
-      </div>
-    </VCardText>
-    <VTable class="text-no-wrap">
-      <!-- 👉 Table head -->
-      <thead class="text-uppercase">
-        <tr>
-          <th scope="col">
-            Nombre
-          </th>
+        <VSpacer />
+        <div class="me-3">
+          <!-- Create Activity -->
+          <VBtn
+            prepend-icon="tabler-plus"
+            :to="{ name: 'activities-new' }"
+          >
+            Agregar
+          </VBtn>
+        </div>
+      </VCardText>
+      <VTable class="text-no-wrap">
+        <!-- 👉 Table head -->
+        <thead class="text-uppercase">
+          <tr>
+            <th scope="col">
+              Actividad
+            </th>
 
-          <th scope="col">
-            Acciones
-          </th>
-        </tr>
-      </thead>
+            <th scope="col">
+              Tipo de Actividad
+            </th>
 
-      <tbody>
-        <tr
-          v-for="career in careers.values()"
-          :key="career.id"
-          style="height: 3.75rem;"
-        >
-          <td>{{ career.name }}</td>
-          <td>
-            <VBtn
-              icon
-              variant="text"
-              color="default"
-              size="x-small"
-              :to="{ name: 'careers-id', params: { id: career.id }}"
+            <th
+              scope="col"
             >
-              <VIcon
-                :size="22"
-                icon="tabler-pencil"
-              />
-            </VBtn>
-            <VBtn
+              Coordinador
+            </th>
+
+            <th
+              scope="col"
+            >
+              Fecha
+            </th>
+
+            <th
+              scope="col"
+            >
+              Horas de Extensión
+            </th>
+
+            <th scope="col">
+              Acciones
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            v-for="activity in activities.values()"
+            :key="activity.id"
+            style="height: 3.75rem;"
+          >
+            <td>{{ activity.name }}</td>
+            <td>{{ activity.activityType.name }}</td>
+            <td>{{ `${activity.professor.person.firstName} ${activity.professor.person.lastName}` }}</td>
+            <td>{{ activity.startDate }}</td>
+            <td>{{ activity.hours }}</td>
+            <td>
+              <VBtn
+                icon
+                variant="text"
+                color="default"
+                size="x-small"
+                :to="{ name: 'activities-id', params: { id: activity.id }}"
+              >
+                <VIcon
+                      :size="22"
+                      icon="tabler-pencil"
+                    />
+              </VBtn>
+
+              <VBtn
                 icon
                 variant="text"
                 color="default"
@@ -125,7 +151,7 @@ const paginationText = computed(() => {
                   />
                 <VMenu activator="parent">
                   <VList>
-                    <VListItem @click="showModal(career)">
+                    <VListItem @click="showModal(activity)">
                       <template #prepend>
                         <VIcon
                           size="24"
@@ -138,75 +164,75 @@ const paginationText = computed(() => {
                   </VList>
                 </VMenu>
               </VBtn>
-          </td>
-        </tr>
-      </tbody>
-      <!-- 👉 table footer  -->
-      <tfoot v-show="!careers.size">
-        <tr>
-          <td
-            colspan="8"
-            class="text-center text-body-1"
-          >
-            No data available
-          </td>
-        </tr>
-      </tfoot>
-    </VTable>
-    <!-- !SECTION -->
+            </td>
+          </tr>
+        </tbody>
+        <!-- 👉 table footer  -->
+        <tfoot v-show="!activities.size">
+          <tr>
+            <td
+              colspan="8"
+              class="text-center text-body-1"
+            >
+              No data available
+            </td>
+          </tr>
+        </tfoot>
+      </VTable>
+      <!-- !SECTION -->
 
-    <VDivider />
+      <VDivider />
 
 
 
-    <!-- SECTION Pagination -->
-    <VCardText class="d-flex align-center flex-wrap gap-4 py-3">
-      <!-- Rows per page -->
-      <div
-        class="d-flex align-center"
-        style="width: 150px;"
-      >
-        <span class="text-no-wrap me-3">Mostrar:</span>
-        <VSelect
-          v-model="rowPerPage"
-          density="compact"
-          :items="[10, 20, 30, 50]"
-          @update:modelValue="loadCareers"
+      <!-- SECTION Pagination -->
+      <VCardText class="d-flex align-center flex-wrap gap-4 py-3">
+        <!-- Rows per page -->
+        <div
+          class="d-flex align-center"
+          style="width: 150px;"
+        >
+          <span class="text-no-wrap me-3">Mostrar:</span>
+          <VSelect
+            v-model="rowPerPage"
+            density="compact"
+            :items="[10, 20, 30, 50]"
+            @update:modelValue="loadActivitiess()"
+          />
+        </div>
+        <!-- 👉 Pagination meta -->
+        <span class="text-sm text-disabled">
+          {{ paginationText }}
+        </span>
+
+        <VSpacer />
+        
+        <!-- 👉 Pagination -->
+        <VPagination
+          v-model="currentPage"
+          size="small"
+          :total-visible="5"
+          :length="paginationData.totalPages"
+          @update:modelValue="loadActivitiess()"
         />
-      </div>
-      <!-- 👉 Pagination meta -->
-      <span class="text-sm text-disabled">
-        {{ paginationText }}
-      </span>
+      </VCardText>
+      <!-- !SECTION -->
 
-      <VSpacer />
-
-      <!-- 👉 Pagination -->
-      <VPagination
-        v-model="currentPage"
-        size="small"
-        :total-visible="5"
-        :length="paginationData.totalPages"
-        @update:modelValue="loadCareers"
+      <!-- Confirmation Dialog -->
+      <ConfirmModal
+        v-model:isDialogVisible="isDialogVisible"
+        :title="`Eliminar Actividad ${activityToDelete?.name}?`"
+        body=""
+        @onConfirm="deleteActivity()"
       />
-    </VCardText>
-    <!-- !SECTION -->
-
-    <!-- Confirmation Dialog -->
-    <ConfirmModal
-      v-model:isDialogVisible="isDialogVisible"
-      :title="`Eliminar Carrera ${careerToDelete?.name}?`"
-      body="Solo podrá ser eliminado si otras no se encuentra asociado a otras entidades"
-      @onConfirm="deleteCareer()"
-    />
-  </VCard>
+    </VCard>
 </template>
 
 
 <style lang="scss">
-#career-list {
+#activity-list {
   .filter {
     inline-size: 15rem;
   }
 }
-</style>
+</style>  

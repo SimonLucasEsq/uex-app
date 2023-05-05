@@ -17,7 +17,7 @@ export default class Api {
     return await this.axios
       .post(`/api/${this.endpoint}`, this.payload())
       .then((response) => {
-        this.data.record = {...response.data[this.recordKey], errors: {}};
+        this.data.record = {...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {}};
         return this.data.record;
       }).catch((error) => {
         let errors = error.response.data?.["errors"];
@@ -33,7 +33,7 @@ export default class Api {
     return await this.axios
       .put(`/api/${this.endpoint}/${this.data.record.id}`, this.payload())
       .then((response) => {
-        this.data.record = {...response.data[this.recordKey], errors: {}};
+        this.data.record = {...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {}};
         return this.data.record;
       }).catch((error) => {
         let errors = error.response.data?.["errors"];
@@ -66,18 +66,7 @@ export default class Api {
         }
 
         response.data[this.recordListKey].forEach(record => {
-          let camelCasedRecord = this.toCamelCase(record);
-          this.associations?.belognsTo?.forEach((store, entity) => {
-            if (camelCasedRecord[entity]) {
-              camelCasedRecord[entity] = this.toCamelCase(camelCasedRecord[entity]);
-              store.insert(camelCasedRecord[entity]);
-            }
-          });
-          this.associations?.hasMany?.forEach((_store, entity) => {
-            if (camelCasedRecord[entity]) {
-              camelCasedRecord[entity] = camelCasedRecord[entity].map(item => { return this.toCamelCase(item) });
-            }
-          });
+          let camelCasedRecord = this.toCamelCaseRecord(record)
           this.data.recordList.records.set(camelCasedRecord.id, camelCasedRecord)
         })
 
@@ -89,24 +78,7 @@ export default class Api {
     return await this.axios
       .get(`/api/${this.endpoint}/${id}`)
       .then((response) => {
-        this.data.record = {...this.toCamelCase(response.data[this.recordKey]), errors: []};
-
-        if (response.data[this.recordListKey]?.length === 0) {
-          return;
-        }
-
-        this.associations?.belognsTo?.forEach((store, entity) => {
-          if (this.data.record[entity]) {
-            this.data.record[entity] = this.toCamelCase(this.data.record[entity]);
-            store.insert(this.data.record[entity]);
-          }
-        });
-
-        this.associations?.hasMany?.forEach((_store, entity) => {
-          if (this.data.record[entity]) {
-            this.data.record[entity] = this.data.record[entity].map(record => { return this.toCamelCase(record); })
-          }
-        });
+        this.data.record = {...this.toCamelCaseRecord(response.data[this.recordKey]), errors: []};
 
         return this.data.record;
       });
@@ -126,8 +98,9 @@ export default class Api {
     payload[this.recordKey] = JSON.parse(JSON.stringify(this.toSnakeCase(this.data.record)));
 
     this.associations?.belognsTo?.forEach((_store, entity) => {
-      if (payload[this.recordKey][entity]) {
-        payload[this.recordKey][entity] = this.toSnakeCase(payload[this.recordKey][entity]);
+      let snakeCasedKey = _.snakeCase(entity)
+      if (payload[this.recordKey][snakeCasedKey]) {
+        payload[this.recordKey][snakeCasedKey] = this.toSnakeCase(payload[this.recordKey][snakeCasedKey]);
       }
     });
 
@@ -139,6 +112,33 @@ export default class Api {
     });
 
     return payload ;
+  }
+
+  toCamelCaseRecord(record) {
+    let camelCasedRecord = this.toCamelCase(record);
+
+    if (camelCasedRecord[this.recordListKey]?.length === 0) {
+      return;
+    }
+
+    this.associations?.belognsTo?.forEach((store, entity) => {
+      if (camelCasedRecord[entity]) {
+        camelCasedRecord[entity] = this.toCamelCase(camelCasedRecord[entity]);
+        // TODO this should be call toCamelCaseRecord recursivily
+        store?.associations?.belognsTo?.forEach((_store, subEntity) => {
+          camelCasedRecord[entity][subEntity] = this.toCamelCase(camelCasedRecord[entity][subEntity]);
+        })
+        // store.insert(camelCasedRecord[entity]);
+      }
+    });
+
+    this.associations?.hasMany?.forEach((_store, entity) => {
+      if (camelCasedRecord[entity]) {
+        camelCasedRecord[entity] = camelCasedRecord[entity].map(record => { return this.toCamelCase(record); })
+      }
+    });
+
+    return camelCasedRecord;
   }
 
   toCamelCase(record) {
