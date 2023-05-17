@@ -11,8 +11,10 @@
     "dependencies": {
         "@casl/ability": "^6.2.0",
         "@casl/vue": "^2.2.0",
+        "@flatfile/vuejs": "^3.0.1",
         "@floating-ui/dom": "1.0.4",
         "@tabler/icons": "^1.97.0",
+        "@usecsv/vuejs3": "^1.0.4",
         "@vueuse/core": "^9.5.0",
         "@vueuse/math": "^9.5.0",
         "apexcharts-clevision": "^3.28.5",
