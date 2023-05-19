@@ -2,13 +2,12 @@
 import router from "@/router"
 import { plainAxiosInstance as axios } from '@axios'
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
-import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
-import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-login-illustration-bordered-light.png'
-import authV2LoginIllustrationDark from '@images/pages/auth-v2-login-illustration-dark.png'
-import authV2LoginIllustrationLight from '@images/pages/auth-v2-login-illustration-light.png'
+import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-register-illustration-bordered-dark.png'
+import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-register-illustration-bordered-light.png'
+import authV2LoginIllustrationDark from '@images/pages/auth-v2-register-illustration-dark-uex.png'
+import authV2LoginIllustrationLight from '@images/pages/auth-v2-register-illustration-light-uex.png'
 import authV2MaskDark from '@images/pages/misc-mask-dark.png'
 import authV2MaskLight from '@images/pages/misc-mask-light.png'
-import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 import {
 emailValidator,
@@ -94,11 +93,6 @@ function checkSignedIn() {
         class="mt-12 mt-sm-0 pa-4"
       >
         <VCardText>
-          <VNodeRenderer
-            :nodes="themeConfig.app.logo"
-            class="mb-6"
-          />
-
           <h5 class="text-h5 font-weight-semibold mb-1">
             Bienvenido a {{ themeConfig.app.title }}! 👋🏻
           </h5>

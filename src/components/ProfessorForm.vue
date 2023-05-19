@@ -1,9 +1,9 @@
 <script setup>
-import { useCareerStore } from "@/stores/career";
-import { useProfessorStore } from "@/stores/professor";
-import { requiredValidator } from '@validators';
-import { computed, onBeforeMount } from 'vue';
-import router from "../router";
+import { useCareerStore } from "@/stores/career"
+import { useProfessorStore } from "@/stores/professor"
+import { requiredValidator } from '@validators'
+import { computed, onBeforeMount } from 'vue'
+import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
@@ -16,14 +16,14 @@ const selectedCarreerIds = ref([])
 onBeforeMount(async () => {
   if(props.id) {
     await store.api.find(props.id)
-    selectedCarreerIds.value = professor.value.professorCareers.map((association)=> { return association.careerId })
+    selectedCarreerIds.value = professor.value.professorCareers.map(association=> { return association.careerId })
   } else {
     store.resetRecord()
   }
 
-  await careerStore.api.query({}).then((response) => {
-    careers.value = Array.from(response.values()).map((record) => {
-      return {careerName: record.name, careerId: record.id};
+  await careerStore.api.query({}).then(response => {
+    careers.value = Array.from(response.values()).map(record => {
+      return { careerName: record.name, careerId: record.id }
     })
   })
 })
@@ -44,14 +44,15 @@ function processSelectedCareersIds() {
 
   selectedCarreerIds.value.forEach(careerId => {
     if (!persistedCareers.some(item => item.careerId === careerId)) {
-      persistedCareers.push({careerId: careerId})
+      persistedCareers.push({ careerId: careerId })
     }
-  });
+  })
 }
 
 
 async function submit() {
   processSelectedCareersIds()
+
   const { valid } = await refForm.value.validate()
   if (valid) {
     store.api.save().then(() => {
@@ -62,7 +63,7 @@ async function submit() {
   }
 }
 
-function cancel() {
+function onCancel() {
   router.push({ name: 'professors' })
 }
 </script>
@@ -143,19 +144,18 @@ function cancel() {
         </VCol>
 
         <VCol cols="12">
-          <v-autocomplete
-              v-model="selectedCarreerIds"
-              :items="careers"
-              closable-chips
-              item-title="careerName"
-              item-value="careerId"
-              label="Carrera"
-              multiple
-              chips
-              filled
-              :rules="[requiredValidator]"
-            >
-            </v-autocomplete>
+          <VAutocomplete
+            v-model="selectedCarreerIds"
+            :items="careers"
+            closable-chips
+            item-title="careerName"
+            item-value="careerId"
+            label="Carrera"
+            multiple
+            chips
+            filled
+            :rules="[requiredValidator]"
+          />
         </VCol>
         <VCol
           cols="12"
@@ -170,8 +170,7 @@ function cancel() {
           <VBtn
             color="secondary"
             variant="tonal"
-            type="reset"
-            @click="cancel"
+            @click.prevent="onCancel"
           >
             Cancelar
           </VBtn>

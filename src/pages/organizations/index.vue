@@ -1,37 +1,34 @@
 <script setup>
-import ConfirmModal from "@/components/ConfirmModal.vue"
-import ImportStudent from "@/components/ImportStudent.vue"
-import { useStudentStore } from "@/stores/student"
-import { computed, onMounted } from "vue"
-import { debounce } from 'vue-debounce'
+import ConfirmModal from "@/components/ConfirmModal.vue";
+import { useOrganizationStore } from "@/stores/organization";
+import { computed, onMounted } from "vue";
+import { debounce } from 'vue-debounce';
 
-const store = useStudentStore()
-const students = computed(() => store.data.recordList.records)
-
+const store = useOrganizationStore()
+const organizations = computed(() => store.data.recordList.records)
 const paginationData = computed(() => store.data.recordList.meta)
 const searchQuery = ref('')
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const isDialogVisible = ref(false)
-const isImportVisible = ref(false)
-const studentToDelete = ref(null)
+const organizationToDelete = ref(null)
 
 const debounceSearch = debounce(async function() {
-  loadStudents()
+  loadOrganizations()
 }, 300)
 
 onMounted(async () => {
-  loadStudents()
+  loadOrganizations()
 })
 
-async function deleteStudent() {
-  store.api.delete(studentToDelete.value.id).then(() => {
-    loadStudents()
+async function deleteOrganization() {
+  store.api.delete(organizationToDelete.value.id).then(() => {
+    loadOrganizations()
   })
   isDialogVisible.value = false
 }
 
-async function loadStudents() {
+async function loadOrganizations() {
   store.api.query({
     search: searchQuery.value,
     page: currentPage.value,
@@ -39,18 +36,15 @@ async function loadStudents() {
   })
 }
 
-function showModal(student) {
+function showModal(organizationId) {
   isDialogVisible.value = true
-  studentToDelete.value = student
-}
-function showImport() {
-  isImportVisible.value = true
+  organizationToDelete.value = organizationId
 }
 
 // Computing pagination text
 const paginationText = computed(() => {
-  const firstIndex = students.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
-  const lastIndex = students.value.size + (currentPage.value - 1) * rowPerPage.value
+  const firstIndex = organizations.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
+  const lastIndex = organizations.value.size + (currentPage.value - 1) * rowPerPage.value
 
   return `Mostrando ${ firstIndex } a ${ lastIndex } de un total de ${ paginationData.value.totalObjects } registros`
 })
@@ -58,9 +52,9 @@ const paginationText = computed(() => {
 
 <template>
   <VCard
-    id="student-list"
+    id="organization-list"
     class="mb-6"
-    title="Alumnos"
+    title="Organizaciones"
   >
     <VCardText class="d-flex align-center flex-wrap gap-4">
       <div class="d-flex align-center flex-wrap gap-4">
@@ -76,17 +70,13 @@ const paginationText = computed(() => {
       </div>
       <VSpacer />
       <div class="me-3">
-        <!-- Create Student -->
+        <!-- Create New Organizations -->
         <VBtn
           prepend-icon="tabler-plus"
-          :to="{ name: 'students-new' }"
+          :to="{ name: 'organizations-new' }"
         >
           Agregar
         </VBtn>
-        <VBtn
-          prepend-icon="tabler-file-import"
-          @click="showImport"
-        />
       </div>
     </VCardText>
     <VTable class="text-no-wrap">
@@ -94,23 +84,17 @@ const paginationText = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            C.I
+            Nombre de la Organización
           </th>
-
-          <th scope="col">
-            Nombre
-          </th>
-
           <th
             scope="col"
           >
-            Horas
+            Correo electrónico
           </th>
-
           <th
             scope="col"
           >
-            Correo Electrónico
+            Celular
           </th>
 
           <th scope="col">
@@ -121,21 +105,20 @@ const paginationText = computed(() => {
 
       <tbody>
         <tr
-          v-for="student in students.values()"
-          :key="student.id"
+          v-for="organization in organizations.values()"
+          :key="organization.id"
           style="height: 3.75rem;"
         >
-          <td>{{ student.person.idCard }}</td>
-          <td>{{ student.person.firstName }} {{ student.person.lastName }}</td>
-          <td>{{ student.hours }}</td>
-          <td>{{ student.person.email }}</td>
+          <td>{{ organization.name }}</td>
+          <td>{{ organization.contactEmail }}</td>
+          <td>{{ organization.contactPhonenumber }}</td>
           <td>
             <VBtn
               icon
               variant="text"
               color="default"
               size="x-small"
-              :to="{ name: 'students-id', params: { id: student.id }}"
+              :to="{ name: 'organizations-id', params: { id: organization.id }}"
             >
               <VIcon
                 :size="22"
@@ -155,7 +138,7 @@ const paginationText = computed(() => {
               />
               <VMenu activator="parent">
                 <VList>
-                  <VListItem @click="showModal(student)">
+                  <VListItem @click="showModal(organization)">
                     <template #prepend>
                       <VIcon
                         size="24"
@@ -172,7 +155,7 @@ const paginationText = computed(() => {
         </tr>
       </tbody>
       <!-- 👉 table footer  -->
-      <tfoot v-show="!students.size">
+      <tfoot v-show="!organizations.size">
         <tr>
           <td
             colspan="8"
@@ -201,7 +184,7 @@ const paginationText = computed(() => {
           v-model="rowPerPage"
           density="compact"
           :items="[10, 20, 30, 50]"
-          @update:modelValue="loadStudents"
+          @update:modelValue="loadOrganizations"
         />
       </div>
       <!-- 👉 Pagination meta -->
@@ -217,7 +200,7 @@ const paginationText = computed(() => {
         size="small"
         :total-visible="5"
         :length="paginationData.totalPages"
-        @update:modelValue="loadStudents"
+        @update:modelValue="loadOrganizations"
       />
     </VCardText>
     <!-- !SECTION -->
@@ -225,19 +208,15 @@ const paginationText = computed(() => {
     <!-- Confirmation Dialog -->
     <ConfirmModal
       v-model:isDialogVisible="isDialogVisible"
-      :title="`Eliminar Alumno ${studentToDelete?.person.firstName}?`"
-      body="Solo podrá ser eliminado si no se encuentra asociado a ninguna actividad"
-      @onConfirm="deleteStudent"
-    />
-    <ImportStudent
-      v-model:isDialogVisible="isImportVisible"
+      :title="`Eliminar Organización ${organizationToDelete?.name}?`"
+      @onConfirm="deleteOrganization"
     />
   </VCard>
 </template>
 
 
 <style lang="scss">
-#student-list {
+#organization-list {
   .filter {
     inline-size: 15rem;
   }

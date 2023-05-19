@@ -1,9 +1,9 @@
 <script setup>
-import { useCareerStore } from "@/stores/career";
-import { useStudentStore } from "@/stores/student";
-import { requiredValidator } from '@validators';
-import { computed, onBeforeMount } from 'vue';
-import router from "../router";
+import { useCareerStore } from "@/stores/career"
+import { useStudentStore } from "@/stores/student"
+import { requiredValidator } from '@validators'
+import { computed, onBeforeMount } from 'vue'
+import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
@@ -23,7 +23,7 @@ async function submit() {
   }
 }
 
-function cancel() {
+function onCancel() {
   router.push({ name: 'students' })
 }
 
@@ -33,7 +33,7 @@ onBeforeMount(async () => {
   } else {
     store.resetRecord()
   }
-  
+
   await careerStore.api.query({})
 })
 </script>
@@ -114,7 +114,7 @@ onBeforeMount(async () => {
         </VCol>
 
         <VCol cols="12">
-          <v-select
+          <VSelect
             id="career_id"
             v-model="student.career"
             :items="Array.from(careers.values())"
@@ -126,7 +126,7 @@ onBeforeMount(async () => {
             single-line
             :rules="[requiredValidator]"
             @update:modelValue="student.careerId = student.career.id"
-          ></v-select>
+          />
         </VCol>
         <VCol
           cols="12"
@@ -141,8 +141,7 @@ onBeforeMount(async () => {
           <VBtn
             color="secondary"
             variant="tonal"
-            type="reset"
-            @click="cancel"
+            @click.prevent="onCancel"
           >
             Cancelar
           </VBtn>

@@ -20,7 +20,7 @@ async function submit() {
   }
 }
 
-function cancel() {
+function onCancel() {
   router.push({ name: 'activity-types' })
 }
 
@@ -88,8 +88,7 @@ onMounted(async () => {
           <VBtn
             color="secondary"
             variant="tonal"
-            type="reset"
-            @click="cancel"
+            @click.prevent="onCancel"
           >
             Cancelar
           </VBtn>

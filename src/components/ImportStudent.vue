@@ -50,6 +50,7 @@ const importarCSV = async () => {
 
     mensajeSuccess.value = response.data.message
     mensajeError.value = ''
+    window.location.reload()
   } catch (error) {
     archivoSeleccionado.value = null
     mensajeSuccess.value = ''
