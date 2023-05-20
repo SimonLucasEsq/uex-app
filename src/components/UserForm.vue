@@ -54,6 +54,15 @@ onMounted(async () => {
       <VRow>
         <VCol cols="12">
           <VTextField
+            id="username"
+            v-model="user.username"
+            label="Usuario"
+            placeholder="Usuario"
+            :rules="[requiredValidator]"
+          />
+        </VCol>
+        <VCol cols="12">
+          <VTextField
             id="email"
             v-model="user.email"
             label="Correo electronico"
