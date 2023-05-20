@@ -114,30 +114,30 @@ const paginationText = computed(() => {
               />
             </VBtn>
             <VBtn
-                icon
-                variant="text"
-                color="default"
-                size="x-small"
-              >
-                <VIcon
-                    :size="22"
-                    icon="tabler-dots-vertical"
-                  />
-                <VMenu activator="parent">
-                  <VList>
-                    <VListItem @click="showModal(career)">
-                      <template #prepend>
-                        <VIcon
-                          size="24"
-                          class="me-3"
-                          icon="tabler-trash"
-                        />
-                      </template>
-                      <VListItemTitle>Eliminar</VListItemTitle>
-                    </VListItem>
-                  </VList>
-                </VMenu>
-              </VBtn>
+              icon
+              variant="text"
+              color="default"
+              size="x-small"
+            >
+              <VIcon
+                :size="22"
+                icon="tabler-dots-vertical"
+              />
+              <VMenu activator="parent">
+                <VList>
+                  <VListItem @click="showModal(career)">
+                    <template #prepend>
+                      <VIcon
+                        size="24"
+                        class="me-3"
+                        icon="tabler-trash"
+                      />
+                    </template>
+                    <VListItemTitle>Eliminar</VListItemTitle>
+                  </VListItem>
+                </VList>
+              </VMenu>
+            </VBtn>
           </td>
         </tr>
       </tbody>
@@ -148,7 +148,7 @@ const paginationText = computed(() => {
             colspan="8"
             class="text-center text-body-1"
           >
-            No data available
+            No hay datos disponibles
           </td>
         </tr>
       </tfoot>
@@ -197,7 +197,7 @@ const paginationText = computed(() => {
       v-model:isDialogVisible="isDialogVisible"
       :title="`Eliminar Carrera ${careerToDelete?.name}?`"
       body="Solo podrá ser eliminado si otras no se encuentra asociado a otras entidades"
-      @onConfirm="deleteCareer()"
+      @onConfirm="deleteCareer"
     />
   </VCard>
 </template>
