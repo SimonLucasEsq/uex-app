@@ -43,8 +43,8 @@ function showModal(userId) {
 
 // Computing pagination text
 const paginationText = computed(() => {
-  const firstIndex = users.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
-  const lastIndex = users.value.length + (currentPage.value - 1) * rowPerPage.value
+  const firstIndex = users.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
+  const lastIndex = users.value.size + (currentPage.value - 1) * rowPerPage.value
 
   return `Mostrando ${ firstIndex } a ${ lastIndex } de un total de ${ paginationData.value.totalObjects } registros`
 })
@@ -84,6 +84,9 @@ const paginationText = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
+            Usuario
+          </th>
+          <th scope="col">
             Correo electronico
           </th>
         </tr>
@@ -91,10 +94,11 @@ const paginationText = computed(() => {
 
       <tbody>
         <tr
-          v-for="user in users"
+          v-for="user in users.values()"
           :key="user.id"
           style="height: 3.75rem;"
         >
+          <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>
             <VBtn
@@ -139,7 +143,7 @@ const paginationText = computed(() => {
         </tr>
       </tbody>
       <!-- 👉 table footer  -->
-      <tfoot v-show="!users.length">
+      <tfoot v-show="!users.size">
         <tr>
           <td
             colspan="8"
@@ -192,7 +196,7 @@ const paginationText = computed(() => {
     <!-- Confirmation Dialog -->
     <ConfirmModal
       v-model:isDialogVisible="isDialogVisible"
-      :title="`Eliminar ${userToDelete?.email}?`"
+      :title="`Eliminar ${userToDelete?.username}?`"
       @onConfirm="deleteUser"
     />
   </VCard>
