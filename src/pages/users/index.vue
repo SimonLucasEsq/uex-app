@@ -145,7 +145,7 @@ const paginationText = computed(() => {
             colspan="8"
             class="text-center text-body-1"
           >
-            No data available
+            No hay datos disponibles
           </td>
         </tr>
       </tfoot>
