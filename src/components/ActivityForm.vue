@@ -1,12 +1,12 @@
 <script setup>
-import { useActivityStore } from "@/stores/activity";
-import { requiredValidator } from '@validators';
-import { computed, onMounted } from 'vue';
-import { useCareerStore } from "@/stores/career";
-import { useActivityTypeStore } from "@/stores/activity-type";
-import { useOrganizationStore } from "@/stores/organization";
-import { useProfessorStore } from "@/stores/professor";
-import router from "../router";
+import { useActivityStore } from "@/stores/activity"
+import { useActivityTypeStore } from "@/stores/activity-type"
+import { useCareerStore } from "@/stores/career"
+import { useOrganizationStore } from "@/stores/organization"
+import { useProfessorStore } from "@/stores/professor"
+import { requiredValidator } from '@validators'
+import { computed, onMounted } from 'vue'
+import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
@@ -21,20 +21,22 @@ const organizations = computed(() => organizationStore.data.recordList.records)
 const careerStore = useCareerStore()
 const careers = ref([])
 const selectedCarreerIds = ref([])
+
 const fullName = computed(() => {
-  return (item) => `${item.person?.firstName} ${item.person?.lastName}`;
-});
+  return item => `${item.person?.firstName} ${item.person?.lastName}`
+})
+
 onMounted(async () => {
   if(props.id) {
     await store.api.find(props.id)
-    selectedCarreerIds.value = activity.value.activityCareers.map((association)=> { return association.careerId })
+    selectedCarreerIds.value = activity.value.activityCareers.map(association=> { return association.careerId })
   } else {
     store.resetRecord()
   }
 
-  await careerStore.api.query({}).then((response) => {
-    careers.value = Array.from(response.values()).map((record) => {
-      return {careerName: record.name, careerId: record.id};
+  await careerStore.api.query({}).then(response => {
+    careers.value = Array.from(response.values()).map(record => {
+      return { careerName: record.name, careerId: record.id }
     })
   })
   await activityTypeStore.api.query({})
@@ -58,13 +60,14 @@ function processSelectedCareersIds() {
 
   selectedCarreerIds.value.forEach(careerId => {
     if (!persistedCareers.some(item => item.careerId === careerId)) {
-      persistedCareers.push({careerId: careerId})
+      persistedCareers.push({ careerId: careerId })
     }
-  });
+  })
 }
 
 async function submit() {
   processSelectedCareersIds()
+
   const { valid } = await refForm.value.validate()
   if (valid) {
     store.api.save().then(() => {
@@ -81,17 +84,6 @@ function onCancel(){
 </script>
 
 <template>
-  <VAlert
-    v-if="store.isInvalid"
-    color="error"
-  >
-    Ops! Error al crear la carrera
-    <div v-if="activity.errors.name">
-      Nombre
-      <VList :items="activity.errors.name" />
-    </div>
-  </VAlert>
-
   <VCardText class="d-flex align-center flex-wrap gap-4">
     <VForm
       ref="refForm"
@@ -113,7 +105,7 @@ function onCancel(){
         </VCol>
 
         <VCol cols="12">
-          <v-select
+          <VSelect
             id="activity_type_id"
             v-model="activity.activityType"
             :items="Array.from(activityTypes.values())"
@@ -123,10 +115,10 @@ function onCancel(){
             return-object
             :rules="[requiredValidator]"
             @update:modelValue="activity.activityTypeId = activity.activityType.id"
-          ></v-select>
+          />
         </VCol>
-         <VCol cols="12">
-          <v-select
+        <VCol cols="12">
+          <VSelect
             id="professor_id"
             v-model="activity.professor"
             :items="Array.from(professors.values())"
@@ -136,8 +128,7 @@ function onCancel(){
             return-object
             :rules="[requiredValidator]"
             @update:modelValue="activity.professorId = activity.professor.id"
-          >
-          </v-select>
+          />
         </VCol>
         <VCol cols="12">
           <VTextField
@@ -169,22 +160,21 @@ function onCancel(){
         </VCol>
 
         <VCol cols="12">
-          <v-checkbox
+          <VCheckbox
             v-model="activity.virtualParticipation"
             label="Participación Virtual"
-          ></v-checkbox>
+          />
         </VCol>
 
         <VCol cols="12">
-          <v-checkbox
+          <VCheckbox
             v-model="activity.institutionalProgram"
             label="Programa Institucional"
-          ></v-checkbox>
+          />
         </VCol>
 
         <VContainer>
           <VRow>
-
             <VCol
               cols="12"
               md="4"
@@ -233,7 +223,7 @@ function onCancel(){
         </VCol>
 
         <VCol cols="12">
-          <v-label>Total:</v-label> {{store.totalBeneficiaries}}
+          <VLabel>Total:</VLabel> {{ store.totalBeneficiaries }}
         </VCol>
 
         <VCol cols="12 text-subtitle-1">
@@ -241,23 +231,22 @@ function onCancel(){
         </VCol>
 
         <VCol cols="12">
-          <v-autocomplete
-              v-model="selectedCarreerIds"
-              :items="careers"
-              closable-chips
-              item-title="careerName"
-              item-value="careerId"
-              label="Carrera"
-              multiple
-              chips
-              filled
-              :rules="[requiredValidator]"
-            >
-            </v-autocomplete>
+          <VAutocomplete
+            v-model="selectedCarreerIds"
+            :items="careers"
+            closable-chips
+            item-title="careerName"
+            item-value="careerId"
+            label="Carrera"
+            multiple
+            chips
+            filled
+            :rules="[requiredValidator]"
+          />
         </VCol>
 
         <VCol cols="12">
-          <v-select
+          <VSelect
             id="organizingOrganizationId"
             v-model="activity.organizingOrganization"
             :items="Array.from(organizations.values())"
@@ -266,11 +255,11 @@ function onCancel(){
             label="Institución Organizadora"
             return-object
             @update:modelValue="activity.organizingOrganizationId = activity.organizingOrganization.id"
-          ></v-select>
+          />
         </VCol>
 
         <VCol cols="12">
-          <v-select
+          <VSelect
             id="partnerOrganizationId"
             v-model="activity.partnerOrganization"
             :items="Array.from(organizations.values())"
@@ -279,7 +268,7 @@ function onCancel(){
             label="Institución Co-participante"
             return-object
             @update:modelValue="activity.partnerOrganizationId = activity.partnerOrganization.id"
-          ></v-select>
+          />
         </VCol>
 
         <VCol cols="12">

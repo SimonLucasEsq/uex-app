@@ -5,7 +5,7 @@ import { computed, onMounted } from "vue";
 import { debounce } from 'vue-debounce';
 
 const store = useCareerStore()
-const careers = computed(() => store.data.recordList.records)
+const careers = ref([])
 const paginationData = computed(() => store.data.recordList.meta)
 const searchQuery = ref('')
 const rowPerPage = ref(10)
@@ -33,6 +33,8 @@ async function loadCareers() {
     search: searchQuery.value,
     page: currentPage.value,
     per_page: rowPerPage.value,
+  }).then(records => {
+    careers.value = records
   })
 }
 
@@ -114,30 +116,30 @@ const paginationText = computed(() => {
               />
             </VBtn>
             <VBtn
-                icon
-                variant="text"
-                color="default"
-                size="x-small"
-              >
-                <VIcon
-                    :size="22"
-                    icon="tabler-dots-vertical"
-                  />
-                <VMenu activator="parent">
-                  <VList>
-                    <VListItem @click="showModal(career)">
-                      <template #prepend>
-                        <VIcon
-                          size="24"
-                          class="me-3"
-                          icon="tabler-trash"
-                        />
-                      </template>
-                      <VListItemTitle>Eliminar</VListItemTitle>
-                    </VListItem>
-                  </VList>
-                </VMenu>
-              </VBtn>
+              icon
+              variant="text"
+              color="default"
+              size="x-small"
+            >
+              <VIcon
+                :size="22"
+                icon="tabler-dots-vertical"
+              />
+              <VMenu activator="parent">
+                <VList>
+                  <VListItem @click="showModal(career)">
+                    <template #prepend>
+                      <VIcon
+                        size="24"
+                        class="me-3"
+                        icon="tabler-trash"
+                      />
+                    </template>
+                    <VListItemTitle>Eliminar</VListItemTitle>
+                  </VListItem>
+                </VList>
+              </VMenu>
+            </VBtn>
           </td>
         </tr>
       </tbody>
@@ -197,7 +199,7 @@ const paginationText = computed(() => {
       v-model:isDialogVisible="isDialogVisible"
       :title="`Eliminar Carrera ${careerToDelete?.name}?`"
       body="Solo podrá ser eliminado si otras no se encuentra asociado a otras entidades"
-      @onConfirm="deleteCareer()"
+      @onConfirm="deleteCareer"
     />
   </VCard>
 </template>

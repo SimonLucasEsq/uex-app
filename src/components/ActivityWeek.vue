@@ -1,71 +1,41 @@
 <script setup>
-import { useCareerStore } from "@/stores/career"
-import { useProfessorStore } from "@/stores/professor"
-import { requiredValidator } from '@validators'
-import { computed, onBeforeMount } from 'vue'
-import router from "../router"
+import { useCareerStore } from "@/stores/career";
+import { useStudentStore } from "@/stores/student";
+import { requiredValidator } from '@validators';
+import { computed, onBeforeMount } from 'vue';
+import router from "../router";
 
 const props = defineProps(['id'])
 const refForm = ref()
-const store = useProfessorStore()
+const store = useStudentStore()
 const careerStore = useCareerStore()
-const professor = computed(() => store.data.record )
-const careers = ref([])
-const selectedCarreerIds = ref([])
-
-onBeforeMount(async () => {
-  if(props.id) {
-    await store.api.find(props.id)
-    selectedCarreerIds.value = professor.value.professorCareers.map(association=> { return association.careerId })
-  } else {
-    store.resetRecord()
-  }
-
-  await careerStore.api.query({}).then(response => {
-    careers.value = Array.from(response.values()).map(record => {
-      return { careerName: record.name, careerId: record.id }
-    })
-  })
-})
-
-function processSelectedCareersIds() {
-  let persistedCareers = professor.value.professorCareers
-  if (selectedCarreerIds.value.length === 0 && persistedCareers.length === 0) {
-    return
-  }
-
-  persistedCareers.forEach(item => {
-    if (selectedCarreerIds.value.includes(item.careerId)) {
-      return
-    }
-
-    item["_destroy"] = true
-  })
-
-  selectedCarreerIds.value.forEach(careerId => {
-    if (!persistedCareers.some(item => item.careerId === careerId)) {
-      persistedCareers.push({ careerId: careerId })
-    }
-  })
-}
-
+const student = computed(() => store.data.record )
+const careers = computed(() => careerStore.data.recordList.records )
 
 async function submit() {
-  processSelectedCareersIds()
-
   const { valid } = await refForm.value.validate()
   if (valid) {
     store.api.save().then(() => {
       if(store.isValid) {
-        router.push({ name: 'professors' })
+        router.push({ name: 'activities' })
       }
     })
   }
 }
 
 function cancel() {
-  router.push({ name: 'professors' })
+  router.push({ name: 'activities' })
 }
+
+onBeforeMount(async () => {
+  if(props.id) {
+    await store.api.find(props.id)
+  } else {
+    store.resetRecord()
+  }
+  
+  await careerStore.api.query({})
+})
 </script>
 
 <template>
@@ -81,7 +51,7 @@ function cancel() {
         <VCol cols="12">
           <VTextField
             id="firstName"
-            v-model="professor.person.firstName"
+            v-model="student.person.firstName"
             label="Nombres"
             placeholder="Nombres"
             :rules="[requiredValidator]"
@@ -91,7 +61,7 @@ function cancel() {
         <VCol cols="12">
           <VTextField
             id="lastName"
-            v-model="professor.person.lastName"
+            v-model="student.person.lastName"
             label="Apellidos"
             placeholder="Apellidos"
             :rules="[requiredValidator]"
@@ -101,7 +71,7 @@ function cancel() {
         <VCol cols="12">
           <VTextField
             id="idCard"
-            v-model="professor.person.idCard"
+            v-model="student.person.idCard"
             label="Nº C.I."
             placeholder="Nº C.I."
             :rules="[requiredValidator]"
@@ -113,7 +83,7 @@ function cancel() {
         <VCol cols="12">
           <VTextField
             id="email"
-            v-model="professor.person.email"
+            v-model="student.person.email"
             label="Correo Electrónico"
             placeholder="Correo Electrónico"
             :rules="[requiredValidator]"
@@ -123,7 +93,7 @@ function cancel() {
         <VCol cols="12">
           <VTextField
             id="phoneNumber"
-            v-model="professor.person.phoneNumber"
+            v-model="student.person.phoneNumber"
             label="Celular"
             placeholder="Celular"
             :rules="[requiredValidator]"
@@ -133,7 +103,7 @@ function cancel() {
         <VCol cols="12">
           <VTextField
             id="address"
-            v-model="professor.person.address"
+            v-model="student.person.address"
             label="Dirección"
             placeholder="Dirección"
             :rules="[requiredValidator]"
@@ -144,18 +114,19 @@ function cancel() {
         </VCol>
 
         <VCol cols="12">
-          <VAutocomplete
-            v-model="selectedCarreerIds"
-            :items="careers"
-            closable-chips
-            item-title="careerName"
-            item-value="careerId"
+          <v-select
+            id="career_id"
+            v-model="student.career"
+            :items="Array.from(careers.values())"
+            item-title="name"
+            item-value="id"
             label="Carrera"
-            multiple
-            chips
-            filled
+            persistent-hint
+            return-object
+            single-line
             :rules="[requiredValidator]"
-          />
+            @update:modelValue="student.careerId = student.career.id"
+          ></v-select>
         </VCol>
         <VCol
           cols="12"

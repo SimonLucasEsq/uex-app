@@ -5,7 +5,7 @@ import { computed, onMounted } from "vue";
 import { debounce } from 'vue-debounce';
 
 const store = useOrganizationStore()
-const organizations = computed(() => store.data.recordList.records)
+const organizations = ref([])
 const paginationData = computed(() => store.data.recordList.meta)
 const searchQuery = ref('')
 const rowPerPage = ref(10)
@@ -33,6 +33,8 @@ async function loadOrganizations() {
     search: searchQuery.value,
     page: currentPage.value,
     per_page: rowPerPage.value,
+  }).then(records => {
+    organizations.value = records
   })
 }
 

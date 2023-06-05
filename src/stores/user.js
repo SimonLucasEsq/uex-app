@@ -10,6 +10,7 @@ class UserApi extends Api {
 
 export const useUserStore = defineStore('users', () => {
   const associations = {}
+
   const defaultRecord = {
     id: null,
     email: null,
@@ -25,7 +26,7 @@ export const useUserStore = defineStore('users', () => {
   const data = reactive({
     record: { ...defaultRecord },
     recordList: {
-      records: [],
+      records: new Map(),
       meta: {
         perPage: 0,
         totalPages: 0,
@@ -38,7 +39,7 @@ export const useUserStore = defineStore('users', () => {
   const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 })
   const isInvalid = computed(() => { return !isValid.value })
 
-  const api = new UserApi(data, associations, apiConfig);
+  const api = new UserApi(data, associations, apiConfig)
 
   function resetRecord() {
     this.data.record = { ...defaultRecord }

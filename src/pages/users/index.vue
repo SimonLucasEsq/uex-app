@@ -5,7 +5,7 @@ import { computed, onMounted } from "vue";
 import { debounce } from 'vue-debounce';
 
 const store = useUserStore()
-const users = computed(() => store.data.recordList.records)
+const users = ref([])
 const paginationData = computed(() => store.data.recordList.meta)
 const searchQuery = ref('')
 const rowPerPage = ref(10)
@@ -33,6 +33,8 @@ async function loadUsers() {
     search: searchQuery.value,
     page: currentPage.value,
     per_page: rowPerPage.value,
+  }).then(records => {
+    users.value = records
   })
 }
 
@@ -43,8 +45,8 @@ function showModal(userId) {
 
 // Computing pagination text
 const paginationText = computed(() => {
-  const firstIndex = users.value.length ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
-  const lastIndex = users.value.length + (currentPage.value - 1) * rowPerPage.value
+  const firstIndex = users.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
+  const lastIndex = users.value.size + (currentPage.value - 1) * rowPerPage.value
 
   return `Mostrando ${ firstIndex } a ${ lastIndex } de un total de ${ paginationData.value.totalObjects } registros`
 })
@@ -91,7 +93,7 @@ const paginationText = computed(() => {
 
       <tbody>
         <tr
-          v-for="user in users"
+          v-for="user in users.values()"
           :key="user.id"
           style="height: 3.75rem;"
         >
@@ -139,7 +141,7 @@ const paginationText = computed(() => {
         </tr>
       </tbody>
       <!-- 👉 table footer  -->
-      <tfoot v-show="!users.length">
+      <tfoot v-show="!users.size">
         <tr>
           <td
             colspan="8"
