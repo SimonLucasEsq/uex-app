@@ -9,7 +9,7 @@ const props = defineProps({
     default: null,
   },
   showAddButton: {
-    type: Number,
+    type: Boolean,
     default: null,
   },
 })
