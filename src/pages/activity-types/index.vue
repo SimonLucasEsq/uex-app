@@ -13,7 +13,7 @@ const currentPage = ref(1)
 const isDialogVisible = ref(false)
 const activityTypeToDelete = ref(null)
 
-const debounceSearch = debounce(async function() { 
+const debounceSearch = debounce(async function() {
   loadActivities()
 }, 300)
 
@@ -92,7 +92,7 @@ const paginationText = computed(() => {
           <th
             scope="col"
           >
-            Descripcion
+            Descripción
           </th>
 
           <th scope="col">
@@ -158,7 +158,7 @@ const paginationText = computed(() => {
             colspan="8"
             class="text-center text-body-1"
           >
-            No data available
+            No hay datos disponibles
           </td>
         </tr>
       </tfoot>
@@ -190,7 +190,7 @@ const paginationText = computed(() => {
       </span>
 
       <VSpacer />
-        
+
       <!-- 👉 Pagination -->
       <VPagination
         v-model="currentPage"
@@ -219,4 +219,5 @@ const paginationText = computed(() => {
     inline-size: 15rem;
   }
 }
-</style>  
+
+</style>

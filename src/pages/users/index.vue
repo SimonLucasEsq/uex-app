@@ -86,6 +86,9 @@ const paginationText = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
+            Usuario
+          </th>
+          <th scope="col">
             Correo electronico
           </th>
         </tr>
@@ -97,6 +100,7 @@ const paginationText = computed(() => {
           :key="user.id"
           style="height: 3.75rem;"
         >
+          <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>
             <VBtn
@@ -147,7 +151,7 @@ const paginationText = computed(() => {
             colspan="8"
             class="text-center text-body-1"
           >
-            No data available
+            No hay datos disponibles
           </td>
         </tr>
       </tfoot>
@@ -194,7 +198,7 @@ const paginationText = computed(() => {
     <!-- Confirmation Dialog -->
     <ConfirmModal
       v-model:isDialogVisible="isDialogVisible"
-      :title="`Eliminar ${userToDelete?.email}?`"
+      :title="`Eliminar ${userToDelete?.username}?`"
       @onConfirm="deleteUser"
     />
   </VCard>

@@ -70,7 +70,7 @@ async function loadCurrentUser() {
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              {{ currentUser.email }}
+              {{ currentUser.username }}
             </VListItemTitle>
           </VListItem>
 

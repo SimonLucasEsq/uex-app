@@ -14,6 +14,7 @@ export const useUserStore = defineStore('users', () => {
   const defaultRecord = {
     id: null,
     email: null,
+    username: null,
     errors: {},
   }
 
