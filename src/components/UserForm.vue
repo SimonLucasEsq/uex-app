@@ -21,7 +21,7 @@ async function submit() {
   }
 }
 
-function cancel() {
+function onCancel() {
   router.push({ name: 'users' })
 }
 
@@ -52,6 +52,15 @@ onMounted(async () => {
       @submit.prevent="() => {}"
     >
       <VRow>
+        <VCol cols="12">
+          <VTextField
+            id="username"
+            v-model="user.username"
+            label="Usuario"
+            placeholder="Usuario"
+            :rules="[requiredValidator]"
+          />
+        </VCol>
         <VCol cols="12">
           <VTextField
             id="email"
@@ -87,8 +96,7 @@ onMounted(async () => {
           <VBtn
             color="secondary"
             variant="tonal"
-            type="reset"
-            @click="cancel"
+            @click.prevent="onCancel"
           >
             Cancelar
           </VBtn>

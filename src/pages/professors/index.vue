@@ -1,8 +1,9 @@
 <script setup>
-import ConfirmModal from "@/components/ConfirmModal.vue";
-import { useProfessorStore } from "@/stores/professor";
-import { computed, onMounted } from "vue";
-import { debounce } from 'vue-debounce';
+import ConfirmModal from "@/components/ConfirmModal.vue"
+import { useProfessorStore } from "@/stores/professor"
+import { computed, onMounted } from "vue"
+import { debounce } from 'vue-debounce'
+import ImportProfessor from "../../components/ImportProfessor.vue"
 
 const store = useProfessorStore()
 const professors = ref([])
@@ -12,9 +13,10 @@ const searchQuery = ref('')
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const isDialogVisible = ref(false)
+const isImportVisible = ref(false)
 const professorToDelete = ref(null)
 
-const debounceSearch = debounce(async function() { 
+const debounceSearch = debounce(async function() {
   loadProfessors()
 }, 300)
 
@@ -42,6 +44,9 @@ async function loadProfessors() {
 function showModal(professor) {
   isDialogVisible.value = true
   professorToDelete.value = professor
+}
+function showImport() {
+  isImportVisible.value = true
 }
 
 // Computing pagination text
@@ -80,6 +85,10 @@ const paginationText = computed(() => {
         >
           Agregar
         </VBtn>
+        <VBtn
+          prepend-icon="tabler-file-import"
+          @click="showImport"
+        />
       </div>
     </VCardText>
     <VTable class="text-no-wrap">
@@ -171,7 +180,7 @@ const paginationText = computed(() => {
             colspan="8"
             class="text-center text-body-1"
           >
-            No data available
+            No hay datos disponibles
           </td>
         </tr>
       </tfoot>
@@ -203,7 +212,7 @@ const paginationText = computed(() => {
       </span>
 
       <VSpacer />
-        
+
       <!-- 👉 Pagination -->
       <VPagination
         v-model="currentPage"
@@ -222,6 +231,10 @@ const paginationText = computed(() => {
       body="Solo podrá ser eliminado si no se encuentra asociado a ninguna actividad"
       @onConfirm="deleteProfessor"
     />
+
+    <ImportProfessor
+      v-model:isDialogVisible="isImportVisible"
+    />
   </VCard>
 </template>
 
@@ -232,4 +245,4 @@ const paginationText = computed(() => {
     inline-size: 15rem;
   }
 }
-</style>  
+</style>
