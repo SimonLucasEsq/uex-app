@@ -285,14 +285,15 @@ function onCancel(){
             id="hours"
             v-model="activity.hours"
             label="Crédito academico o Horas de extensón"
-            placeholder="Crédito academico o Horas de extensón"
+            placeholder="Crédito académico o Horas de extensón"
             type="number"
+            :rules="[requiredValidator]"
           />
         </VCol>
 
         <VCol
           cols="12"
-          class="d-flex gap-4"
+          class="d-flex justify-end gap-4"
         >
           <VBtn
             type="submit"

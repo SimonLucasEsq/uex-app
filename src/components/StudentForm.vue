@@ -1,9 +1,9 @@
 <script setup>
-import { useCareerStore } from "@/stores/career";
-import { useStudentStore } from "@/stores/student";
-import { requiredValidator } from '@validators';
-import { computed, onBeforeMount } from 'vue';
-import router from "../router";
+import { useCareerStore } from "@/stores/career"
+import { useStudentStore } from "@/stores/student"
+import { requiredValidator } from '@validators'
+import { computed, onBeforeMount } from 'vue'
+import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
@@ -114,7 +114,7 @@ onBeforeMount(async () => {
         </VCol>
 
         <VCol cols="12">
-          <v-select
+          <VSelect
             id="career_id"
             v-model="student.career"
             :items="Array.from(careers.values())"
@@ -126,11 +126,11 @@ onBeforeMount(async () => {
             single-line
             :rules="[requiredValidator]"
             @update:modelValue="student.careerId = student.career.id"
-          ></v-select>
+          />
         </VCol>
         <VCol
           cols="12"
-          class="d-flex gap-4"
+          class="d-flex justify-end gap-4"
         >
           <VBtn
             type="submit"

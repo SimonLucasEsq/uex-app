@@ -8,7 +8,13 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  showAddButton: {
+    type: Number,
+    default: null,
+  },
 })
+
+const emit = defineEmits(['addNewRow'])
 
 const availableParticipableStores = {
   Professor: useProfessorStore(),
@@ -42,7 +48,23 @@ const fullName = computed(() => {
 </script>
 
 <template>
-  <td>
+  <td class="pa-0">
+    <VBtn
+      v-if="props.showAddButton"
+      icon
+      rounded="0"
+      size="small"
+      variant="tonal"
+      color="default"
+      @click="emit('addNewRow')"
+    >
+      <VIcon
+        :size="22"
+        icon="tabler-plus"
+      />
+    </VBtn>
+  </td>
+  <td class="pl-1">
     <VAutocomplete
       v-model="participant.participable"
       :item-title="fullName"

@@ -145,8 +145,8 @@ onBeforeMount(async () => {
     <!-- Confirmation Dialog -->
     <ConfirmModal
       v-model:isDialogVisible="isVisibleDeleteDialog"
-      title="`Eliminar Actividad?`"
-      body=""
+      title="Eliminar Fecha?"
+      body="Al eliminar la fecha se eliminarán automáticamente los participantes asociados a ella."
       @on-confirm="deleteActivityWeek"
     />
   </VCard>

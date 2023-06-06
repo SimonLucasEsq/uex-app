@@ -95,22 +95,17 @@ function save() {
           />
         </div>
       </div>
-      <VSpacer />
-      <div class="me-3">
-        <!-- Create Activity -->
-        <VBtn
-          prepend-icon="tabler-plus"
-          @click="addParticipant"
-        >
-          Agregar
-        </VBtn>
-      </div>
     </VCardText>
     <VTable class="text-no-wrap">
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-          <th scope="col-2">
+          <th class="pa-0" />
+
+          <th
+            class="pl-1 w-25"
+            scope="col"
+          >
             Nombre
           </th>
 
@@ -146,12 +141,14 @@ function save() {
 
       <tbody>
         <tr
-          v-for="participant in filteredParticipants"
+          v-for="(participant, index) in filteredParticipants"
           :key="participant.id"
           style="height: 3.75rem;"
         >
           <ActivityWeekParticipantRow
             :participant="participant"
+            :show-add-button="index === (filteredParticipants.length - 1)"
+            @add-new-row="addParticipant"
           />
         </tr>
       </tbody>
@@ -169,11 +166,9 @@ function save() {
     </VTable>
     <!-- !SECTION -->
 
-    <VDivider />
-
     <VCol
       cols="12"
-      class="d-flex gap-4"
+      class="d-flex justify-end gap-4"
     >
       <VBtn
         type="submit"

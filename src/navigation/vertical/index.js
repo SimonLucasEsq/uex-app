@@ -7,7 +7,7 @@ export default [
   {
     title: 'Actividades',
     to: { name: 'activities' },
-    icon: { icon: 'tabler-file' },
+    icon: { icon: 'tabler-files' },
   },
   {
     title: 'Alumnos',
