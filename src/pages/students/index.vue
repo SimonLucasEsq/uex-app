@@ -6,7 +6,7 @@ import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
 
 const store = useStudentStore()
-const students = computed(() => store.data.recordList.records)
+const students = ref([])
 
 const paginationData = computed(() => store.data.recordList.meta)
 const searchQuery = ref('')
@@ -36,6 +36,8 @@ async function loadStudents() {
     search: searchQuery.value,
     page: currentPage.value,
     per_page: rowPerPage.value,
+  }).then(records => {
+    students.value = records
   })
 }
 
@@ -43,6 +45,7 @@ function showModal(student) {
   isDialogVisible.value = true
   studentToDelete.value = student
 }
+
 function showImport() {
   isImportVisible.value = true
 }

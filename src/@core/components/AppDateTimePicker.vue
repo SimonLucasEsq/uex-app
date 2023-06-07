@@ -293,7 +293,7 @@ input[altinputclass="inlinePicker"] {
   }
 
   &.open {
-    z-index: 1051;
+    z-index: 100000;
   }
 
   &.hasTime.open {
@@ -396,9 +396,9 @@ input[altinputclass="inlinePicker"] {
 
   .flatpickr-prev-month,
   .flatpickr-next-month {
+    border-radius: 5rem;
     background: rgba(var(--v-theme-surface-variant), var(--v-selected-opacity));
     block-size: 1.75rem;
-    border-radius: 5rem;
     inline-size: 1.75rem;
     inset-block-start: 0.75rem !important;
     padding-block: 0.25rem;

@@ -5,7 +5,7 @@ import { computed, onMounted } from "vue";
 import { debounce } from 'vue-debounce';
 
 const store = useCareerStore()
-const careers = computed(() => store.data.recordList.records)
+const careers = ref([])
 const paginationData = computed(() => store.data.recordList.meta)
 const searchQuery = ref('')
 const rowPerPage = ref(10)
@@ -33,6 +33,8 @@ async function loadCareers() {
     search: searchQuery.value,
     page: currentPage.value,
     per_page: rowPerPage.value,
+  }).then(records => {
+    careers.value = records
   })
 }
 
