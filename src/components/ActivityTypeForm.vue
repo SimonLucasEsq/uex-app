@@ -77,7 +77,7 @@ onMounted(async () => {
 
         <VCol
           cols="12"
-          class="d-flex gap-4"
+          class="d-flex justify-end gap-4"
         >
           <VBtn
             type="submit"
@@ -88,6 +88,7 @@ onMounted(async () => {
           <VBtn
             color="secondary"
             variant="tonal"
+            type="reset"
             @click.prevent="onCancel"
           >
             Cancelar

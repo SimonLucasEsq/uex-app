@@ -13,4 +13,4 @@ const id = route.params.id
   >
     <StudentForm :id="id" />
   </VCard>
-</template> 
+</template>

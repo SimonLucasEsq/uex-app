@@ -5,7 +5,7 @@ import { computed, onMounted } from "vue";
 import { debounce } from 'vue-debounce';
 
 const store = useActivityTypeStore()
-const activityTypes = computed(() => store.data.recordList.records)
+const activityTypes = ref([])
 const paginationData = computed(() => store.data.recordList.meta)
 const searchQuery = ref('')
 const rowPerPage = ref(10)
@@ -33,6 +33,8 @@ async function loadActivities() {
     search: searchQuery.value,
     page: currentPage.value,
     per_page: rowPerPage.value,
+  }).then(records => {
+    activityTypes.value = records
   })
 }
 
@@ -217,4 +219,5 @@ const paginationText = computed(() => {
     inline-size: 15rem;
   }
 }
+
 </style>
