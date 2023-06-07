@@ -47,7 +47,7 @@ const importarCSV = async () => {
       },
     },
     )
-
+    alert(response.data.message)
     mensajeSuccess.value = response.data.message
     mensajeError.value = ''
     window.location.reload()
