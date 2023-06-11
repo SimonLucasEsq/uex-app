@@ -1,13 +1,15 @@
 <script setup>
 import ConfirmModal from "@/components/ConfirmModal.vue"
 import ImportStudent from "@/components/ImportStudent.vue"
+import { useCareerStore } from "@/stores/career"
 import { useStudentStore } from "@/stores/student"
 import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
 
 const store = useStudentStore()
 const students = ref([])
-
+const careers = ref([])
+const filteredCareer = (null)
 const paginationData = computed(() => store.data.recordList.meta)
 const searchQuery = ref('')
 const rowPerPage = ref(10)
@@ -22,6 +24,7 @@ const debounceSearch = debounce(async function() {
 
 onMounted(async () => {
   loadStudents()
+  loadCareers()
 })
 
 async function deleteStudent() {
@@ -36,8 +39,16 @@ async function loadStudents() {
     search: searchQuery.value,
     page: currentPage.value,
     per_page: rowPerPage.value,
+    career_id: filteredCareer.value,
   }).then(records => {
     students.value = records
+  })
+}
+
+async function loadCareers() {
+  useCareerStore().api.query().then(records => {
+    let arrayRecords = Array.from(records.values())
+    careers.value = useSelect().includeBlankOptionObject(arrayRecords, { valueKey: "name" })
   })
 }
 
@@ -68,14 +79,24 @@ const paginationText = computed(() => {
     <VCardText class="d-flex align-center flex-wrap gap-4">
       <div class="d-flex align-center flex-wrap gap-4">
         <!-- 👉 Search  -->
-        <div class="filter">
-          <VTextField
-            v-model="searchQuery"
-            placeholder="Buscar"
-            density="compact"
-            @update:modelValue="debounceSearch"
-          />
-        </div>
+        <VTextField
+          v-model="searchQuery"
+          class="filter"
+          placeholder="Buscar"
+          density="compact"
+          @update:model-value="debounceSearch"
+        />
+
+        <VSelect
+          id="career_id"
+          v-model="filteredCareer"
+          class="filter"
+          placeholder="Carrera"
+          :items="Array.from(careers.values())"
+          item-title="name"
+          item-value="id"
+          @update:model-value="loadProfessors"
+        />
       </div>
       <VSpacer />
       <div class="me-3">
