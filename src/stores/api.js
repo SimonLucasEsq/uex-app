@@ -57,7 +57,7 @@ export default class Api {
     }
   }
 
-  async query(params) {
+  async query(params = null) {
     return await this.axios
       .get(`/api/${this.endpoint}`, { params: params })
       .then(response => {
