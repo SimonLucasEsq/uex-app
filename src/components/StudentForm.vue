@@ -1,4 +1,5 @@
 <script setup>
+import { useSelect } from "@/composables/select"
 import { useCareerStore } from "@/stores/career"
 import { useStudentStore } from "@/stores/student"
 import { requiredValidator } from '@validators'
@@ -7,6 +8,7 @@ import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
+const { sexOptions } = useSelect()
 const store = useStudentStore()
 const careerStore = useCareerStore()
 const student = computed(() => store.data.record )
@@ -69,6 +71,19 @@ onBeforeMount(async () => {
         </VCol>
 
         <VCol cols="12">
+          <VSelect
+            id="sex_id"
+            v-model="student.person.sex"
+            :items="sexOptions"
+            item-title="name"
+            item-value="value"
+            label="Sexo"
+            persistent-hint
+            :rules="[requiredValidator]"
+          />
+        </VCol>
+
+        <VCol cols="12">
           <VTextField
             id="idCard"
             v-model="student.person.idCard"
@@ -125,7 +140,7 @@ onBeforeMount(async () => {
             return-object
             single-line
             :rules="[requiredValidator]"
-            @update:modelValue="student.careerId = student.career.id"
+            @update:model-value="student.careerId = student.career.id"
           />
         </VCol>
         <VCol

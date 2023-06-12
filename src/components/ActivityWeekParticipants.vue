@@ -16,8 +16,21 @@ const participantsByParticipableType = ref({
   Professor: [],
 })
 
-const students = computed(() => participantsByParticipableType.value.Student)
-const professors = computed(() => participantsByParticipableType.value.Professor)
+const students = computed(() => {
+  if (participantsByParticipableType.value.Student.length === 0) {
+    return [useActivityWeekParticipantStore().newRecord({ activityWeekId: props.activityWeekId, participableType: "Student" })]
+  }
+  
+  return participantsByParticipableType.value.Student
+})
+
+const professors = computed(() => {
+  if (participantsByParticipableType.value.Professor.length === 0) {
+    return [useActivityWeekParticipantStore().newRecord({ activityWeekId: props.activityWeekId, participableType: "Professor" })]
+  }
+  
+  return participantsByParticipableType.value.Professor
+})
 
 
 onBeforeMount(async () => {
@@ -38,10 +51,6 @@ async function reloadParticipants() {
   participantsByParticipableType.value.Student = []
   participantsByParticipableType.value.Professor = []
   await loadParticipants()
-}
-
-function onSave() {
-  
 }
 
 const currentTab = ref(0)

@@ -6,6 +6,7 @@ import { useOrganizationStore } from "@/stores/organization"
 import { useProfessorStore } from "@/stores/professor"
 import { requiredValidator } from '@validators'
 import { computed, onMounted } from 'vue'
+import { debounce } from 'vue-debounce'
 import router from "../router"
 
 const props = defineProps(['id'])
@@ -13,11 +14,11 @@ const refForm = ref()
 const store = useActivityStore()
 const activity = computed(() => store.data.record)
 const professorStore = useProfessorStore()
-const professors = computed(() => professorStore.data.recordList.records)
+const professors = ref([])
 const activityTypeStore = useActivityTypeStore()
 const activityTypes = computed(() => activityTypeStore.data.recordList.records)
 const organizationStore = useOrganizationStore()
-const organizations = computed(() => organizationStore.data.recordList.records)
+const organizations = ref([])
 const careerStore = useCareerStore()
 const careers = ref([])
 const selectedCarreerIds = ref([])
@@ -25,6 +26,26 @@ const selectedCarreerIds = ref([])
 const fullName = computed(() => {
   return item => `${item.person?.firstName} ${item.person?.lastName}`
 })
+
+const searchProfessors = debounce(async function(search) { 
+  if (!search) {
+    return []
+  }
+
+  professorStore.api.query({ search: search }).then(records => {
+    professors.value = Array.from(records.values())
+  })
+}, 500)
+
+const searchOrganizations = debounce(async function(search) { 
+  if (!search) {
+    return []
+  }
+
+  organizationStore.api.query({ search: search }).then(records => {
+    organizations.value = Array.from(records.values())
+  })
+}, 500)
 
 onMounted(async () => {
   if(props.id) {
@@ -114,11 +135,11 @@ function onCancel(){
             label="Tipo de Actividad"
             return-object
             :rules="[requiredValidator]"
-            @update:modelValue="activity.activityTypeId = activity.activityType.id"
+            @update:model-value="activity.activityTypeId = activity.activityType.id"
           />
         </VCol>
         <VCol cols="12">
-          <VSelect
+          <VAutocomplete
             id="professor_id"
             v-model="activity.professor"
             :items="Array.from(professors.values())"
@@ -127,7 +148,8 @@ function onCancel(){
             label="Coordinador"
             return-object
             :rules="[requiredValidator]"
-            @update:modelValue="activity.professorId = activity.professor.id"
+            @update:model-value="activity.professorId = activity.professor.id"
+            @update:search="searchProfessors($event)"
           />
         </VCol>
         <VCol cols="12">
@@ -246,7 +268,7 @@ function onCancel(){
         </VCol>
 
         <VCol cols="12">
-          <VSelect
+          <VAutocomplete
             id="organizingOrganizationId"
             v-model="activity.organizingOrganization"
             :items="Array.from(organizations.values())"
@@ -254,12 +276,13 @@ function onCancel(){
             item-value="id"
             label="Institución Organizadora"
             return-object
-            @update:modelValue="activity.organizingOrganizationId = activity.organizingOrganization.id"
+            @update:model-value="activity.organizingOrganizationId = activity.organizingOrganization.id"
+            @update:search="searchOrganizations($event)"
           />
         </VCol>
 
         <VCol cols="12">
-          <VSelect
+          <VAutocomplete
             id="partnerOrganizationId"
             v-model="activity.partnerOrganization"
             :items="Array.from(organizations.values())"
@@ -267,7 +290,8 @@ function onCancel(){
             item-value="id"
             label="Institución Co-participante"
             return-object
-            @update:modelValue="activity.partnerOrganizationId = activity.partnerOrganization.id"
+            @update:model-value="activity.partnerOrganizationId = activity.partnerOrganization.id"
+            @update:search="searchOrganizations($event)"
           />
         </VCol>
 

@@ -47,7 +47,7 @@ async function loadActivities() {
 async function loadCareers() {
   useCareerStore().api.query().then(records => {
     let arrayRecords = Array.from(records.values())
-    careers.value = useSelect().includeBlankOptionObject(arrayRecords, { valueKey: "name" })
+    careers.value = useSelect().includeBlankOptionObject(arrayRecords, { titleKey: "name", valueKey: "id" })
   })
 }
 
@@ -86,10 +86,11 @@ const paginationText = computed(() => {
           id="career_id"
           v-model="filteredCareer"
           class="filter"
-          placeholder="Carrera"
+          label="Carrera"
           :items="Array.from(careers.values())"
           item-title="name"
           item-value="id"
+          persistent-hint
           @update:model-value="loadActivities"
         />
       </div>

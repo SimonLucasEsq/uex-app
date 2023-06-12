@@ -1,6 +1,11 @@
 export function useSelect() {
   const defaultTitle = "Todos"
-  const defaultValue = null
+  const defaultValue = ""
+
+  const sexOptions = [
+    { name: "Masculino", value: "male" },
+    { name: "Femenino", value: "female" },
+  ]
 
   function includeBlankOptionObject(records, options = {}) {
     let blankOption = {}
@@ -20,5 +25,5 @@ export function useSelect() {
     return [value].concat(records)
   }
 
-  return { includeBlankOption, includeBlankOptionObject }
+  return { sexOptions, includeBlankOption, includeBlankOptionObject }
 }

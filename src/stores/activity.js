@@ -1,7 +1,7 @@
-import Api from '@/stores/api';
-import { defineStore } from "pinia";
-import { computed, reactive } from "vue";
-import { useProfessorStore } from './professor';
+import Api from '@/stores/api'
+import { defineStore } from "pinia"
+import { computed, reactive } from "vue"
+import { useProfessorStore } from './professor'
 
 export const useActivityStore = defineStore('activities', () => {
   const associations = {
@@ -10,17 +10,18 @@ export const useActivityStore = defineStore('activities', () => {
         ["organizingOrganization", null],
         ["partnerOrganization", null],
         ["professor", useProfessorStore()],
-        ["beneficiaryDetail", null] // hasOne
-      ]
+        ["beneficiaryDetail", null], // hasOne
+      ],
     ),
     hasMany: new Map(
       [
         ["activityCareers", null],
         ["activityTypes", null],
-        ["activityWeeks", null]
-      ]
-    )
+        ["activityWeeks", null],
+      ],
+    ),
   }
+
   const defaultRecord = {
     id: null,
     name: null,
@@ -31,7 +32,7 @@ export const useActivityStore = defineStore('activities', () => {
     organizingOrganizationId: null,
     partnerOrganizationId: null,
     projectLink: null,
-    hours: null,
+    hours: 0,
     odsVinculation: null,
     institutionalProgram: null,
     institutionalExtensionLine: 0,
@@ -39,17 +40,17 @@ export const useActivityStore = defineStore('activities', () => {
     endDate: null,
     beneficiaryDetail: {
       numberOfMen: 0,
-      numberOfWomen: 0
+      numberOfWomen: 0,
     },
     activityCareers: [],
-    errors: {}
-  };
+    errors: {},
+  }
 
   const apiConfig = {
     endpoint: "activities",
     recordKey: "activity",
-    recordListKey: "activities"
-  };
+    recordListKey: "activities",
+  }
 
   const data = reactive({
     record: { ...defaultRecord },
@@ -58,14 +59,14 @@ export const useActivityStore = defineStore('activities', () => {
       meta: {
         perPage: 0,
         totalPages: 0,
-        totalObjects: 0
-      }
-    }
-  });
+        totalObjects: 0,
+      },
+    },
+  })
 
 
 
-  const api = new Api(data, associations, apiConfig);
+  const api = new Api(data, associations, apiConfig)
 
   const totalBeneficiaries = computed(() => {
     let numberOfMen = parseInt(data.record.beneficiaryDetail.numberOfMen)
@@ -76,13 +77,13 @@ export const useActivityStore = defineStore('activities', () => {
     }
 
     return numberOfMen + numberOfWomen
-  });
+  })
 
   function resetRecord() {
-    this.data.record = { ...defaultRecord };
+    this.data.record = { ...defaultRecord }
   }
 
-  const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 });
+  const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 })
 
   return { data, api, resetRecord, totalBeneficiaries, isValid }
 })

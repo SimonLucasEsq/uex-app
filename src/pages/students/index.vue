@@ -1,6 +1,7 @@
 <script setup>
 import ConfirmModal from "@/components/ConfirmModal.vue"
 import ImportStudent from "@/components/ImportStudent.vue"
+import { useSelect } from "@/composables/select"
 import { useCareerStore } from "@/stores/career"
 import { useStudentStore } from "@/stores/student"
 import { computed, onMounted } from "vue"
@@ -9,7 +10,7 @@ import { debounce } from 'vue-debounce'
 const store = useStudentStore()
 const students = ref([])
 const careers = ref([])
-const filteredCareer = (null)
+const filteredCareer = ref(null)
 const paginationData = computed(() => store.data.recordList.meta)
 const searchQuery = ref('')
 const rowPerPage = ref(10)
@@ -48,7 +49,7 @@ async function loadStudents() {
 async function loadCareers() {
   useCareerStore().api.query().then(records => {
     let arrayRecords = Array.from(records.values())
-    careers.value = useSelect().includeBlankOptionObject(arrayRecords, { valueKey: "name" })
+    careers.value = useSelect().includeBlankOptionObject(arrayRecords, { titleKey: "name", valueKey: "id" })
   })
 }
 
@@ -91,11 +92,12 @@ const paginationText = computed(() => {
           id="career_id"
           v-model="filteredCareer"
           class="filter"
-          placeholder="Carrera"
+          label="Carrera"
           :items="Array.from(careers.values())"
           item-title="name"
           item-value="id"
-          @update:model-value="loadProfessors"
+          persistent-hint
+          @update:model-value="loadStudents"
         />
       </div>
       <VSpacer />
