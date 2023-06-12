@@ -76,7 +76,7 @@ const paginationText = computed(() => {
       </div>
       <VSpacer />
       <div class="me-3">
-        <VRow justify="center" align="right">
+        <VRow>
           <VCol
             cols="12"
             class="d-flex gap-4"
