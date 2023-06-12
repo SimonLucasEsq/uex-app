@@ -112,6 +112,12 @@ function save() {
           <th
             scope="col"
           >
+            Carrera
+          </th>
+
+          <th
+            scope="col"
+          >
             Correo electrónico
           </th>
 

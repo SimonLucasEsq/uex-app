@@ -16,14 +16,28 @@ const props = defineProps({
 
 const emit = defineEmits(['addNewRow'])
 
+const selectTitleHash = {
+  professor: "Docente",
+  student: "Alumno", 
+}
+
 const availableParticipableStores = {
-  Professor: useProfessorStore(),
-  Student: useStudentStore(), 
+  professor: useProfessorStore(),
+  student: useStudentStore(), 
 }
 
 const participant = ref(props.participant)
-const participableStore = availableParticipableStores[props.participant.participableType]
+const participableType = participant.value.participableType?.toLowerCase()
+const participableStore = availableParticipableStores[participableType]
 const searchResults = ref([])
+
+const participantCareers = computed(() => {
+  if (participableType === "student") {
+    return participant.value?.participable?.career?.name
+  } else if (participableType === "professor") {
+    return participant.value?.participable?.professorCareers?.map(item => item.career_name).join(", ")
+  }
+})
 
 const debounceSearch = debounce(async function(search) { 
   if (!search) {
@@ -70,12 +84,13 @@ const fullName = computed(() => {
       :item-title="fullName"
       item-value="id"
       :items="searchResults"
-      label="Estudiante"
+      :label="selectTitleHash[participableType]"
       return-object
       @update:model-value="participant.participableId = participant.participable.id"
       @update:search="debounceSearch($event)"
     />
   </td>
+  <td>{{ participantCareers }}</td>
   <td>{{ participant.participable?.person?.email }}</td>
   <td>{{ participant.participable?.person?.phoneNumber }}</td>
   <td>
