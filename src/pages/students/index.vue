@@ -76,17 +76,27 @@ const paginationText = computed(() => {
       </div>
       <VSpacer />
       <div class="me-3">
-        <!-- Create Student -->
-        <VBtn
-          prepend-icon="tabler-plus"
-          :to="{ name: 'students-new' }"
-        >
-          Agregar
-        </VBtn>
-        <VBtn
-          prepend-icon="tabler-file-import"
-          @click="showImport"
-        />
+        <VRow justify="center" align="right">
+          <VCol
+            cols="12"
+            class="d-flex gap-4"
+          >
+            <VBtn
+              prepend-icon="tabler-file-upload"
+              @click="showImport"
+              color="secondary"
+            >
+              Importar
+            </VBtn>
+            <!-- Create Student -->
+            <VBtn
+              prepend-icon="tabler-plus"
+              :to="{ name: 'students-new' }"
+            >
+              Agregar
+            </VBtn>
+          </VCol>
+        </VRow>
       </div>
     </VCardText>
     <VTable class="text-no-wrap">
