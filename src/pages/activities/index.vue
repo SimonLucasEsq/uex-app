@@ -1,14 +1,13 @@
 <script setup>
 import ConfirmModal from "@/components/ConfirmModal.vue"
 import { useSelect } from "@/composables/select"
+import { useActivityStore } from "@/stores/activity"
 import { useCareerStore } from "@/stores/career"
-import { useProfessorStore } from "@/stores/professor"
 import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
-import ImportProfessor from "../../components/ImportProfessor.vue"
 
-const store = useProfessorStore()
-const professors = ref([])
+const store = useActivityStore()
+const activities = ref([])
 const careers = ref([])
 const filteredCareer = ref(null)
 const paginationData = computed(() => store.data.recordList.meta)
@@ -16,33 +15,32 @@ const searchQuery = ref('')
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const isDialogVisible = ref(false)
-const isImportVisible = ref(false)
-const professorToDelete = ref(null)
+const activityToDelete = ref(null)
 
-const debounceSearch = debounce(async function() {
-  loadProfessors()
+const debounceSearch = debounce(async function() { 
+  loadActivities()
 }, 300)
 
 onMounted(async () => {
-  loadProfessors()
+  loadActivities()
   loadCareers()
 })
 
-async function deleteProfessor() {
-  store.api.delete(professorToDelete.value.id).then(() => {
-    loadProfessors()
+async function deleteActivity() {
+  store.api.delete(activityToDelete.value.id).then(() => {
+    loadActivities()
   })
   isDialogVisible.value = false
 }
 
-async function loadProfessors() {
+async function loadActivities() {
   store.api.query({
     search: searchQuery.value,
     page: currentPage.value,
     per_page: rowPerPage.value,
     career_id: filteredCareer.value,
   }).then(records => {
-    professors.value = records
+    activities.value = records
   })
 }
 
@@ -53,19 +51,15 @@ async function loadCareers() {
   })
 }
 
-function showModal(professor) {
+function showModal(activity) {
   isDialogVisible.value = true
-  professorToDelete.value = professor
-}
-
-function showImport() {
-  isImportVisible.value = true
+  activityToDelete.value = activity
 }
 
 // Computing pagination text
 const paginationText = computed(() => {
-  const firstIndex = professors.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
-  const lastIndex = professors.value.size + (currentPage.value - 1) * rowPerPage.value
+  const firstIndex = activities.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
+  const lastIndex = activities.value.size + (currentPage.value - 1) * rowPerPage.value
 
   return `Mostrando ${ firstIndex } a ${ lastIndex } de un total de ${ paginationData.value.totalObjects } registros`
 })
@@ -73,12 +67,12 @@ const paginationText = computed(() => {
 
 <template>
   <VCard
-    id="professor-list"
+    id="activity-list"
     class="mb-6"
-    title="Docentes"
+    title="Actividades"
   >
     <VCardText class="d-flex align-center flex-wrap gap-4">
-      <div class="d-flex flex-row gap-4">
+      <div class="d-flex align-center flex-wrap gap-4">
         <!-- 👉 Search  -->
         <VTextField
           v-model="searchQuery"
@@ -97,22 +91,18 @@ const paginationText = computed(() => {
           item-title="name"
           item-value="id"
           persistent-hint
-          @update:model-value="loadProfessors"
+          @update:model-value="loadActivities"
         />
       </div>
       <VSpacer />
       <div class="me-3">
-        <!-- Create Professor -->
+        <!-- Create Activity -->
         <VBtn
           prepend-icon="tabler-plus"
-          :to="{ name: 'professors-new' }"
+          :to="{ name: 'activities-new' }"
         >
           Agregar
         </VBtn>
-        <VBtn
-          prepend-icon="tabler-file-import"
-          @click="showImport"
-        />
       </div>
     </VCardText>
     <VTable class="text-no-wrap">
@@ -120,23 +110,29 @@ const paginationText = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            C.I
+            Actividad
           </th>
 
           <th scope="col">
-            Nombre
+            Tipo de Actividad
           </th>
 
           <th
             scope="col"
           >
-            Horas
+            Coordinador
           </th>
 
           <th
             scope="col"
           >
-            Correo Electrónico
+            Fecha
+          </th>
+
+          <th
+            scope="col"
+          >
+            Horas de Extensión
           </th>
 
           <th scope="col">
@@ -147,21 +143,22 @@ const paginationText = computed(() => {
 
       <tbody>
         <tr
-          v-for="professor in professors.values()"
-          :key="professor.id"
+          v-for="activity in activities.values()"
+          :key="activity.id"
           style="height: 3.75rem;"
         >
-          <td>{{ professor.person.idCard }}</td>
-          <td>{{ professor.person.firstName }} {{ professor.person.lastName }}</td>
-          <td>{{ professor.hours }}</td>
-          <td>{{ professor.person.email }}</td>
+          <td>{{ activity.name }}</td>
+          <td>{{ activity.activityType.name }}</td>
+          <td>{{ `${activity.professor.person.firstName} ${activity.professor.person.lastName}` }}</td>
+          <td>{{ activity.startDate }}</td>
+          <td>{{ activity.hours }}</td>
           <td>
             <VBtn
               icon
               variant="text"
               color="default"
               size="x-small"
-              :to="{ name: 'professors-id', params: { id: professor.id }}"
+              :to="{ name: 'activities-id', params: { id: activity.id }}"
             >
               <VIcon
                 :size="22"
@@ -181,7 +178,7 @@ const paginationText = computed(() => {
               />
               <VMenu activator="parent">
                 <VList>
-                  <VListItem @click="showModal(professor)">
+                  <VListItem @click="showModal(activity)">
                     <template #prepend>
                       <VIcon
                         size="24"
@@ -198,7 +195,7 @@ const paginationText = computed(() => {
         </tr>
       </tbody>
       <!-- 👉 table footer  -->
-      <tfoot v-show="!professors.size">
+      <tfoot v-show="!activities.size">
         <tr>
           <td
             colspan="8"
@@ -227,7 +224,7 @@ const paginationText = computed(() => {
           v-model="rowPerPage"
           density="compact"
           :items="[10, 20, 30, 50]"
-          @update:modelValue="loadProfessors"
+          @update:modelValue="loadActivities"
         />
       </div>
       <!-- 👉 Pagination meta -->
@@ -236,14 +233,14 @@ const paginationText = computed(() => {
       </span>
 
       <VSpacer />
-
+        
       <!-- 👉 Pagination -->
       <VPagination
         v-model="currentPage"
         size="small"
         :total-visible="5"
         :length="paginationData.totalPages"
-        @update:modelValue="loadProfessors"
+        @update:modelValue="loadActivities"
       />
     </VCardText>
     <!-- !SECTION -->
@@ -251,22 +248,18 @@ const paginationText = computed(() => {
     <!-- Confirmation Dialog -->
     <ConfirmModal
       v-model:isDialogVisible="isDialogVisible"
-      :title="`Eliminar Docente ${professorToDelete?.person.firstName}?`"
-      body="Solo podrá ser eliminado si no se encuentra asociado a ninguna actividad"
-      @onConfirm="deleteProfessor"
-    />
-
-    <ImportProfessor
-      v-model:isDialogVisible="isImportVisible"
+      :title="`Eliminar Actividad ${activityToDelete?.name}?`"
+      body=""
+      @onConfirm="deleteActivity"
     />
   </VCard>
 </template>
 
 
 <style lang="scss">
-#professor-list {
+#activity-list {
   .filter {
     inline-size: 15rem;
   }
 }
-</style>
+</style>  

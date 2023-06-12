@@ -63,7 +63,7 @@ onMounted(async () => {
 
         <VCol
           cols="12"
-          class="d-flex gap-4"
+          class="d-flex justify-end gap-4"
         >
           <VBtn
             type="submit"

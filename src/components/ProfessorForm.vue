@@ -1,4 +1,5 @@
 <script setup>
+import { useSelect } from "@/composables/select"
 import { useCareerStore } from "@/stores/career"
 import { useProfessorStore } from "@/stores/professor"
 import { requiredValidator } from '@validators'
@@ -7,6 +8,7 @@ import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
+const { sexOptions } = useSelect()
 const store = useProfessorStore()
 const careerStore = useCareerStore()
 const professor = computed(() => store.data.record )
@@ -99,6 +101,19 @@ function onCancel() {
         </VCol>
 
         <VCol cols="12">
+          <VSelect
+            id="sex_id"
+            v-model="professor.person.sex"
+            :items="sexOptions"
+            item-title="name"
+            item-value="value"
+            label="Sexo"
+            persistent-hint
+            :rules="[requiredValidator]"
+          />
+        </VCol>
+
+        <VCol cols="12">
           <VTextField
             id="idCard"
             v-model="professor.person.idCard"
@@ -159,7 +174,7 @@ function onCancel() {
         </VCol>
         <VCol
           cols="12"
-          class="d-flex gap-4"
+          class="d-flex justify-end gap-4"
         >
           <VBtn
             type="submit"
