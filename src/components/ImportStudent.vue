@@ -12,7 +12,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   'update:isDialogVisible',
-  'importarCSV',
+  'imported',
 ])
 
 const toast = useToast()
@@ -48,6 +48,7 @@ const importarCSV = async () => {
     )
 
     toast.info(response.data.message)
+    emit('imported')
   } catch (error) {
     archivoSeleccionado.value = null
     toast.error(mensajeError.value)

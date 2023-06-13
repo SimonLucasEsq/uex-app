@@ -267,6 +267,7 @@ const paginationText = computed(() => {
     />
     <ImportStudent
       v-model:isDialogVisible="isImportVisible"
+      @imported="loadStudents"
     />
   </VCard>
 </template>
