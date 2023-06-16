@@ -1,6 +1,7 @@
 <script setup>
-import { securedAxiosInstance as axios } from '@axios';
-import { ref } from 'vue';
+import { securedAxiosInstance as axios } from '@axios'
+import { ref } from 'vue'
+import { useToast } from "vue-toastification"
 
 const props = defineProps({
   isDialogVisible: {
@@ -11,22 +12,20 @@ const props = defineProps({
 
 const emit = defineEmits([
   'update:isDialogVisible',
-  'importarCSV',
+  'imported',
 ])
+
+const toast = useToast()
 
 const updateModelValue = val => {
   emit('update:isDialogVisible', val)
 }
 
-
 const archivoSeleccionado = ref(null)
-const mensajeSuccess = ref('')
-const mensajeError = ref('')
+const mensajeError = ref('Ocurrió un error al importar el archivo. Por favor, intente de nuevo.')
 
 const seleccionarArchivo = event => {
   archivoSeleccionado.value = event.target.files[0]
-  mensajeSuccess.value = ''
-  mensajeError.value = ''
 }
 
 const importarCSV = async () => {
@@ -48,13 +47,11 @@ const importarCSV = async () => {
     },
     )
 
-    mensajeSuccess.value = response.data.message
-    mensajeError.value = ''
-    window.location.reload()
+    toast.info(response.data.message)
+    emit('imported')
   } catch (error) {
     archivoSeleccionado.value = null
-    mensajeSuccess.value = ''
-    mensajeError.value = 'Ocurrió un error al importar el archivo. Por favor, intente de nuevo.'
+    toast.error(mensajeError.value)
     console.error(error)
   }
 }

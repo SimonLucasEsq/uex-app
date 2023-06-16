@@ -12,6 +12,11 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import VueAxios from 'vue-axios'
 
+import Toast from "vue-toastification"
+
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css"
+
 loadFonts()
 
 
@@ -28,6 +33,12 @@ app.use(VueAxios, {
   secured: securedAxiosInstance,
   plain: plainAxiosInstance,
 })
+
+const toastOptions = {
+  // You can set your default options here
+}
+
+app.use(Toast, toastOptions)
 
 // Mount vue app
 app.mount('#app')
