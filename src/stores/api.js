@@ -86,6 +86,7 @@ export default class Api {
     return await this.axios
       .get(`/api/${this.endpoint}/${id}`)
       .then(response => {
+        // Deprecated: we should no longer compute data.record from the store, instead we should use the returned object
         this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: [] }
 
         return this.data.record

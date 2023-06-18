@@ -111,7 +111,6 @@ onBeforeMount(async () => {
             v-model="student.person.phoneNumber"
             label="Celular"
             placeholder="Celular"
-            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -121,7 +120,6 @@ onBeforeMount(async () => {
             v-model="student.person.address"
             label="Dirección"
             placeholder="Dirección"
-            :rules="[requiredValidator]"
           />
         </VCol>
         <VCol cols="12 text-subtitle-1">
@@ -141,6 +139,16 @@ onBeforeMount(async () => {
             single-line
             :rules="[requiredValidator]"
             @update:model-value="student.careerId = student.career.id"
+          />
+        </VCol>
+        <VCol cols="12">
+          <VTextField
+            id="admissionYear"
+            v-model="student.admissionYear"
+            type="number"
+            label="Año de Ingreso"
+            placeholder="Año de Ingres"
+            :rules="[requiredValidator]"
           />
         </VCol>
         <VCol
