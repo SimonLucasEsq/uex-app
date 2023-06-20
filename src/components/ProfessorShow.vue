@@ -1,4 +1,6 @@
 <script setup>
+import { usePerson } from '@/composables/person';
+
 const props = defineProps({
   professor: {
     type: Object,
@@ -48,6 +50,15 @@ const careersText = props.professor.professorCareers.reduce(
             <VListItem>
               <VListItemTitle>
                 <h6 class="text-base font-weight-semibold">
+                  Sexo:
+                  <span class="text-body-2">{{ usePerson().sexEnum[props.professor.person.sex] }}</span>
+                </h6>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem>
+              <VListItemTitle>
+                <h6 class="text-base font-weight-semibold">
                   N° C.I.:
                   <span class="text-body-2">{{ props.professor.person.idCard }}</span>
                 </h6>
@@ -65,7 +76,7 @@ const careersText = props.professor.professorCareers.reduce(
             <VListItem>
               <VListItemTitle>
                 <h6 class="text-base font-weight-semibold">
-                  Email:
+                  Correo Electrónico:
                   <span class="text-body-2">{{ props.professor.person.email }}</span>
                 </h6>
               </VListItemTitle>

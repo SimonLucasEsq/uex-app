@@ -1,10 +1,5 @@
 export default [
   {
-    title: 'Inicio',
-    to: { name: 'index' },
-    icon: { icon: 'tabler-smart-home' },
-  },
-  {
     title: 'Actividades',
     to: { name: 'activities' },
     icon: { icon: 'tabler-files' },
@@ -23,10 +18,6 @@ export default [
     title: 'Organizaciones',
     to: { name: 'organizations' },
     icon: { icon: 'tabler-building' },
-  },
-  {
-    title: 'Reportes',
-    icon: { icon: 'tabler-file-analytics' },
   },
   {
     title: 'Configuraciones',

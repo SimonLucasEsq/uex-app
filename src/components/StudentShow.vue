@@ -1,4 +1,6 @@
 <script setup>
+import { usePerson } from '@/composables/person';
+
 const props = defineProps({
   student: {
     type: Object,
@@ -43,6 +45,15 @@ const props = defineProps({
             <VListItem>
               <VListItemTitle>
                 <h6 class="text-base font-weight-semibold">
+                  Sexo:
+                  <span class="text-body-2">{{ usePerson().sexEnum[props.student.person.sex] }}</span>
+                </h6>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem>
+              <VListItemTitle>
+                <h6 class="text-base font-weight-semibold">
                   N° C.I.:
                   <span class="text-body-2">{{ props.student.person.idCard }}</span>
                 </h6>
@@ -60,7 +71,7 @@ const props = defineProps({
             <VListItem>
               <VListItemTitle>
                 <h6 class="text-base font-weight-semibold">
-                  Email:
+                  Correo Electrónico:
                   <span class="text-body-2">{{ props.student.person.email }}</span>
                 </h6>
               </VListItemTitle>
@@ -97,6 +108,15 @@ const props = defineProps({
                 <h6 class="text-base font-weight-semibold">
                   Carreras:
                   <span class="text-body-2">{{ student.career.name }}</span>
+                </h6>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem>
+              <VListItemTitle>
+                <h6 class="text-base font-weight-semibold">
+                  Año de Ingreso:
+                  <span class="text-body-2">{{ student.admissionYear }}</span>
                 </h6>
               </VListItemTitle>
             </VListItem>

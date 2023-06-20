@@ -11,7 +11,7 @@ import authV2MaskLight from '@images/pages/misc-mask-light.png'
 import { themeConfig } from '@themeConfig'
 import {
 emailValidator,
-requiredValidator,
+requiredValidator
 } from '@validators'
 import { onBeforeMount } from "vue"
 
@@ -40,7 +40,7 @@ function signinSuccessful(response) {
   localStorage.csrf = response.data.csrf
   localStorage.user_id = response.data.user_id
   localStorage.signedIn = true
-  router.push({ name: 'activity-types' })
+  router.push({ name: 'activities' })
 }
 
 function signinFailed(error) {
@@ -56,6 +56,7 @@ function checkSignedIn() {
   }
 }
 </script>
+
 
 <template>
   <VRow

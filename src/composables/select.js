@@ -1,3 +1,5 @@
+import { useArrayUtils } from "./array-utils"
+
 export function useSelect() {
   const defaultTitle = "Todos"
   const defaultValue = ""
@@ -25,5 +27,13 @@ export function useSelect() {
     return [value].concat(records)
   }
 
-  return { sexOptions, includeBlankOption, includeBlankOptionObject }
+  function yearOptions() {
+    let initialYear = 1996
+    const currentDate = new Date() 
+    let currentYear= currentDate.getFullYear()
+    
+    return useArrayUtils().range(initialYear, currentYear)
+  }
+
+  return { sexOptions, includeBlankOption, includeBlankOptionObject, yearOptions }
 }

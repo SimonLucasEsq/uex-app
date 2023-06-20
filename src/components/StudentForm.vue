@@ -8,7 +8,7 @@ import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
-const { sexOptions } = useSelect()
+const { sexOptions, yearOptions } = useSelect()
 const store = useStudentStore()
 const careerStore = useCareerStore()
 const student = computed(() => store.data.record )
@@ -142,12 +142,12 @@ onBeforeMount(async () => {
           />
         </VCol>
         <VCol cols="12">
-          <VTextField
-            id="admissionYear"
+          <VSelect
+            id="admissionYearId"
             v-model="student.admissionYear"
-            type="number"
+            :items="yearOptions()"
             label="Año de Ingreso"
-            placeholder="Año de Ingres"
+            persistent-hint
             :rules="[requiredValidator]"
           />
         </VCol>
