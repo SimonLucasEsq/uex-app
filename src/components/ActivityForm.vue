@@ -91,10 +91,15 @@ async function submit() {
 
   const { valid } = await refForm.value.validate()
   if (valid) {
-    store.api.save().then(() => {
-      if(store.isValid) {
+    store.api.save().then(activity => {
+      if (!store.isValid) return
+
+      if (props.id) {
         router.push({ name: 'activities' })
+      } else {
+        router.push({ name: 'activities-id', params: { id: activity.id } })
       }
+      
     })
   }
 }
