@@ -62,6 +62,10 @@ function showImport() {
   isImportVisible.value = true
 }
 
+function exportData(student) {
+  store.api.exportStudentData(student.id)
+}
+
 // Computing pagination text
 const paginationText = computed(() => {
   const firstIndex = students.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
@@ -162,7 +166,11 @@ const paginationText = computed(() => {
           style="height: 3.75rem;"
         >
           <td>{{ student.person.idCard }}</td>
-          <td>{{ student.person.firstName }} {{ student.person.lastName }}</td>
+          <td>
+            <RouterLink :to="{ name: 'students-show-id', params: { id: student.id }}">
+              {{ student.person.firstName }} {{ student.person.lastName }}
+            </RouterLink>
+          </td>
           <td>{{ student.hours }}</td>
           <td>{{ student.person.email }}</td>
           <td>
@@ -171,7 +179,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
-              :to="{ name: 'students-id', params: { id: student.id }}"
+              :to="{ name: 'students-edit-id', params: { id: student.id }}"
             >
               <VIcon
                 :size="22"
@@ -191,6 +199,16 @@ const paginationText = computed(() => {
               />
               <VMenu activator="parent">
                 <VList>
+                  <VListItem @click="exportData(student)">
+                    <template #prepend>
+                      <VIcon
+                        size="24"
+                        class="me-3"
+                        icon="tabler-download"
+                      />
+                    </template>
+                    <VListItemTitle>Exportar</VListItemTitle>
+                  </VListItem>
                   <VListItem @click="showModal(student)">
                     <template #prepend>
                       <VIcon

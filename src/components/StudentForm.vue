@@ -8,7 +8,7 @@ import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
-const { sexOptions } = useSelect()
+const { sexOptions, yearOptions } = useSelect()
 const store = useStudentStore()
 const careerStore = useCareerStore()
 const student = computed(() => store.data.record )
@@ -111,7 +111,6 @@ onBeforeMount(async () => {
             v-model="student.person.phoneNumber"
             label="Celular"
             placeholder="Celular"
-            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -121,7 +120,6 @@ onBeforeMount(async () => {
             v-model="student.person.address"
             label="Dirección"
             placeholder="Dirección"
-            :rules="[requiredValidator]"
           />
         </VCol>
         <VCol cols="12 text-subtitle-1">
@@ -141,6 +139,16 @@ onBeforeMount(async () => {
             single-line
             :rules="[requiredValidator]"
             @update:model-value="student.careerId = student.career.id"
+          />
+        </VCol>
+        <VCol cols="12">
+          <VSelect
+            id="admissionYearId"
+            v-model="student.admissionYear"
+            :items="yearOptions()"
+            label="Año de Ingreso"
+            persistent-hint
+            :rules="[requiredValidator]"
           />
         </VCol>
         <VCol

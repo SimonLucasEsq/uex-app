@@ -58,6 +58,10 @@ function showModal(professor) {
   professorToDelete.value = professor
 }
 
+function exportData(professor) {
+  store.api.exportProfessorData(professor.id)
+}
+
 function showImport() {
   isImportVisible.value = true
 }
@@ -152,7 +156,11 @@ const paginationText = computed(() => {
           style="height: 3.75rem;"
         >
           <td>{{ professor.person.idCard }}</td>
-          <td>{{ professor.person.firstName }} {{ professor.person.lastName }}</td>
+          <td>
+            <RouterLink :to="{ name: 'professors-show-id', params: { id: professor.id }}">
+              {{ professor.person.firstName }} {{ professor.person.lastName }}
+            </RouterLink>
+          </td>
           <td>{{ professor.hours }}</td>
           <td>{{ professor.person.email }}</td>
           <td>
@@ -161,7 +169,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
-              :to="{ name: 'professors-id', params: { id: professor.id }}"
+              :to="{ name: 'professors-edit-id', params: { id: professor.id }}"
             >
               <VIcon
                 :size="22"
@@ -181,6 +189,16 @@ const paginationText = computed(() => {
               />
               <VMenu activator="parent">
                 <VList>
+                  <VListItem @click="exportData(professor)">
+                    <template #prepend>
+                      <VIcon
+                        size="24"
+                        class="me-3"
+                        icon="tabler-download"
+                      />
+                    </template>
+                    <VListItemTitle>Exportar</VListItemTitle>
+                  </VListItem>
                   <VListItem @click="showModal(professor)">
                     <template #prepend>
                       <VIcon

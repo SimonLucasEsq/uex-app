@@ -2,6 +2,18 @@ import Api from '@/stores/api'
 import { usePersonStore } from "@/stores/person"
 import { defineStore } from "pinia"
 import { computed, reactive } from "vue"
+import { useDownloadFile } from '../composables/download-file'
+
+class StudentApi extends Api {
+  async exportStudentData(id) {
+    return await this.axios.get(`/api/${this.endpoint}/${id}/export_student_data`, { responseType: 'blob' }).then(
+      ({ data, headers }) => {
+        const { downloadFile } = useDownloadFile()
+
+        downloadFile(data, headers['content-disposition'])
+      })
+  }
+}
 
 export const useStudentStore = defineStore('students', () => {
   const associations = {
@@ -43,7 +55,7 @@ export const useStudentStore = defineStore('students', () => {
   const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 })
   const isInvalid = computed(() => { return !isValid.value })
 
-  const api = new Api(data, associations, apiConfig)
+  const api = new StudentApi(data, associations, apiConfig)
 
   function resetRecord() {
     this.data.record = JSON.parse(JSON.stringify(defaultRecord))
