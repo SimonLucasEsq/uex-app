@@ -147,7 +147,11 @@ const paginationText = computed(() => {
           :key="activity.id"
           style="height: 3.75rem;"
         >
-          <td>{{ activity.name }}</td>
+          <td>
+            <RouterLink :to="{ name: 'activities-show-id', params: { id: activity.id }}">
+              {{ activity.name }}
+            </RouterLink>
+          </td>
           <td>{{ activity.activityType.name }}</td>
           <td>{{ `${activity.professor.person.firstName} ${activity.professor.person.lastName}` }}</td>
           <td>{{ activity.startDate }}</td>
@@ -158,7 +162,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
-              :to="{ name: 'activities-id', params: { id: activity.id }}"
+              :to="{ name: 'activities-edit-id', params: { id: activity.id }}"
             >
               <VIcon
                 :size="22"
