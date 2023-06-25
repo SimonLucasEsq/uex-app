@@ -75,7 +75,7 @@ onMounted(async () => {
               prepend-icon="tabler-file-check"
               class="mb-2"
             >
-              Elevaluar
+              Evaluar
             </VBtn>
 
             <VBtn
