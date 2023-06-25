@@ -1,5 +1,4 @@
 <script setup>
-import { useActivityWeekStore } from "@/stores/activity-week";
 import { useActivityWeekParticipantStore } from "@/stores/activity-week-participant";
 import { onBeforeMount } from 'vue';
 
@@ -16,8 +15,6 @@ const participantsByParticipableType = ref({
 })
 
 onBeforeMount(async () => {
-  // Load the current activity week into the record store so that it can be found in the children's components
-  useActivityWeekStore().loadRecordFromStore(props.activityWeekId)
   loadParticipants()
 })
 
@@ -109,7 +106,7 @@ async function loadParticipants() {
                 colspan="8"
                 class="text-center text-body-1"
               >
-                No data available
+                No hay datos disponibles
               </td>
             </tr>
           </tfoot>
@@ -166,13 +163,13 @@ async function loadParticipants() {
             </tr>
           </tbody>
           <!-- 👉 table footer  -->
-          <tfoot v-show="!participantsByParticipableType['student'].length">
+          <tfoot v-show="!participantsByParticipableType['professor'].length">
             <tr>
               <td
                 colspan="8"
                 class="text-center text-body-1"
               >
-                No data available
+                No hay datos disponibles
               </td>
             </tr>
           </tfoot>

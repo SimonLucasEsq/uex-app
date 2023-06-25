@@ -21,36 +21,76 @@ onMounted(async () => {
 </script>
 
 <template>
-  <VCard>
-    <ActivityShow
-      v-if="activity"
-      :activity="activity"
-    />
-
-    <VTabs
-      v-model="tab"
-      class="me-auto"
-    >
-      <VTab
-        v-for="week in activityWeeks.values()"
-        :key="week.id"
-        :value="`activity-week-${week.id}`"
+  <section>
+    <VRow>
+      <VCol
+        cols="12"
+        md="9"
       >
-        {{ format(new Date(week.startDate), 'MM/dd/yyyy') }} - {{ format(new Date(week.endDate), 'MM/dd/yyyy') }}
-      </VTab>
-    </VTabs>
+        <VCard>
+          <ActivityShow
+            v-if="activity"
+            :activity="activity"
+          />
 
-    <VWindow
-      v-model="tab"
-      class="disable-tab-transition"
-    >
-      <VWindowItem
-        v-for="week in activityWeeks.values()"
-        :key="week.id"
-        :value="`activity-week-${week.id}`"
+          <VDivider />
+
+          <VTabs
+            v-model="tab"
+            class="me-auto"
+          >
+            <VTab
+              v-for="week in activityWeeks.values()"
+              :key="week.id"
+              :value="`activity-week-${week.id}`"
+            >
+              {{ format(new Date(week.startDate), 'MM/dd/yyyy') }} - {{ format(new Date(week.endDate), 'MM/dd/yyyy') }}
+            </VTab>
+          </VTabs>
+          <VDivider />
+
+          <VWindow
+            v-model="tab"
+            class="disable-tab-transition"
+          >
+            <VWindowItem
+              v-for="week in activityWeeks.values()"
+              :key="week.id"
+              :value="`activity-week-${week.id}`"
+            >
+              <ActivityWeekParticipantsShow :activity-week-id="week.id" />
+            </VWindowItem>
+          </VWindow>
+        </VCard>
+      </VCol>
+      <VCol
+        cols="12"
+        md="3"
+        class="d-print-none"
       >
-        <ActivityWeekParticipantsShow :activity-week-id="week.id" />
-      </VWindowItem>
-    </VWindow>
-  </VCard>
+        <VCard v-if="activity">
+          <VCardText>
+            <VBtn
+              block
+              prepend-icon="tabler-file-check"
+              class="mb-2"
+            >
+              Elevaluar
+            </VBtn>
+
+            <VBtn
+              block
+              color="secondary"
+              variant="tonal"
+              class="mb-2"
+              prepend-icon="tabler-edit"
+              :to="{ name: 'activities-edit-id', params: { id: activity.id }}"
+            >
+              Editar
+            </VBtn>
+          </VCardText>
+        </VCard>
+      </VCol>
+    </vrow>
+  </section>
 </template>
