@@ -5,7 +5,7 @@ import { useCareerStore } from "@/stores/career"
 import { useProfessorStore } from "@/stores/professor"
 import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
-import ImportProfessor from "../../components/ImportProfessor.vue"
+import ImportCsv from "@/components/ImportCsv.vue"
 
 const store = useProfessorStore()
 const professors = ref([])
@@ -18,6 +18,7 @@ const currentPage = ref(1)
 const isDialogVisible = ref(false)
 const isImportVisible = ref(false)
 const professorToDelete = ref(null)
+const csvImportRoute = '/api/professors/import_csv'
 
 const debounceSearch = debounce(async function() {
   loadProfessors()
@@ -284,8 +285,9 @@ const paginationText = computed(() => {
       @onConfirm="deleteProfessor"
     />
 
-    <ImportProfessor
+    <ImportCsv
       v-model:isDialogVisible="isImportVisible"
+      v-model:csvImportRoute="csvImportRoute"
       @imported="loadProfessors"
     />
   </VCard>

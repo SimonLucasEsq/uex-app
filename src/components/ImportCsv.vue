@@ -8,6 +8,10 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  csvImportRoute: {
+    type: String,
+    required: true,
+  },
 })
 
 const emit = defineEmits([
@@ -16,43 +20,42 @@ const emit = defineEmits([
 ])
 
 const toast = useToast()
-const panel = ref(0)
 
 const updateModelValue = val => {
   emit('update:isDialogVisible', val)
 }
 
-const archivoSeleccionado = ref(null)
-const mensajeError = ref('Ocurrió un error al importar el archivo. Por favor, intente de nuevo.')
+const selectedFile = ref(null)
+const errorMsg = ref('Ocurrió un error al importar el archivo. Por favor, intente de nuevo.')
 
-const seleccionarArchivo = event => {
-  archivoSeleccionado.value = event.target.files[0]
+const selectFile = event => {
+  selectedFile.value = event.target.files[0]
 }
 
-const importarCSV = async () => {
+const importCSV = async () => {
   emit('update:isDialogVisible', false)
-  if (!archivoSeleccionado.value) {
-    mensajeError.value = 'Debe seleccionar un archivo para importar'
+  if (!selectedFile.value) {
+    errorMsg.value = 'Debe seleccionar un archivo para importar'
 
     return
   }
 
   const formData = new FormData()
 
-  formData.append('file', archivoSeleccionado.value)
+  formData.append('file', selectedFile.value)
   try {
-    const response = await axios.post('/api/professors/import_csv', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await axios.post(props.csvImportRoute, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       },
-    },
     )
 
     toast.info(response.data.message)
     emit('imported')
   } catch (error) {
-    archivoSeleccionado.value = null
-    toast.error(mensajeError.value)
+    selectedFile.value = null
+    toast.error(errorMsg.value)
     console.error(error)
   }
 }
@@ -60,7 +63,7 @@ const importarCSV = async () => {
 
 <template>
   <VDialog
-    max-width="900"
+    max-width="700"
     :model-value="props.isDialogVisible"
     @update:model-value="updateModelValue"
   >
@@ -68,7 +71,6 @@ const importarCSV = async () => {
     <VCard>
       <VCardText>
         <VExpansionPanels
-          v-model="panel"
           class="no-icon-rotate"
         >
           <VExpansionPanel>
@@ -107,14 +109,15 @@ const importarCSV = async () => {
       <VCardText>
         <VFileInput
           accept="text/csv"
+          prepend-icon="tabler-file-upload"
           label="Seleccionar Archivo"
-          @change="seleccionarArchivo"
+          @change="selectFile"
         />
       </VCardText>
       <VCardText class="d-flex justify-end gap-3 flex-wrap">
         <VBtn
-          :disabled="!archivoSeleccionado"
-          @click="importarCSV"
+          :disabled="!selectedFile"
+          @click="importCSV"
         >
           Importar CSV
         </VBtn>
@@ -122,8 +125,3 @@ const importarCSV = async () => {
     </VCard>
   </VDialog>
 </template>
-<style type=”text/css”>
-ul {
-  list-style-type: circle;
-}
-</style>
