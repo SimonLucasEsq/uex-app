@@ -2,6 +2,7 @@
 import { securedAxiosInstance as axios } from '@axios'
 import { ref } from 'vue'
 import { useToast } from "vue-toastification"
+import ImportCsvNote from "@/components/ImportCsvNote.vue"
 
 const props = defineProps({
   isDialogVisible: {
@@ -45,10 +46,10 @@ const importCSV = async () => {
   formData.append('file', selectedFile.value)
   try {
     const response = await axios.post(props.csvImportRoute, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
+    },
     )
 
     toast.info(response.data.message)
@@ -70,41 +71,7 @@ const importCSV = async () => {
     <DialogCloseBtn @click="updateModelValue(false)" />
     <VCard>
       <VCardText>
-        <VExpansionPanels
-          class="no-icon-rotate"
-        >
-          <VExpansionPanel>
-            <VExpansionPanelTitle>
-              <VIcon
-                size="18"
-                icon="tabler-alert-triangle"
-                color="warning"
-              />
-              ¡Importante! Para importar datos correctamente, asegúrate de seguir estas pautas:
-
-            </VExpansionPanelTitle>
-            <VExpansionPanelText>
-              <VAlert
-                border="start"
-                border-color="info"
-              >
-                <ul>
-                  <li>Solo se admiten archivos en formato CSV (valores separados por comas).</li>
-                  <li>El archivo debe contener un encabezado con los siguientes campos: first_name,last_name,sex,email,phone_number,id_card,address y career.</li>
-                  <li>Si se importan algunos registros y otros no, es recomendable crear un nuevo archivo para las filas que no fueron importadas.</li>
-                  <li>Asegúrate de que los valores cumplan con los siguientes criterios:
-                    <ul>
-                      <li>El campo 'sex' debe contener los valores 'masculino' o 'femenino'</li>
-                      <li>El campo 'carrer' debe recibir una lista de carreras separadas por comas y entre comillas dobles. Ej: "Ing. Civil, Ing. Infor.".</li>
-                      <li>El campo 'carrer' debe recibir una lista de carreras con el mismo nombre en que fueron registradas en el sistema.</li>
-                    </ul>
-                  </li>
-                </ul>
-                Asegúrate de que tu archivo cumpla con estos requisitos antes de realizar la importación.
-              </VAlert>
-            </VExpansionPanelText>
-          </VExpansionPanel>
-        </VExpansionPanels>
+        <ImportCsvNote></ImportCsvNote>
       </VCardText>
       <VCardText>
         <VFileInput
