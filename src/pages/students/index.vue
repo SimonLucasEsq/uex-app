@@ -1,6 +1,6 @@
 <script setup>
 import ConfirmModal from "@/components/ConfirmModal.vue"
-import ImportStudent from "@/components/ImportStudent.vue"
+import ImportCsv from "@/components/ImportCsv.vue"
 import { useSelect } from "@/composables/select"
 import { useCareerStore } from "@/stores/career"
 import { useStudentStore } from "@/stores/student"
@@ -18,6 +18,7 @@ const currentPage = ref(1)
 const isDialogVisible = ref(false)
 const isImportVisible = ref(false)
 const studentToDelete = ref(null)
+const csvImportRoute = '/api/students/import_csv'
 
 const debounceSearch = debounce(async function() {
   loadStudents()
@@ -283,8 +284,9 @@ const paginationText = computed(() => {
       body="Solo podrá ser eliminado si no se encuentra asociado a ninguna actividad"
       @onConfirm="deleteStudent"
     />
-    <ImportStudent
+    <ImportCsv
       v-model:isDialogVisible="isImportVisible"
+      v-model:csvImportRoute="csvImportRoute"
       @imported="loadStudents"
     />
   </VCard>

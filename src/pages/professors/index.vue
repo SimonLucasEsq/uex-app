@@ -5,7 +5,7 @@ import { useCareerStore } from "@/stores/career"
 import { useProfessorStore } from "@/stores/professor"
 import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
-import ImportProfessor from "../../components/ImportProfessor.vue"
+import ImportCsv from "@/components/ImportCsv.vue"
 
 const store = useProfessorStore()
 const professors = ref([])
@@ -18,6 +18,7 @@ const currentPage = ref(1)
 const isDialogVisible = ref(false)
 const isImportVisible = ref(false)
 const professorToDelete = ref(null)
+const csvImportRoute = '/api/professors/import_csv'
 
 const debounceSearch = debounce(async function() {
   loadProfessors()
@@ -106,17 +107,27 @@ const paginationText = computed(() => {
       </div>
       <VSpacer />
       <div class="me-3">
-        <!-- Create Professor -->
-        <VBtn
-          prepend-icon="tabler-plus"
-          :to="{ name: 'professors-new' }"
-        >
-          Agregar
-        </VBtn>
-        <VBtn
-          prepend-icon="tabler-file-import"
-          @click="showImport"
-        />
+        <VRow>
+          <VCol
+            cols="12"
+            class="d-flex gap-4"
+          >
+            <VBtn
+              prepend-icon="tabler-file-upload"
+              @click="showImport"
+              color="secondary"
+            >
+              Importar
+            </VBtn>
+            <!-- Create Professor -->
+            <VBtn
+              prepend-icon="tabler-plus"
+              :to="{ name: 'professors-new' }"
+            >
+              Agregar
+            </VBtn>
+          </VCol>
+        </VRow>
       </div>
     </VCardText>
     <VTable class="text-no-wrap">
@@ -274,8 +285,10 @@ const paginationText = computed(() => {
       @onConfirm="deleteProfessor"
     />
 
-    <ImportProfessor
+    <ImportCsv
       v-model:isDialogVisible="isImportVisible"
+      v-model:csvImportRoute="csvImportRoute"
+      @imported="loadProfessors"
     />
   </VCard>
 </template>
