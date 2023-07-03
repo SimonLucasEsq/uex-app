@@ -112,7 +112,7 @@ onMounted(async () => {
 
             <VBtn
               block
-              color="secondary"
+              color="secondary" 
               variant="tonal"
               class="mb-2"
               prepend-icon="tabler-edit"
