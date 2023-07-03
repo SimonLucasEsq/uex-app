@@ -97,7 +97,7 @@ async function submit() {
       if (props.id) {
         router.push({ name: 'activities' })
       } else {
-        router.push({ name: 'activities-id', params: { id: activity.id } })
+        router.push({ name: 'activities-edit-id', params: { id: activity.id } })
       }
       
     })
