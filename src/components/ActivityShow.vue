@@ -1,4 +1,5 @@
 <script setup>
+import { useActivityStatus } from '@/composables/activity-status'
 import { useTextUtil } from "@/composables/text-utils";
 
 const props = defineProps({
@@ -9,56 +10,80 @@ const props = defineProps({
 })
 
 const { booleanTranslate } = useTextUtil()
+const { statusLabel, statusColor, prevStatusLabel, getPrevStatus } = useActivityStatus()
 </script>
 
 <template>
-  <VCardText class="d-flex justify-space-between flex-column flex-sm-row print-row pb-0">
-    <!-- 👉 Left Content -->
-    <div class="my-2 mr-sm-4 w-75">
-      <div class="d-flex align-center mb-6">
-        <!-- 👉 Title -->
-        <h6 class="font-weight-bold text-xl">
-          {{ props.activity.name }}
-        </h6>
+  <VCardText>
+    <div class="d-flex justify-space-between flex-column flex-sm-row print-row pb-0">
+      <!-- 👉 Left Content -->
+      <div class="my-2 mr-sm-4 w-75">
+        <div class="d-flex align-center mb-6">
+          <!-- 👉 Title -->
+          <h6 class="font-weight-bold text-xl">
+            {{ props.activity.name }}
+          </h6>
+        </div>
+
+        <!-- 👉 Hours -->
+        <p class="mb-0">
+          <VChip
+            label
+            color="primary"
+          >
+            <VIcon
+              start
+              size="16"
+              icon="tabler-clock"
+            />
+            {{ props.activity.hours }} hs.
+          </VChip>
+        </p>
       </div>
 
-      <!-- 👉 Hours -->
-      <p class="mb-0">
+      <!-- 👉 Right Content -->
+      <div class="my-2 mr-sm-4 w-25">
+        <!-- 👉 Status -->
         <VChip
+          class="mb-1"
+          :color="statusColor(props.activity.status)"
           label
-          color="primary"
         >
-          <VIcon
-            start
-            size="16"
-            icon="tabler-clock"
-          />
-          {{ props.activity.hours }} hs.
+          {{ statusLabel(props.activity.status) }}
         </VChip>
-      </p>
+
+        <!-- 👉 Start Date -->
+        <p class="mb-2">
+          <span>Inicia: </span>
+          <span class="font-weight-semibold">{{ props.activity.startDate }}</span>
+        </p>
+
+        <!-- 👉 End Date -->
+        <p class="mb-2">
+          <span>Finaliza: </span>
+          <span class="font-weight-semibold">{{ props.activity.endDate }}</span>
+        </p>
+      </div>
     </div>
 
-    <!-- 👉 Right Content -->
-    <div class="my-2 mr-sm-4 w-25">
-      <!-- 👉 Status -->
-      <VChip
-        class="mb-1"
-        label
-      >
-        Borrador
-      </VChip>
+    <div class="d-flex flex-row mb-0">
+      <!-- 👉 Evaluation-->
+      <div v-if="props.activity.status !== 'draft'" class="mr-4">
+        <span>Valoración obtenida: </span>
+        <span class="font-weight-semibold">{{ props.activity.evaluation }}</span>
+      </div>
 
-      <!-- 👉 Start Date -->
-      <p class="mb-2">
-        <span>Inicia: </span>
-        <span class="font-weight-semibold">{{ props.activity.startDate }}</span>
-      </p>
+      <!-- 👉 Approved Date -->
+      <div v-if="props.activity.status === 'approved'" class="mr-4">
+        <span>Fecha de aprobación: </span>
+        <span class="font-weight-semibold">{{ props.activity.approvedAt }}</span>
+      </div>
 
-      <!-- 👉 End Date -->
-      <p class="mb-2">
-        <span>Finaliza: </span>
-        <span class="font-weight-semibold">{{ props.activity.endDate }}</span>
-      </p>
+      <!-- 👉 Resolution Number -->
+      <div v-if="props.activity.status === 'approved'" class="mr-4">
+        <span>Nº de Resolución: </span>
+        <span class="font-weight-semibold">{{ props.activity.resolutionNumber }}</span>
+      </div>
     </div>
   </VCardText>
 
