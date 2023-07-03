@@ -3,6 +3,25 @@ import { defineStore } from "pinia"
 import { computed, reactive } from "vue"
 import { useProfessorStore } from './professor'
 
+class ActivityApi extends Api {
+  async updateStatus(id, params) {
+    return await this.axios.put(`/api/${this.endpoint}/${id}/update_status`, this.toSnakeCase(params))
+    .then(response => {
+      this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {} }
+      this.data.recordList.records.set(this.data.record.id, this.data.record)
+
+      return this.data.record
+    }).catch(error => {
+      let errors = error.response.data?.["errors"]
+      if (errors) {
+        this.data.record.errors = errors
+      }
+
+      console.log(`Fallo al actualizar ${this.recordKey}`)
+    })
+  }
+}
+
 export const useActivityStore = defineStore('activities', () => {
   const associations = {
     belognsTo: new Map(
@@ -66,7 +85,7 @@ export const useActivityStore = defineStore('activities', () => {
 
 
 
-  const api = new Api(data, associations, apiConfig)
+  const api = new ActivityApi(data, associations, apiConfig)
 
   const totalBeneficiaries = computed(() => {
     let numberOfMen = parseInt(data.record.beneficiaryDetail.numberOfMen)
