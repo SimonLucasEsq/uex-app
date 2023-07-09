@@ -1,6 +1,6 @@
 <script setup>
 import { useActivityStatus } from '@/composables/activity-status'
-import { useTextUtil } from "@/composables/text-utils";
+import { useTextUtil } from "@/composables/text-utils"
 
 const props = defineProps({
   activity: {
@@ -11,6 +11,7 @@ const props = defineProps({
 
 const { booleanTranslate } = useTextUtil()
 const { statusLabel, statusColor, prevStatusLabel, getPrevStatus } = useActivityStatus()
+const { formatRecordsByAttribute } = useTextUtil()
 </script>
 
 <template>
@@ -67,20 +68,29 @@ const { statusLabel, statusColor, prevStatusLabel, getPrevStatus } = useActivity
     </div>
 
     <div class="d-flex flex-row mb-0">
-      <!-- 👉 Evaluation-->
-      <div v-if="props.activity.status !== 'draft'" class="mr-4">
+      <!-- 👉 Evaluation -->
+      <div
+        v-if="props.activity.status !== 'draft'"
+        class="mr-4"
+      >
         <span>Valoración obtenida: </span>
         <span class="font-weight-semibold">{{ props.activity.evaluation }}</span>
       </div>
 
       <!-- 👉 Approved Date -->
-      <div v-if="props.activity.status === 'approved'" class="mr-4">
+      <div
+        v-if="props.activity.status === 'approved'"
+        class="mr-4"
+      >
         <span>Fecha de aprobación: </span>
         <span class="font-weight-semibold">{{ props.activity.approvedAt }}</span>
       </div>
 
       <!-- 👉 Resolution Number -->
-      <div v-if="props.activity.status === 'approved'" class="mr-4">
+      <div
+        v-if="props.activity.status === 'approved'"
+        class="mr-4"
+      >
         <span>Nº de Resolución: </span>
         <span class="font-weight-semibold">{{ props.activity.resolutionNumber }}</span>
       </div>
@@ -96,9 +106,19 @@ const { statusLabel, statusColor, prevStatusLabel, getPrevStatus } = useActivity
         <div class="font-weight-bold">
           Tipo de Actividad:
         </div>
-        <p class="description">
-          {{ props.activity.activityType.name }}
-        </p>
+        <VCol
+          cols="12"
+          md="9"
+        >
+          <ul>
+            <li
+              v-for="item in activity.activitySubTypes"
+              :key="item.name"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+        </VCol>
       </div>
       <div class="container">
         <div class="font-weight-bold">
@@ -152,9 +172,7 @@ const { statusLabel, statusColor, prevStatusLabel, getPrevStatus } = useActivity
         <div class="font-weight-bold">
           Objetivos:
         </div>
-        <p class="description">
-          {{ props.activity.activityType.name }}
-        </p>
+        <p class="description" />
       </div>
     </div>
 

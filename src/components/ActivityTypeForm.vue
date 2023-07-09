@@ -1,8 +1,9 @@
 <script setup>
-import { useActivityTypeStore } from "@/stores/activity-type";
-import { requiredValidator } from '@validators';
-import { computed, onMounted } from 'vue';
-import router from "../router";
+import ActivitySubTypeListForm from "@/components/ActivitySubTypeListForm.vue"
+import { useActivityTypeStore } from "@/stores/activity-type"
+import { requiredValidator } from '@validators'
+import { computed, onMounted } from 'vue'
+import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
@@ -34,27 +35,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <VAlert
-    v-if="store.isInvalid"
-    color="error"
-  >
-    Ops! Error al crear el tipo de Actividad
-    <div v-if="activityType.errors.name">
-      Nombre
-      <VList :items="activityType.errors.name" />
-    </div>
-    <div v-if="activityType.errors.description">
-      Descripción
-      <VList :items="activityType.errors.description" />
-    </div>
-  </VAlert>
-
   <VCardText class="d-flex align-center flex-wrap gap-4">
     <VForm
       ref="refForm"
       @submit.prevent="() => {}"
     >
       <VRow>
+        <VCol cols="12 text-subtitle-1">
+          Tipo de Actividad de Extensión Universitaria
+        </VCol>
+
         <VCol cols="12">
           <VTextField
             id="name"
@@ -74,6 +64,14 @@ onMounted(async () => {
             :rules="[requiredValidator]"
           />
         </VCol>
+
+        <VCol cols="12 text-subtitle-1">
+          Subtipos de actividades
+        </VCol>
+
+        <ActivitySubTypeListForm
+          :activity-sub-types="activityType.activitySubTypes"
+        />
 
         <VCol
           cols="12"

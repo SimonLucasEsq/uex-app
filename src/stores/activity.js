@@ -6,19 +6,19 @@ import { useProfessorStore } from './professor'
 class ActivityApi extends Api {
   async updateStatus(id, params) {
     return await this.axios.put(`/api/${this.endpoint}/${id}/update_status`, this.toSnakeCase(params))
-    .then(response => {
-      this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {} }
-      this.data.recordList.records.set(this.data.record.id, this.data.record)
+      .then(response => {
+        this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {} }
+        this.data.recordList.records.set(this.data.record.id, this.data.record)
 
-      return this.data.record
-    }).catch(error => {
-      let errors = error.response.data?.["errors"]
-      if (errors) {
-        this.data.record.errors = errors
-      }
+        return this.data.record
+      }).catch(error => {
+        let errors = error.response.data?.["errors"]
+        if (errors) {
+          this.data.record.errors = errors
+        }
 
-      console.log(`Fallo al actualizar ${this.recordKey}`)
-    })
+        console.log(`Fallo al actualizar ${this.recordKey}`)
+      })
   }
 }
 
@@ -35,7 +35,7 @@ export const useActivityStore = defineStore('activities', () => {
     hasMany: new Map(
       [
         ["activityCareers", null],
-        ["activityTypes", null],
+        ["activitiesActivitySubTypes", null],
         ["activityWeeks", null],
       ],
     ),
@@ -62,6 +62,7 @@ export const useActivityStore = defineStore('activities', () => {
       numberOfWomen: 0,
     },
     activityCareers: [],
+    activitiesActivitySubTypes: [],
     errors: {},
   }
 
