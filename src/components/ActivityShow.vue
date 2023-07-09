@@ -106,19 +106,15 @@ const { formatRecordsByAttribute } = useTextUtil()
         <div class="font-weight-bold">
           Tipo de Actividad:
         </div>
-        <VCol
-          cols="12"
-          md="9"
-        >
-          <ul>
-            <li
-              v-for="item in activity.activitySubTypes"
-              :key="item.name"
-            >
-              {{ item.name }}
-            </li>
-          </ul>
-        </VCol>
+
+        <ul>
+          <li
+            v-for="item in activity.activitySubTypes"
+            :key="item.name"
+          >
+            {{ item.name }}
+          </li>
+        </ul>
       </div>
       <div class="container">
         <div class="font-weight-bold">
