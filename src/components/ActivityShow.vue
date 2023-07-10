@@ -1,5 +1,5 @@
 <script setup>
-import { useActivityStatus } from '@/composables/activity-status'
+import { useActivityStatus } from '@/composables/activity-status';
 import { useTextUtil } from "@/composables/text-utils";
 
 const props = defineProps({
@@ -67,20 +67,29 @@ const { statusLabel, statusColor, prevStatusLabel, getPrevStatus } = useActivity
     </div>
 
     <div class="d-flex flex-row mb-0">
-      <!-- 👉 Evaluation-->
-      <div v-if="props.activity.status !== 'draft'" class="mr-4">
+      <!-- 👉 Evaluation -->
+      <div
+        v-if="props.activity.status !== 'draft'"
+        class="mr-4"
+      >
         <span>Valoración obtenida: </span>
         <span class="font-weight-semibold">{{ props.activity.evaluation }}</span>
       </div>
 
       <!-- 👉 Approved Date -->
-      <div v-if="props.activity.status === 'approved'" class="mr-4">
+      <div
+        v-if="props.activity.status === 'approved'"
+        class="mr-4"
+      >
         <span>Fecha de aprobación: </span>
         <span class="font-weight-semibold">{{ props.activity.approvedAt }}</span>
       </div>
 
       <!-- 👉 Resolution Number -->
-      <div v-if="props.activity.status === 'approved'" class="mr-4">
+      <div
+        v-if="props.activity.status === 'approved'"
+        class="mr-4"
+      >
         <span>Nº de Resolución: </span>
         <span class="font-weight-semibold">{{ props.activity.resolutionNumber }}</span>
       </div>
@@ -131,7 +140,7 @@ const { statusLabel, statusColor, prevStatusLabel, getPrevStatus } = useActivity
         <p class="description">
           {{ booleanTranslate(props.activity.institutionalProgram) }}
         </p>
-      </div> 
+      </div>
       <div class="container">
         <div class="font-weight-bold">
           Linea de Extensión Institucional:
@@ -153,7 +162,7 @@ const { statusLabel, statusColor, prevStatusLabel, getPrevStatus } = useActivity
           Objetivos:
         </div>
         <p class="description">
-          {{ props.activity.activityType.name }}
+          {{ props.activity.objective }}
         </p>
       </div>
     </div>

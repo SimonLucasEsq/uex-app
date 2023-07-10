@@ -27,7 +27,7 @@ const fullName = computed(() => {
   return item => `${item.person?.firstName} ${item.person?.lastName}`
 })
 
-const searchProfessors = debounce(async function(search) { 
+const searchProfessors = debounce(async function(search) {
   if (!search) {
     return []
   }
@@ -37,7 +37,7 @@ const searchProfessors = debounce(async function(search) {
   })
 }, 500)
 
-const searchOrganizations = debounce(async function(search) { 
+const searchOrganizations = debounce(async function(search) {
   if (!search) {
     return []
   }
@@ -99,7 +99,7 @@ async function submit() {
       } else {
         router.push({ name: 'activities-edit-id', params: { id: activity.id } })
       }
-      
+
     })
   }
 }
@@ -313,10 +313,18 @@ function onCancel(){
           <VTextField
             id="hours"
             v-model="activity.hours"
-            label="Crédito academico o Horas de extensón"
+            label="Crédito académico o Horas de extensón"
             placeholder="Crédito académico o Horas de extensón"
             type="number"
             :rules="[requiredValidator]"
+          />
+        </VCol>
+        <VCol cols="12">
+          <VTextarea
+            id="objective"
+            v-model="activity.objective"
+            label="Objetivos"
+            placeholder="Objetivos"
           />
         </VCol>
 

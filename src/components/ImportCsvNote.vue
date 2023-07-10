@@ -23,11 +23,11 @@ const alertBody = [
     level: 2,
   },
   {
-    title: 'El campo \'carrer\' debe recibir una lista de carreras separadas por comas y entre comillas dobles cuando se está importando Profesores. Ej: "Ing. Civil, Ing. Infor.". Para estudiantes sólo se admite una carrera y no es necesario que esté entre comillas',
+    title: 'El campo \'career\' debe recibir una lista de carreras separadas por comas y entre comillas dobles cuando se está importando Profesores. Ej: "Ing. Civil, Ing. Infor.". Para estudiantes sólo se admite una carrera y no es necesario que esté entre comillas',
     level: 2,
   },
   {
-    title: 'El campo \'carrer\' debe recibir la carrera o la lista de carreras con el mismo nombre en que fueron registradas en el sistema.',
+    title: 'El campo \'career\' debe recibir la carrera o la lista de carreras con el mismo nombre en que fueron registradas en el sistema.',
     level: 2,
   },
   {
@@ -40,17 +40,24 @@ const alertBody = [
 <template>
   <VExpansionPanels>
     <VExpansionPanel elevation="1">
-      <VAlert prominent
-              border="start"
-              border-color="primary"
-              icon="tabler-alert-circle"
+      <VAlert
+        prominent
+        border="start"
+        border-color="primary"
+        icon="tabler-alert-circle"
       >
         <VExpansionPanelTitle>
           {{ alertTitle }}
         </VExpansionPanelTitle>
       </VAlert>
-      <VExpansionPanelText color="primary" border="start">
-        <VList v-bind:key="item" v-for="item in alertBody">
+      <VExpansionPanelText
+        color="primary"
+        border="start"
+      >
+        <VList
+          v-for="item in alertBody"
+          :key="item"
+        >
           <VListItemTitle :style="[item.level==2 ? 'margin-left: 2em;' : '']">
             <VIcon>{{ item.level==1 ? 'tabler-point-filled' : 'tabler-point' }}</VIcon>
             {{ item.title }}
