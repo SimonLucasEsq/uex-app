@@ -326,7 +326,7 @@ const paginationText = computed(() => {
 </template>
 
 
-</style lang="scss">
+<style lang="scss">
 #activity-list {
   .filter {
     inline-size: 15rem;
