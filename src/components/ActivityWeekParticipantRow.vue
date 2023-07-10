@@ -1,7 +1,8 @@
 <script setup>
-import { useProfessorStore } from "@/stores/professor";
-import { useStudentStore } from "@/stores/student";
-import { debounce } from 'vue-debounce';
+import { useProfessorStore } from "@/stores/professor"
+import { useActivitySubTypeStore } from "@/stores/activity-sub-type"
+import { useStudentStore } from "@/stores/student"
+import { debounce } from 'vue-debounce'
 
 const props = defineProps({
   participant: {
@@ -29,7 +30,8 @@ const availableParticipableStores = {
 const participant = ref(props.participant)
 const participableType = participant.value.participableType?.toLowerCase()
 const participableStore = availableParticipableStores[participableType]
-const searchResults = ref([])
+const professors = ref([])
+const activitySubTypes = ref([])
 
 const participantCareers = computed(() => {
   if (participableType === "student") {
@@ -39,13 +41,15 @@ const participantCareers = computed(() => {
   }
 })
 
-const debounceSearch = debounce(async function(search) { 
-  if (!search) {
-    return []
-  }
-
+const professorSearch = debounce(async function(search) { 
   participableStore.api.query({ search: search }).then(records => {
-    searchResults.value = Array.from(records.values())
+    professors.value = Array.from(records.values())
+  })
+}, 500)
+
+const activitySubTypeSearch = debounce(async function(search) { 
+  useActivitySubTypeStore().api.query({ search: search }).then(records => {
+    activitySubTypes.value = Array.from(records.values())
   })
 }, 500)
 
@@ -83,16 +87,28 @@ const fullName = computed(() => {
       v-model="participant.participable"
       :item-title="fullName"
       item-value="id"
-      :items="searchResults"
+      :items="professors"
       :label="selectTitleHash[participableType]"
       return-object
       @update:model-value="participant.participableId = participant.participable.id"
-      @update:search="debounceSearch($event)"
+      @update:search="professorSearch($event)"
     />
   </td>
   <td>{{ participantCareers }}</td>
   <td>{{ participant.participable?.person?.email }}</td>
   <td>{{ participant.participable?.person?.phoneNumber }}</td>
+  <td class="pl-1">
+    <VAutocomplete
+      v-model="participant.activitySubType"
+      item-title="name"
+      item-value="id"
+      :items="activitySubTypes"
+      label="Tipo de Actividad"
+      return-object
+      @update:model-value="participant.activitySubTypeId = participant.activitySubType.id"
+      @update:search="activitySubTypeSearch($event)"
+    />
+  </td>
   <td>
     <VTextField
       v-model="participant.hours"

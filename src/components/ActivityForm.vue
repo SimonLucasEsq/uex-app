@@ -1,6 +1,6 @@
 <script setup>
 import { useActivityStore } from "@/stores/activity"
-import { useActivityTypeStore } from "@/stores/activity-type"
+import { useActivitySubTypeStore } from "@/stores/activity-sub-type"
 import { useCareerStore } from "@/stores/career"
 import { useOrganizationStore } from "@/stores/organization"
 import { useProfessorStore } from "@/stores/professor"
@@ -15,34 +15,33 @@ const store = useActivityStore()
 const activity = computed(() => store.data.record)
 const professorStore = useProfessorStore()
 const professors = ref([])
-const activityTypeStore = useActivityTypeStore()
-const activityTypes = computed(() => activityTypeStore.data.recordList.records)
+const activitySubTypeStore = useActivitySubTypeStore()
+const activitySubTypes = ref([])
 const organizationStore = useOrganizationStore()
 const organizations = ref([])
 const careerStore = useCareerStore()
 const careers = ref([])
 const selectedCarreerIds = ref([])
+const selectedActivitySubTypeIds = ref([])
 
 const fullName = computed(() => {
   return item => `${item.person?.firstName} ${item.person?.lastName}`
 })
 
-const searchProfessors = debounce(async function(search) {
-  if (!search) {
-    return []
-  }
+const searchActivitySubTypes = debounce(async function(search) { 
+  await activitySubTypeStore.api.query({ search: search }).then(records => {
+    activitySubTypes.value = Array.from(records.values())
+  })
+}, 500)
 
-  professorStore.api.query({ search: search }).then(records => {
+const searchProfessors = debounce(async function(search) { 
+  await professorStore.api.query({ search: search }).then(records => {
     professors.value = Array.from(records.values())
   })
 }, 500)
 
-const searchOrganizations = debounce(async function(search) {
-  if (!search) {
-    return []
-  }
-
-  organizationStore.api.query({ search: search }).then(records => {
+const searchOrganizations = debounce(async function(search) { 
+  await organizationStore.api.query({ search: search }).then(records => {
     organizations.value = Array.from(records.values())
   })
 }, 500)
@@ -51,6 +50,7 @@ onMounted(async () => {
   if(props.id) {
     await store.api.find(props.id)
     selectedCarreerIds.value = activity.value.activityCareers.map(association=> { return association.careerId })
+    selectedActivitySubTypeIds.value = activity.value.activitiesActivitySubTypes.map(association=> { return association.activitySubTypeId })
   } else {
     store.resetRecord()
   }
@@ -60,21 +60,17 @@ onMounted(async () => {
       return { careerName: record.name, careerId: record.id }
     })
   })
-  await activityTypeStore.api.query({})
-  await professorStore.api.query({})
-  await organizationStore.api.query({})
+  activitySubTypes.value = await activitySubTypeStore.api.query({})
+  professors.value = await professorStore.api.query({})
+  organizations.value = await organizationStore.api.query({})
 })
 
 function processSelectedCareersIds() {
   let persistedCareers = activity.value.activityCareers
-  if (selectedCarreerIds.value.length === 0 && persistedCareers.length === 0) {
-    return
-  }
+  if (selectedCarreerIds.value.length === 0 && persistedCareers.length === 0) return
 
   persistedCareers.forEach(item => {
-    if (selectedCarreerIds.value.includes(item.careerId)) {
-      return
-    }
+    if (selectedCarreerIds.value.includes(item.careerId)) return
 
     item["_destroy"] = true
   })
@@ -86,8 +82,26 @@ function processSelectedCareersIds() {
   })
 }
 
+function processSelectedActivitySubTypeIds() {
+  let persistedActivitySubTypes = activity.value.activitiesActivitySubTypes
+  if (selectedActivitySubTypeIds.value.length === 0 && persistedActivitySubTypes.length === 0) return
+
+  persistedActivitySubTypes.forEach(item => {
+    if (selectedActivitySubTypeIds.value.includes(item.activitySubTypeId)) return
+
+    item["_destroy"] = true
+  })
+
+  selectedActivitySubTypeIds.value.forEach(id => {
+    if (!persistedActivitySubTypes.some(item => item.activitySubTypeId === id)) {
+      persistedActivitySubTypes.push({ activitySubTypeId: id })
+    }
+  })
+}
+
 async function submit() {
   processSelectedCareersIds()
+  processSelectedActivitySubTypeIds()
 
   const { valid } = await refForm.value.validate()
   if (valid) {
@@ -99,7 +113,6 @@ async function submit() {
       } else {
         router.push({ name: 'activities-edit-id', params: { id: activity.id } })
       }
-
     })
   }
 }
@@ -131,19 +144,6 @@ function onCancel(){
         </VCol>
 
         <VCol cols="12">
-          <VSelect
-            id="activity_type_id"
-            v-model="activity.activityType"
-            :items="Array.from(activityTypes.values())"
-            item-title="name"
-            item-value="id"
-            label="Tipo de Actividad"
-            return-object
-            :rules="[requiredValidator]"
-            @update:model-value="activity.activityTypeId = activity.activityType.id"
-          />
-        </VCol>
-        <VCol cols="12">
           <VAutocomplete
             id="professor_id"
             v-model="activity.professor"
@@ -155,6 +155,21 @@ function onCancel(){
             :rules="[requiredValidator]"
             @update:model-value="activity.professorId = activity.professor.id"
             @update:search="searchProfessors($event)"
+          />
+        </VCol>
+        <VCol cols="12">
+          <VAutocomplete
+            v-model="selectedActivitySubTypeIds"
+            :items="Array.from(activitySubTypes.values())"
+            closable-chips
+            item-title="name"
+            item-value="id"
+            label="Tipos de Actividades"
+            multiple
+            chips
+            filled
+            :rules="[requiredValidator]"
+            @update:search="searchActivitySubTypes($event)"
           />
         </VCol>
         <VCol cols="12">

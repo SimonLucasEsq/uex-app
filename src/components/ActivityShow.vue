@@ -1,6 +1,6 @@
 <script setup>
-import { useActivityStatus } from '@/composables/activity-status';
-import { useTextUtil } from "@/composables/text-utils";
+import { useActivityStatus } from '@/composables/activity-status'
+import { useTextUtil } from "@/composables/text-utils"
 
 const props = defineProps({
   activity: {
@@ -11,6 +11,7 @@ const props = defineProps({
 
 const { booleanTranslate } = useTextUtil()
 const { statusLabel, statusColor, prevStatusLabel, getPrevStatus } = useActivityStatus()
+const { formatRecordsByAttribute } = useTextUtil()
 </script>
 
 <template>
@@ -105,9 +106,15 @@ const { statusLabel, statusColor, prevStatusLabel, getPrevStatus } = useActivity
         <div class="font-weight-bold">
           Tipo de Actividad:
         </div>
-        <p class="description">
-          {{ props.activity.activityType.name }}
-        </p>
+
+        <ul>
+          <li
+            v-for="item in activity.activitySubTypes"
+            :key="item.name"
+          >
+            {{ item.name }}
+          </li>
+        </ul>
       </div>
       <div class="container">
         <div class="font-weight-bold">

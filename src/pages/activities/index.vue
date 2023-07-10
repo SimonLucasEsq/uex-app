@@ -6,6 +6,7 @@ import { useActivityStore } from "@/stores/activity"
 import { useCareerStore } from "@/stores/career"
 import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
+import { useTextUtil } from "@/composables/text-utils"
 
 const store = useActivityStore()
 const activities = ref([])
@@ -18,6 +19,7 @@ const currentPage = ref(1)
 const isDialogVisible = ref(false)
 const activityToDelete = ref(null)
 const isProjectReportVisible = ref(false)
+const { formatRecordsByAttribute } = useTextUtil()
 
 const items = [
   {
@@ -157,7 +159,7 @@ const paginationText = computed(() => {
         </VBtn>
       </div>
     </VCardText>
-    <VTable class="text-no-wrap">
+    <VTable>
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
@@ -165,7 +167,7 @@ const paginationText = computed(() => {
             Actividad
           </th>
 
-          <th scope="col">
+          <th>
             Tipo de Actividad
           </th>
 
@@ -199,15 +201,24 @@ const paginationText = computed(() => {
           :key="activity.id"
           style="height: 3.75rem;"
         >
-          <td>
+          <td class="w-25">
             <RouterLink :to="{ name: 'activities-show-id', params: { id: activity.id }}">
               {{ activity.name }}
             </RouterLink>
           </td>
-          <td>{{ activity.activityType.name }}</td>
+          <td class="w-25">
+            <VListItem
+              v-for="item in activity.activitySubTypes"
+              :key="item.name"
+              :title="item.name"
+              class="pa-0"
+            />
+          </td>
           <td>{{ `${activity.professor.person.firstName} ${activity.professor.person.lastName}` }}</td>
           <td>{{ activity.startDate }}</td>
-          <td>{{ activity.hours }}</td>
+          <td>
+            {{ activity.hours }}
+          </td>
           <td>
             <VBtn
               icon
@@ -315,7 +326,7 @@ const paginationText = computed(() => {
 </template>
 
 
-<style lang="scss">
+</style lang="scss">
 #activity-list {
   .filter {
     inline-size: 15rem;

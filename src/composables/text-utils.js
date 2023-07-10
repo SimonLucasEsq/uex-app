@@ -3,5 +3,12 @@ export function useTextUtil() {
     return boolean ? "Sí" : "No"
   }
 
-  return { booleanTranslate }
+  function formatRecordsByAttribute(records, key) {
+    return records.reduce(
+      (acumulator, currentItem) => {
+        return !acumulator ? currentItem[key] : `${acumulator}, ${currentItem[key]}`
+      }, '')
+  }
+
+  return { booleanTranslate, formatRecordsByAttribute }
 }

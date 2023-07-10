@@ -35,7 +35,7 @@ export const useActivityStore = defineStore('activities', () => {
     hasMany: new Map(
       [
         ["activityCareers", null],
-        ["activityTypes", null],
+        ["activitiesActivitySubTypes", null],
         ["activityWeeks", null],
       ],
     ),
@@ -63,6 +63,7 @@ export const useActivityStore = defineStore('activities', () => {
       numberOfWomen: 0,
     },
     activityCareers: [],
+    activitiesActivitySubTypes: [],
     errors: {},
   }
 

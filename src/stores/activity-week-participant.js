@@ -8,7 +8,8 @@ export const useActivityWeekParticipantStore = defineStore('activityWeekParticip
     belognsTo: new Map(
       [
         ["participable", useProfessorStore()],
-        ["ActivityWeek", null],
+        ["activityWeek", null],
+        ["activitySubType", null],
       ],
     ),
   }

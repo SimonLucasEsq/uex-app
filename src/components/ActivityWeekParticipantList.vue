@@ -1,8 +1,8 @@
 <script setup>
-import { useActivityWeekStore } from "@/stores/activity-week";
-import { useActivityWeekParticipantStore } from "@/stores/activity-week-participant";
-import { computed } from "vue";
-import ActivityWeekParticipantRow from "./ActivityWeekParticipantRow.vue";
+import { useActivityWeekStore } from "@/stores/activity-week"
+import { useActivityWeekParticipantStore } from "@/stores/activity-week-participant"
+import { computed } from "vue"
+import ActivityWeekParticipantRow from "./ActivityWeekParticipantRow.vue"
 
 const props = defineProps({
   activityWeekId: {
@@ -125,6 +125,12 @@ function save() {
             scope="col"
           >
             Celular
+          </th>
+
+          <th
+            scope="col"
+          >
+            Tipo de Actividad
           </th>
 
           <th
