@@ -3,12 +3,19 @@ import { defineStore } from "pinia"
 import { computed, reactive } from "vue"
 
 export const useActivityTypeStore = defineStore('activityTypes', () => {
-  const associations = {}
+  const associations = {
+    hasMany: new Map(
+      [
+        ["activitySubTypes", null],
+      ],
+    ),
+  }
 
   const defaultRecord = {
     id: null,
     name: null,
     description: null,
+    activitySubTypes: [],
     errors: {},
   }
 

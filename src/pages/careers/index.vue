@@ -1,8 +1,8 @@
 <script setup>
-import ConfirmModal from "@/components/ConfirmModal.vue";
-import { useCareerStore } from "@/stores/career";
-import { computed, onMounted } from "vue";
-import { debounce } from 'vue-debounce';
+import ConfirmModal from "@/components/ConfirmModal.vue"
+import { useCareerStore } from "@/stores/career"
+import { computed, onMounted } from "vue"
+import { debounce } from 'vue-debounce'
 
 const store = useCareerStore()
 const careers = ref([])

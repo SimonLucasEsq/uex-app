@@ -1,8 +1,8 @@
 <script setup>
-import ConfirmModal from "@/components/ConfirmModal.vue";
-import { useActivityTypeStore } from "@/stores/activity-type";
-import { computed, onMounted } from "vue";
-import { debounce } from 'vue-debounce';
+import ConfirmModal from "@/components/ConfirmModal.vue"
+import { useActivityTypeStore } from "@/stores/activity-type"
+import { computed, onMounted } from "vue"
+import { debounce } from 'vue-debounce'
 
 const store = useActivityTypeStore()
 const activityTypes = ref([])
@@ -81,11 +81,13 @@ const paginationText = computed(() => {
         </VBtn>
       </div>
     </VCardText>
-    <VTable class="text-no-wrap">
+    <VTable class="text-wrap ">
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-          <th scope="col">
+          <th
+            scope="col"
+          >
             Nombre
           </th>
 
@@ -95,7 +97,9 @@ const paginationText = computed(() => {
             Descripción
           </th>
 
-          <th scope="col">
+          <th
+            scope="col"
+          >
             Acciones
           </th>
         </tr>
@@ -219,5 +223,4 @@ const paginationText = computed(() => {
     inline-size: 15rem;
   }
 }
-
 </style>
