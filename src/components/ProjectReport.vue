@@ -1,4 +1,6 @@
 <script setup>
+import { requiredValidator } from '@validators'
+
 const props = defineProps({
   isProjectReportVisible: {
     type: Boolean,
@@ -20,6 +22,7 @@ const updateModelValue = val => {
 <template>
   <VDialog
     :model-value="props.isProjectReportVisible"
+    persistent
     class="v-dialog-sm"
   >
     <!-- Dialog close btn -->
@@ -27,13 +30,16 @@ const updateModelValue = val => {
 
     <!-- Dialog Content -->
     <VCard title="Reporte de Listado de Proyectos">
-      <VCardText class="pb-0" />
-      <VCardText class="d-flex justify-end gap-3 flex-wrap">
+      <VForm
+        ref="refForm"
+        @submit.prevent="() => {}"
+      >
         <VCol cols="12">
           <AppDateTimePicker
             v-model="approvedAt"
             label="Fecha de aprobación"
             placeholder="Fecha de aprobación"
+            :rules="[requiredValidator]"
           />
         </VCol>
         <VCol cols="12">
@@ -41,24 +47,25 @@ const updateModelValue = val => {
             v-model="endDate"
             label="Fecha de culminación según cronograma"
             placeholder="Fecha de culminación según cronograma"
+            :rules="[requiredValidator]"
           />
         </VCol>
-      </VCardText>
-      <VCardText class="d-flex justify-end flex-wrap gap-3">
-        <VBtn
-          type="submit"
-          @click="updateModelValue(false)"
-        >
-          Generar Reporte
-        </VBtn>
-        <VBtn
-          variant="tonal"
-          color="secondary"
-          @click="updateModelValue(false)"
-        >
-          Cancelar
-        </VBtn>
-      </VCardText>
+        <VCardText class="d-flex justify-end flex-wrap gap-3">
+          <VBtn
+            type="submit"
+            @click="updateModelValue(false)"
+          >
+            Generar Reporte
+          </VBtn>
+          <VBtn
+            variant="tonal"
+            color="secondary"
+            @click="updateModelValue(false)"
+          >
+            Cancelar
+          </VBtn>
+        </VCardText>
+      </VForm>
     </VCard>
   </VDialog>
 </template>

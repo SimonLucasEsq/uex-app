@@ -1,7 +1,7 @@
 <script setup>
-import { useActivityWeekStore } from "@/stores/activity-week";
-import { requiredValidator } from '@validators';
-import { computed, onBeforeMount } from 'vue';
+import { useActivityWeekStore } from "@/stores/activity-week"
+import { requiredValidator } from '@validators'
+import { computed, onBeforeMount } from 'vue'
 
 const props = defineProps({
   id: {
