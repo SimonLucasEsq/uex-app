@@ -4,7 +4,6 @@ import ActivityWeekForm from "@/components/ActivityWeekForm.vue"
 import ActivityWeekParticipants from "@/components/ActivityWeekParticipants.vue"
 import ConfirmModal from "@/components/ConfirmModal.vue"
 import { useActivityWeekStore } from "@/stores/activity-week"
-import { format } from 'date-fns'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -66,7 +65,7 @@ onBeforeMount(async () => {
           :key="week.id"
           :value="`activity-week-${week.id}`"
         >
-          {{ format(new Date(week.startDate), 'MM/dd/yyyy') }} - {{ format(new Date(week.endDate), 'MM/dd/yyyy') }}
+          {{ week.startDate }} - {{ week.endDate }}
           <VBtn
             icon
             variant="text"

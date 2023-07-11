@@ -1,12 +1,12 @@
 <script setup>
 import ConfirmModal from "@/components/ConfirmModal.vue"
-import ProjectReport from "@/components/ProjectReport.vue"
+import ProjectReportModal from "@/components/ProjectReportModal.vue"
 import { useSelect } from "@/composables/select"
+import { useTextUtil } from "@/composables/text-utils"
 import { useActivityStore } from "@/stores/activity"
 import { useCareerStore } from "@/stores/career"
 import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
-import { useTextUtil } from "@/composables/text-utils"
 
 const store = useActivityStore()
 const activities = ref([])
@@ -319,7 +319,7 @@ const paginationText = computed(() => {
       body=""
       @onConfirm="deleteActivity"
     />
-    <ProjectReport
+    <ProjectReportModal
       v-model:isProjectReportVisible="isProjectReportVisible"
     />
   </VCard>
