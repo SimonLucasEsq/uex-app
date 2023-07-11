@@ -1,0 +1,69 @@
+{
+  "store": {
+    "models": {
+      "activity_week_participant": {
+        "one": "Participante",
+        "other": "Participantes"
+      },
+      "activity_sub_type": {
+        "one": "Sub-Tipo de Actividad",
+        "other": "Sub-Tipos de Actividad"
+      },
+      "activity_type": {
+        "one": "Tipo de Actividad",
+        "other": "Tipos de Actividad"
+      },
+      "activity_week": {
+        "one": "Actividad Semanal",
+        "other": "Actividades Semanales"
+      },
+      "activity": {
+        "one": "Actividad",
+        "other": "Actividades"
+      },
+      "career": {
+        "one": "Carrera",
+        "other": "Carreras"
+      },
+      "organization": {
+        "one": "Organización",
+        "other": "Organizaciones"
+      },
+      "person": {
+        "one": "Persona",
+        "other": "Personas"
+      },
+      "professor": {
+        "one": "Docente",
+        "other": "Docentes"
+      },
+      "student": {
+        "one": "Estudiante",
+        "other": "Estudiantes"
+      },
+      "user": {
+        "one": "Usuario",
+        "other": "Usuarios"
+      }
+    },
+    "attributes": {
+      "career": {
+        "name": "Nombre"
+      }
+    },
+    "messages": {
+      "create": {
+        "success": "Se ha creado %{model}",
+        "error": "No se ha podido crear %{model}. %{errors}"
+      },
+      "update": {
+        "success": "Se ha actualizado %{model}",
+        "error": "No se ha podido actualizar %{model}. %{errors}"
+      },
+      "delete": {
+        "success": "Se ha eliminado %{model}",
+        "error": "No se ha podido eliminar %{model}. %{errors}"
+      }
+    }
+  }
+}
