@@ -1,7 +1,7 @@
 <script setup>
-import { useActivityWeekStore } from "@/stores/activity-week"
-import { requiredValidator } from '@validators'
-import { computed, onBeforeMount } from 'vue'
+import { useActivityWeekStore } from "@/stores/activity-week";
+import { requiredValidator } from '@validators';
+import { computed, onBeforeMount } from 'vue';
 
 const props = defineProps({
   id: {
@@ -90,7 +90,7 @@ const title = `${store.isNew ? "Crear" : "Editar"} Fecha`
     <!-- Dialog close btn -->
     <DialogCloseBtn @click="$emit('onLeave')" />
 
-    <!-- Dialog Content --> 
+    <!-- Dialog Content -->
     <VCard :title="title">
       <VCardText>
         <VForm
@@ -101,8 +101,9 @@ const title = `${store.isNew ? "Crear" : "Editar"} Fecha`
             <VCol cols="12">
               <AppDateTimePicker
                 v-model="activityWeek.startDate"
-                label="Fecha de Inicio"
-                placeholder="Fecha de Inicio"
+                label="Fecha de inicio de la actividad"
+                placeholder="Fecha de inicio de la actividad"
+                :config="{dateFormat: 'd/m/Y'}"
                 :rules="[startDateLessthanEndDate, requiredValidator]"
               />
             </VCol>
@@ -110,8 +111,9 @@ const title = `${store.isNew ? "Crear" : "Editar"} Fecha`
             <VCol cols="12">
               <AppDateTimePicker
                 v-model="activityWeek.endDate"
-                label="Fecha de Finalización"
-                placeholder="Fecha de Finalización"
+                label="Fecha de culminación de la actividad"
+                placeholder="Fecha de culminación de la actividad"
+                :config="{dateFormat: 'd/m/Y'}"
                 :rules="[endDateGreaterThanStartDate, requiredValidator]"
               />
             </VCol>

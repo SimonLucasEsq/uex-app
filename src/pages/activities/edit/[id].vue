@@ -105,7 +105,6 @@ onBeforeMount(async () => {
       </VTabs>
 
       <VBtn
-        icon
         color="primary"
         size="small"
         class="ma-2 pa-2"
@@ -115,6 +114,7 @@ onBeforeMount(async () => {
         <VIcon
           icon="ic-baseline-plus"
         />
+        Nueva Fecha
       </VBtn>
     </div>
 
