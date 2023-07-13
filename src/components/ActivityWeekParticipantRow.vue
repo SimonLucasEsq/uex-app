@@ -1,8 +1,8 @@
 <script setup>
-import { useProfessorStore } from "@/stores/professor"
-import { useActivitySubTypeStore } from "@/stores/activity-sub-type"
-import { useStudentStore } from "@/stores/student"
-import { debounce } from 'vue-debounce'
+import { useActivitySubTypeStore } from "@/stores/activity-sub-type";
+import { useProfessorStore } from "@/stores/professor";
+import { useStudentStore } from "@/stores/student";
+import { debounce } from 'vue-debounce';
 
 const props = defineProps({
   participant: {
@@ -19,12 +19,12 @@ const emit = defineEmits(['addNewRow'])
 
 const selectTitleHash = {
   professor: "Docente",
-  student: "Alumno", 
+  student: "Alumno",
 }
 
 const availableParticipableStores = {
   professor: useProfessorStore(),
-  student: useStudentStore(), 
+  student: useStudentStore(),
 }
 
 const participant = ref(props.participant)
@@ -41,13 +41,13 @@ const participantCareers = computed(() => {
   }
 })
 
-const professorSearch = debounce(async function(search) { 
+const professorSearch = debounce(async function(search) {
   participableStore.api.query({ search: search }).then(records => {
     professors.value = Array.from(records.values())
   })
 }, 500)
 
-const activitySubTypeSearch = debounce(async function(search) { 
+const activitySubTypeSearch = debounce(async function(search) {
   useActivitySubTypeStore().api.query({ search: search }).then(records => {
     activitySubTypes.value = Array.from(records.values())
   })
@@ -58,7 +58,7 @@ function deleteParticipant(participant) {
 }
 
 const fullName = computed(() => {
-  
+
   return item => {
     return `${item?.person?.firstName} ${item?.person?.lastName}`
   }
@@ -96,8 +96,9 @@ const fullName = computed(() => {
   </td>
   <td>{{ participantCareers }}</td>
   <td>{{ participant.participable?.person?.email }}</td>
-  <td>{{ participant.participable?.person?.phoneNumber }}</td>
-  <td class="pl-1">
+  <td
+    class="p1-1"
+  >
     <VAutocomplete
       v-model="participant.activitySubType"
       item-title="name"
@@ -148,4 +149,4 @@ const fullName = computed(() => {
     inline-size: 15rem;
   }
 }
-</style>  
+</style>

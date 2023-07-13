@@ -147,7 +147,7 @@ const { formatRecordsByAttribute } = useTextUtil()
         <p class="description">
           {{ booleanTranslate(props.activity.institutionalProgram) }}
         </p>
-      </div> 
+      </div>
       <div class="container">
         <div class="font-weight-bold">
           Linea de Extensión Institucional:
@@ -168,7 +168,9 @@ const { formatRecordsByAttribute } = useTextUtil()
         <div class="font-weight-bold">
           Objetivos:
         </div>
-        <p class="description" />
+        <p class="description">
+          {{ props.activity.objective }}
+        </p>
       </div>
     </div>
 

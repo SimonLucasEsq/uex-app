@@ -1,11 +1,12 @@
 <script setup>
 import ConfirmModal from "@/components/ConfirmModal.vue"
+import ProjectReportModal from "@/components/ProjectReportModal.vue"
 import { useSelect } from "@/composables/select"
+import { useTextUtil } from "@/composables/text-utils"
 import { useActivityStore } from "@/stores/activity"
 import { useCareerStore } from "@/stores/career"
 import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
-import { useTextUtil } from "@/composables/text-utils"
 
 const store = useActivityStore()
 const activities = ref([])
@@ -17,9 +18,25 @@ const rowPerPage = ref(10)
 const currentPage = ref(1)
 const isDialogVisible = ref(false)
 const activityToDelete = ref(null)
+const isProjectReportVisible = ref(false)
 const { formatRecordsByAttribute } = useTextUtil()
 
-const debounceSearch = debounce(async function() { 
+const items = [
+  {
+    title: 'Reporte Estadístico',
+    value: 'Reporte Estadístico',
+    prependIcon: 'tabler-file-analytics',
+    modalName: showReportModal,
+  },
+  {
+    title: 'Listado de proyectos',
+    value: 'Listado de proyectos',
+    prependIcon: 'tabler-file-spreadsheet',
+    modalName: showReportModal,
+  },
+]
+
+const debounceSearch = debounce(async function() {
   loadActivities()
 }, 300)
 
@@ -56,6 +73,9 @@ async function loadCareers() {
 function showModal(activity) {
   isDialogVisible.value = true
   activityToDelete.value = activity
+}
+function showReportModal() {
+  isProjectReportVisible.value = true
 }
 
 // Computing pagination text
@@ -97,7 +117,39 @@ const paginationText = computed(() => {
         />
       </div>
       <VSpacer />
-      <div class="me-3">
+      <div>
+        <VMenu location="bottom">
+          <template #activator="{ props }">
+            <VBtn
+              v-bind="props"
+              prepend-icon="tabler-report"
+            >
+              Generar Reporte
+            </VBtn>
+          </template>
+
+          <VList>
+            <VListItem
+              v-for="item in items"
+              :key="item.value"
+              :value="item.value"
+              @click="item.modalName"
+            >
+              <template #prepend>
+                <VIcon
+                  :icon="item.prependIcon"
+                  class="me-3"
+                />
+              </template>
+
+              <VListItemTitle>
+                {{ item.title }}
+              </VListItemTitle>
+            </VListItem>
+          </VList>
+        </VMenu>
+      </div>
+      <div>
         <!-- Create Activity -->
         <VBtn
           prepend-icon="tabler-plus"
@@ -248,7 +300,7 @@ const paginationText = computed(() => {
       </span>
 
       <VSpacer />
-        
+
       <!-- 👉 Pagination -->
       <VPagination
         v-model="currentPage"
@@ -267,6 +319,9 @@ const paginationText = computed(() => {
       body=""
       @onConfirm="deleteActivity"
     />
+    <ProjectReportModal
+      v-model:isProjectReportVisible="isProjectReportVisible"
+    />
   </VCard>
 </template>
 
@@ -277,10 +332,4 @@ const paginationText = computed(() => {
     inline-size: 15rem;
   }
 }
-
-.nowrap {
-  overflow: hidden; /* keeps the element from overflowing its parent */
-  text-overflow: ellipsis; /* enables ellipsis */
-  white-space: nowrap; /* keeps the text in a single line */
-}
-</style>  
+</style>

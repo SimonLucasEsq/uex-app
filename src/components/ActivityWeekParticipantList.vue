@@ -1,8 +1,8 @@
 <script setup>
-import { useActivityWeekStore } from "@/stores/activity-week"
-import { useActivityWeekParticipantStore } from "@/stores/activity-week-participant"
-import { computed } from "vue"
-import ActivityWeekParticipantRow from "./ActivityWeekParticipantRow.vue"
+import { useActivityWeekStore } from "@/stores/activity-week";
+import { useActivityWeekParticipantStore } from "@/stores/activity-week-participant";
+import { computed } from "vue";
+import ActivityWeekParticipantRow from "./ActivityWeekParticipantRow.vue";
 
 const props = defineProps({
   activityWeekId: {
@@ -23,7 +23,7 @@ const emit = defineEmits(['afterSave'])
 
 const titleHash = {
   professor: "Docentes",
-  student: "Alumnos", 
+  student: "Alumnos",
 }
 
 const searchQuery = ref('')
@@ -45,7 +45,7 @@ const filteredParticipants = computed(() => {
 
       let personData = item?.participable?.person || {}
       let searchabledFields = [personData.idCard, `${personData.firstName} ${personData.lastName}`, personData.email, personData.phoneNumber, item.hours?.toString(), item.evaluation]
-      
+
       return searchabledFields.some(field => field?.match(searchValue))
     })
 })
@@ -85,7 +85,7 @@ function save() {
     :title="titleHash[props.participableType]"
   >
     <VCardText class="d-flex align-center flex-wrap gap-4">
-      <div class="d-flex align-center flex-wrap gap-4">
+      <div class=" me-3 d-flex gap-3">
         <!-- 👉 Search  -->
         <div class="filter">
           <VTextField
@@ -94,6 +94,22 @@ function save() {
             density="compact"
           />
         </div>
+      </div>
+      <div class="flex-grow-1" />
+      <div class="d-flex justify-end gap-4">
+        <VBtn
+          icon
+          rounded="0"
+          size="small"
+          variant="tonal"
+          color="default"
+          @click="addParticipant"
+        >
+          <VIcon
+            :size="22"
+            icon="tabler-plus"
+          />
+        </VBtn>
       </div>
     </VCardText>
     <VTable class="text-no-wrap">
@@ -119,12 +135,6 @@ function save() {
             scope="col"
           >
             Correo electrónico
-          </th>
-
-          <th
-            scope="col"
-          >
-            Celular
           </th>
 
           <th
@@ -171,7 +181,7 @@ function save() {
             colspan="8"
             class="text-center text-body-1"
           >
-            No data available
+            No hay datos disponibles
           </td>
         </tr>
       </tfoot>
@@ -199,4 +209,4 @@ function save() {
     inline-size: 15rem;
   }
 }
-</style>  
+</style>

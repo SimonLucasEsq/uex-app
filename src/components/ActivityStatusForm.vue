@@ -1,8 +1,9 @@
 <script setup>
-import { useActivityStatus } from '@/composables/activity-status'
-import { useActivityStore } from '@/stores/activity'
-import { requiredValidator } from '@validators'
-import { computed } from 'vue'
+import { useActivityStatus } from '@/composables/activity-status';
+import { useActivityStore } from '@/stores/activity';
+import { requiredValidator } from '@validators';
+import { computed } from 'vue';
+
 const props = defineProps({
   activity: {
     type: Object,
@@ -17,6 +18,7 @@ const props = defineProps({
     default: null,
   },
 })
+
 const emit = defineEmits(['update:isDialogVisible'])
 const refForm = ref()
 const evaluation = ref(props.activity.evaluation)
@@ -24,21 +26,26 @@ const approvedAt = ref(props.activity.approvedAt)
 const resolutionNumber = ref(props.activity.resolutionNumber)
 const store = useActivityStore()
 const { statusActionLabel, prevStatusLabel, getPrevStatus } = useActivityStatus()
+
 const titleMap = {
   evaluated: "Evaluación de la Actividad",
   sent_to_deanery: "Elevar proyecto al Decanato?",
   approved: "Aprobación de la Actividad",
-  rejected: "Rechazar proyecto?"
+  rejected: "Rechazar proyecto?",
 }
+
 const title = computed(() => {
   if (getPrevStatus(props.activity.status) === props.status) {
     return `${prevStatusLabel(props.status)}?`
   }
+  
   return titleMap[props.status]
 })
+
 async function submit() {
   const { valid } = await refForm.value.validate()
   if (!valid) return
+
   // Custom logic for evaluated status, when evaluation number is less that 60 then status should be declined instead of evaluated
   let status = props.status === "evaluated" && evaluation.value < 60 ? "declined" : props.status
   let params = {
@@ -53,6 +60,7 @@ async function submit() {
     }
   })
 }
+
 const isDialogVisible = computed({
   get() {
     return props.isDialogVisible
@@ -72,7 +80,7 @@ const isDialogVisible = computed({
     <!-- Dialog close btn -->
     <DialogCloseBtn @click="isDialogVisible = false" />
 
-    <!-- Dialog Content --> 
+    <!-- Dialog Content -->
     <VCard :title="title">
       <VCardText class="pb-0">
         <VForm
@@ -92,9 +100,11 @@ const isDialogVisible = computed({
               type="number"
               :rules="[requiredValidator]"
             />
-            <p class="text-caption">Si la evaluación es menor a 60, la actividad será declinada.</p>
+            <p class="text-caption">
+              Si la evaluación es menor a 60, la actividad será declinada.
+            </p>
           </VCol>
-          <!-- End Evaluated status fields --> 
+          <!-- End Evaluated status fields -->
 
           <!-- Approved status fields -->
           <VCol
@@ -105,6 +115,7 @@ const isDialogVisible = computed({
               v-model="approvedAt"
               label="Fecha de aprobación"
               placeholder="Fecha de aprobación"
+              :config="{ dateFormat: 'd/m/Y'}"
               :rules="[requiredValidator]"
             />
           </VCol>
@@ -120,7 +131,7 @@ const isDialogVisible = computed({
               :rules="[requiredValidator]"
             />
           </VCol>
-          <!-- End approved status fields --> 
+          <!-- End approved status fields -->
         </VForm>
       </VCardText>
       <VCardText class="d-flex justify-end gap-3 flex-wrap">
