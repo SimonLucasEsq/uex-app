@@ -2,6 +2,7 @@
 import { useTheme } from 'vuetify'
 import { useThemeConfig } from '@core/composable/useThemeConfig'
 import { hexToRgb } from '@layouts/utils'
+import { useI18n } from "vue-i18n"
 
 const {
   syncInitialLoaderTheme,
@@ -10,6 +11,7 @@ const {
 } = useThemeConfig()
 
 const { global } = useTheme()
+const { t } = useI18n()
 
 // ℹ️ Sync current theme with initial loader theme
 syncInitialLoaderTheme()
