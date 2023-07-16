@@ -1,5 +1,6 @@
 <script setup>
 import { useActivityWeekStore } from "@/stores/activity-week"
+import { useActivityStore } from "@/stores/activity"
 import { useActivityWeekParticipantStore } from "@/stores/activity-week-participant"
 import { computed } from "vue"
 import ActivityWeekParticipantRow from "./ActivityWeekParticipantRow.vue"
@@ -15,7 +16,7 @@ const props = defineProps({
   },
   participants: {
     type: Array,
-    default: null,
+    default: () => [],
   },
 })
 
@@ -50,6 +51,8 @@ const filteredParticipants = computed(() => {
     })
 })
 
+const registeredHours = computed(() => participants.value.some(p => p.registeredHours))
+
 onBeforeMount(async () => {
   useActivityWeekParticipantStore().api.query({ activity_week_id: props.activityWeekId })
 })
@@ -76,6 +79,22 @@ function save() {
     emit('afterSave')
   })
 }
+
+function registerHours(){
+  useActivityWeekStore().api.registerHours().then(() => {
+    emit('afterSave')
+  })
+}
+
+function autoCompleate(){
+  let activityWeek = useActivityWeekStore().data.recordList.records.get(props.activityWeekId)
+  let activity = useActivityStore().data.recordList.records.get(activityWeek.activityId)
+  
+  participants.value.forEach(participant => {
+    participant.hours = activity.hours
+    participant.evaluation = 5
+  })
+}
 </script>
 
 <template>
@@ -84,8 +103,8 @@ function save() {
     class="mb-6"
     :title="titleHash[props.participableType]"
   >
-    <VCardText class="d-flex align-center flex-wrap gap-4">
-      <div class="d-flex align-center flex-wrap gap-4">
+    <VCardText class="d-flex align-center flex-wrap gap-4 pr-2">
+      <div class="d-flex justify-start flex-wrap gap-4 me-auto">
         <!-- 👉 Search  -->
         <div class="filter">
           <VTextField
@@ -94,6 +113,27 @@ function save() {
             density="compact"
           />
         </div>
+      </div>
+
+      <div class="d-flex justify-end align-center">
+        <VBtn
+          v-if="!registeredHours"
+          @click="registerHours"
+        >
+          Registrar
+        </VBtn>
+      </div>
+
+      <div class="d-flex justify-end align-center">
+        <VBtn
+          v-if="!registeredHours"
+          prepend-icon="tabler-arrow-autofit-down"
+          variant="tonal"
+          color="default"
+          @click="autoCompleate"
+        >
+          Autocompletar
+        </VBtn>
       </div>
     </VCardText>
     <VTable class="text-no-wrap">
@@ -186,7 +226,7 @@ function save() {
         type="submit"
         @click="save"
       >
-        Guardar
+        {{ registeredHours ? "Corregir" : "Guardar" }}
       </VBtn>
     </VCol>
   </VCard>
