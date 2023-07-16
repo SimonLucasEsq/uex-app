@@ -1,0 +1,8 @@
+{
+  "models": {
+    "career": {
+      "one": "Carrera",
+      "other": "Carreras"
+    }
+  }
+}

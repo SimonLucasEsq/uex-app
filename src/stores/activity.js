@@ -1,6 +1,7 @@
 import Api from '@/stores/api'
 import { defineStore } from "pinia"
 import { computed, reactive } from "vue"
+import { useDownloadFile } from '../composables/download-file'
 import { useProfessorStore } from './professor'
 
 class ActivityApi extends Api {
@@ -18,6 +19,14 @@ class ActivityApi extends Api {
         }
 
         console.log(`Fallo al actualizar ${this.recordKey}`)
+      })
+  }
+  async exportProjectListReport(params) {
+    return await this.axios.get(`/api/${this.endpoint}/export_project_list_report`, { params: this.toSnakeCase(params) , responseType: 'blob' }).then(
+      ({ data, headers }) => {
+        const { downloadFile } = useDownloadFile()
+
+        downloadFile(data, headers['content-disposition'])
       })
   }
 }
@@ -57,6 +66,7 @@ export const useActivityStore = defineStore('activities', () => {
     institutionalExtensionLine: 0,
     startDate: null,
     endDate: null,
+    objective: null,
     beneficiaryDetail: {
       numberOfMen: 0,
       numberOfWomen: 0,

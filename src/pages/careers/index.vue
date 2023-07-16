@@ -56,7 +56,7 @@ const paginationText = computed(() => {
   <VCard
     id="career-list"
     class="mb-6"
-    title="Carreras"
+    :title="$t('store.models.career.other')"
   >
     <VCardText class="d-flex align-center flex-wrap gap-4">
       <div class="d-flex align-center flex-wrap gap-4">
@@ -86,7 +86,7 @@ const paginationText = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            Nombre
+            {{$t('store.attributes.career.name')}}
           </th>
 
           <th scope="col">

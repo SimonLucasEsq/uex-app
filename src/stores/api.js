@@ -1,7 +1,10 @@
 import { securedAxiosInstance as axios } from '@axios'
 import _ from 'lodash'
+import i18n from "@/i18n"
+import { useToast } from "vue-toastification"
 
 const RESERVED_WORDS = ["_destroy"]
+const toast = useToast()
 
 export default class Api {
   constructor(data, associations, apiConfig) {
@@ -19,14 +22,15 @@ export default class Api {
       .then(response => {
         this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {} }
         this.data.recordList.records.set(this.data.record.id, this.data.record)
-        
+        this.showAlert('create', 'success')
+
         return this.data.record
       }).catch(error => {
         let errors = error.response.data?.["errors"]
         if (errors) {
           this.data.record.errors = errors
         }
-
+        this.showAlert('create', 'error')
         console.log(`Fallo al crear ${this.recordKey}`)
       })
   }
@@ -37,14 +41,15 @@ export default class Api {
       .then(response => {
         this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {} }
         this.data.recordList.records.set(this.data.record.id, this.data.record)
-        
+        this.showAlert('update', 'success')
+
         return this.data.record
       }).catch(error => {
         let errors = error.response.data?.["errors"]
         if (errors) {
           this.data.record.errors = errors
         }
-
+        this.showAlert('update', 'error')
         console.log(`Fallo al actualizar ${this.recordKey}`)
       })
   }
@@ -99,6 +104,7 @@ export default class Api {
       .then(() => {
         // Ensuring to delete record from the store
         this.data.recordList.records.delete(id)
+        this.showAlert('delete', 'success')
       })
   }
 
@@ -176,5 +182,24 @@ export default class Api {
 
   toCamelCaseText(text) {
     return RESERVED_WORDS.includes(text) ? text : _.camelCase(text)
+  }
+
+  showAlert(action, alertType){
+    let msg = i18n.global.t(`store.messages.${action}.${alertType}`, { model: this.model() })
+
+    switch (alertType) {
+    case 'success':
+      toast.success(msg)
+      break
+    case 'error':
+      toast.error(msg)
+      break
+    default:
+      console.log(msg)
+    }
+  }
+
+  model() {
+    return i18n.global.t(`store.models.${this.recordKey}.one`)
   }
 }

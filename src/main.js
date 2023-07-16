@@ -16,13 +16,12 @@ import Toast from "vue-toastification"
 
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css"
+import i18n from "@/i18n"
 
 loadFonts()
 
-
 // Create vue app
 const app = createApp(App)
-
 
 // Use plugins
 app.use(vuetify)
@@ -39,6 +38,7 @@ const toastOptions = {
 }
 
 app.use(Toast, toastOptions)
+app.use(i18n)
 
 // Mount vue app
 app.mount('#app')

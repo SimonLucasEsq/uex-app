@@ -28,19 +28,19 @@ const fullName = computed(() => {
   return item => `${item.person?.firstName} ${item.person?.lastName}`
 })
 
-const searchActivitySubTypes = debounce(async function(search) { 
+const searchActivitySubTypes = debounce(async function(search) {
   await activitySubTypeStore.api.query({ search: search }).then(records => {
     activitySubTypes.value = Array.from(records.values())
   })
 }, 500)
 
-const searchProfessors = debounce(async function(search) { 
+const searchProfessors = debounce(async function(search) {
   await professorStore.api.query({ search: search }).then(records => {
     professors.value = Array.from(records.values())
   })
 }, 500)
 
-const searchOrganizations = debounce(async function(search) { 
+const searchOrganizations = debounce(async function(search) {
   await organizationStore.api.query({ search: search }).then(records => {
     organizations.value = Array.from(records.values())
   })
@@ -181,26 +181,6 @@ function onCancel(){
             :rules="[requiredValidator]"
           />
         </VCol>
-
-        <VCol cols="12">
-          <VTextField
-            v-model="activity.odsVinculation"
-            label="Vinculación ODS"
-            placeholder="Vinculación ODS"
-            type="number"
-            :rules="[requiredValidator]"
-          />
-        </VCol>
-
-        <VCol cols="12">
-          <VTextField
-            v-model="activity.institutionalExtensionLine"
-            label="Linea de Extensión Institucional"
-            placeholder="Linea de Extensión Institucional"
-            :rules="[requiredValidator]"
-          />
-        </VCol>
-
         <VCol cols="12">
           <VCheckbox
             v-model="activity.virtualParticipation"
@@ -215,6 +195,25 @@ function onCancel(){
           />
         </VCol>
 
+        <VCol cols="12">
+          <VTextField
+            v-model="activity.institutionalExtensionLine"
+            label="Linea de Extensión Institucional"
+            placeholder="Linea de Extensión Institucional"
+            :rules="[requiredValidator]"
+          />
+        </VCol>
+
+        <VCol cols="12">
+          <VTextField
+            v-model="activity.odsVinculation"
+            label="Vinculación ODS"
+            placeholder="Vinculación ODS"
+            type="number"
+            :rules="[requiredValidator]"
+          />
+        </VCol>
+
         <VContainer>
           <VRow>
             <VCol
@@ -223,7 +222,8 @@ function onCancel(){
             >
               <AppDateTimePicker
                 v-model="activity.startDate"
-                label="Fecha de Inicio"
+                label="Fecha de inicio según cronograma"
+                :config="{dateFormat: 'd/m/Y'}"
               />
             </VCol>
             <VCol
@@ -232,7 +232,8 @@ function onCancel(){
             >
               <AppDateTimePicker
                 v-model="activity.endDate"
-                label="Fecha de Finalización"
+                label="Fecha de culminación según cronograma"
+                :config="{dateFormat: 'd/m/Y'}"
               />
             </VCol>
           </VRow>
@@ -328,10 +329,18 @@ function onCancel(){
           <VTextField
             id="hours"
             v-model="activity.hours"
-            label="Crédito academico o Horas de extensón"
+            label="Crédito académico o Horas de extensón"
             placeholder="Crédito académico o Horas de extensón"
             type="number"
             :rules="[requiredValidator]"
+          />
+        </VCol>
+        <VCol cols="12">
+          <VTextarea
+            id="objective"
+            v-model="activity.objective"
+            label="Objetivos"
+            placeholder="Objetivos"
           />
         </VCol>
 

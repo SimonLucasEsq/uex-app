@@ -24,7 +24,7 @@ const emit = defineEmits(['afterSave'])
 
 const titleHash = {
   professor: "Docentes",
-  student: "Alumnos", 
+  student: "Alumnos",
 }
 
 const searchQuery = ref('')
@@ -46,7 +46,7 @@ const filteredParticipants = computed(() => {
 
       let personData = item?.participable?.person || {}
       let searchabledFields = [personData.idCard, `${personData.firstName} ${personData.lastName}`, personData.email, personData.phoneNumber, item.hours?.toString(), item.evaluation]
-      
+
       return searchabledFields.some(field => field?.match(searchValue))
     })
 })
@@ -134,6 +134,21 @@ function autoCompleate(){
         >
           Autocompletar
         </VBtn>
+      <div class="flex-grow-1" />
+      <div class="d-flex justify-end gap-4">
+        <VBtn
+          icon
+          rounded="0"
+          size="small"
+          variant="tonal"
+          color="default"
+          @click="addParticipant"
+        >
+          <VIcon
+            :size="22"
+            icon="tabler-plus"
+          />
+        </VBtn>
       </div>
     </VCardText>
     <VTable class="text-no-wrap">
@@ -159,12 +174,6 @@ function autoCompleate(){
             scope="col"
           >
             Correo electrónico
-          </th>
-
-          <th
-            scope="col"
-          >
-            Celular
           </th>
 
           <th
@@ -211,7 +220,7 @@ function autoCompleate(){
             colspan="8"
             class="text-center text-body-1"
           >
-            No data available
+            No hay datos disponibles
           </td>
         </tr>
       </tfoot>
@@ -239,4 +248,4 @@ function autoCompleate(){
     inline-size: 15rem;
   }
 }
-</style>  
+</style>
