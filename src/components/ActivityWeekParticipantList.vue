@@ -134,8 +134,8 @@ function autoCompleate(){
         >
           Autocompletar
         </VBtn>
-      <div class="flex-grow-1" />
-      <div class="d-flex justify-end gap-4">
+      </div>
+      <div class="d-flex justify-end align-center">
         <VBtn
           icon
           rounded="0"

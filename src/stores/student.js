@@ -13,6 +13,23 @@ class StudentApi extends Api {
         downloadFile(data, headers['content-disposition'])
       })
   }
+
+  async updateStatus(id, params) {
+    return await this.axios.put(`/api/${this.endpoint}/${id}/update_status`, this.toSnakeCase(params))
+      .then(response => {
+        this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {} }
+        this.data.recordList.records.set(this.data.record.id, this.data.record)
+
+        return this.data.record
+      }).catch(error => {
+        let errors = error.response.data?.["errors"]
+        if (errors) {
+          this.data.record.errors = errors
+        }
+
+        console.log(`Fallo al actualizar ${this.recordKey}`)
+      })
+  }
 }
 
 export const useStudentStore = defineStore('students', () => {

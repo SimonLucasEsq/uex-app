@@ -1,5 +1,5 @@
 <script setup>
-import { usePerson } from '@/composables/person';
+import { usePerson } from '@/composables/person'
 
 const props = defineProps({
   student: {
