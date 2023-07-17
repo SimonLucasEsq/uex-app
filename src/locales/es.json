@@ -49,6 +49,13 @@
     "attributes": {
       "career": {
         "name": "Nombre"
+      },
+      "student": {
+        "status": {
+          "insuficient": "Incompleto",
+          "to_be_submitted": "A remitir",
+          "submitted": "Remitido"
+        }
       }
     },
     "messages": {

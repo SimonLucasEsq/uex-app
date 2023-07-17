@@ -92,6 +92,7 @@ export default class Api {
       .get(`/api/${this.endpoint}/${id}`)
       .then(response => {
         this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: [] }
+        this.data.recordList.records.set(this.data.record.id, this.data.record)
 
         return this.data.record
       })

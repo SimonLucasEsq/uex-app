@@ -3,6 +3,25 @@ import { defineStore } from "pinia"
 import { computed, reactive } from "vue"
 import { useActivityWeekParticipantStore } from './activity-week-participant'
 
+class ActivityWeekApi extends Api {
+  async registerHours() {
+    return await this.axios.post(`/api/${this.endpoint}/${this.data.record.id}/register_hours`)
+      .then(response => {
+        this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {} }
+        this.data.recordList.records.set(this.data.record.id, this.data.record)
+
+        return this.data.record
+      }).catch(error => {
+        let errors = error.response.data?.["errors"]
+        if (errors) {
+          this.data.record.errors = errors
+        }
+
+        console.log(`Fallo al actualizar ${this.recordKey}`)
+      })
+  }
+}
+
 export const useActivityWeekStore = defineStore('activityWeeks', () => {
   const associations = {
     belognsTo: new Map(
@@ -46,7 +65,7 @@ export const useActivityWeekStore = defineStore('activityWeeks', () => {
   const isValid = computed(() => { return Object.keys(data.record.errors).length === 0 })
   const isInvalid = computed(() => { return !isValid.value })
 
-  const api = new Api(data, associations, apiConfig)
+  const api = new ActivityWeekApi(data, associations, apiConfig)
 
   function newRecord(attributes={}) {
     this.data.record = { ...defaultRecord, ...attributes }

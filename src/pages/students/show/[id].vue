@@ -1,8 +1,8 @@
 <script setup>
-import StudentActivitiesShow from '@/components/StudentActivitiesShow.vue';
-import StudentShow from '@/components/StudentShow.vue';
-import { useStudentStore } from '@/stores/student';
-import { useRoute } from 'vue-router';
+import StudentActivitiesShow from '@/components/StudentActivitiesShow.vue'
+import StudentShow from '@/components/StudentShow.vue'
+import { useStudentStore } from '@/stores/student'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const id = route.params.id
@@ -33,7 +33,7 @@ onMounted(async () => {
     >
       <StudentActivitiesShow
         v-if="student.id"
-        :student="student"
+        v-model:student="student"
       />
     </VCol>
   </VRow>
