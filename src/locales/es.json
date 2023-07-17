@@ -52,7 +52,7 @@
       },
       "student": {
         "status": {
-          "insuficient": "Insuficiente",
+          "insuficient": "Incompleto",
           "to_be_submitted": "A remitir",
           "submitted": "Remitido"
         }
