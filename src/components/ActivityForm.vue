@@ -129,7 +129,7 @@ function onCancel(){
       @submit.prevent="() => {}"
     >
       <VRow>
-        <VCol cols="12 text-subtitle-1">
+        <VCol cols="12 text-h6">
           Descripción del Proyecto
         </VCol>
 
@@ -269,7 +269,7 @@ function onCancel(){
           <VLabel>Total:</VLabel> {{ store.totalBeneficiaries }}
         </VCol>
 
-        <VCol cols="12 text-subtitle-1">
+        <VCol cols="12 text-h6">
           Identificación General
         </VCol>
 

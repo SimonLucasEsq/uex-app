@@ -2,6 +2,7 @@
 import ActivityForm from "@/components/ActivityForm.vue"
 import ActivityWeekForm from "@/components/ActivityWeekForm.vue"
 import ActivityWeekParticipants from "@/components/ActivityWeekParticipants.vue"
+import BreadCrumbLayout from "@/components/BreadCrumbLayout.vue"
 import ConfirmModal from "@/components/ConfirmModal.vue"
 import { useActivityWeekStore } from "@/stores/activity-week"
 import { useRoute } from 'vue-router'
@@ -44,12 +45,25 @@ function onLeaveActivityWeekForm() {
 onBeforeMount(async () => {
   await useActivityWeekStore().api.query({ activity_id: id })
 })
+
+const items = [
+  {
+    text: 'Actividades',
+    color: 'primary',
+    disabled: false,
+    to: '/activities',
+  },
+  {
+    text: 'Editar Actividad',
+    disabled: true,
+    to: '/activities',
+  },
+]
 </script>
 
 <template>
-  <VCard
-    class="mb-6"
-    title="Editar Actividad"
+  <BreadCrumbLayout
+    :items="items"
   >
     <div class="d-flex">
       <VTabs
@@ -149,5 +163,5 @@ onBeforeMount(async () => {
       body="Al eliminar la fecha se eliminarán automáticamente los participantes asociados a ella."
       @on-confirm="deleteActivityWeek"
     />
-  </VCard>
+  </BreadCrumbLayout>
 </template>

@@ -1,12 +1,26 @@
 <script setup>
 import ActivityTypeForm from "@/components/ActivityTypeForm.vue";
+import BreadCrumbLayout from "@/components/BreadCrumbLayout.vue";
+
+const items = [
+  {
+    text: 'Tipos de Actividades',
+    color: 'primary',
+    disabled: false,
+    to: '/activity-types',
+  },
+  {
+    text: 'Crear Tipo de Carrera',
+    disabled: true,
+    to: '/activity-types',
+  },
+]
 </script>
 
 <template>
-  <VCard
-    class="mb-6"
-    title="Nuevo Tipo de Actividad"
+  <BreadCrumbLayout
+    :items="items"
   >
     <ActivityTypeForm />
-  </VCard>
+  </BreadCrumbLayout>
 </template>

@@ -1,16 +1,30 @@
 <script setup>
+import BreadCrumbLayout from "@/components/BreadCrumbLayout.vue";
 import OrganizationForm from "@/components/OrganizationForm.vue";
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
 const id = route.params.id
+
+const items = [
+  {
+    text: 'Organizaciones',
+    color: 'primary',
+    disabled: false,
+    to: '/organizations',
+  },
+  {
+    text: 'Editar Organización',
+    disabled: true,
+    to: '/organizations',
+  },
+]
 </script>
 
 <template>
-  <VCard
-    class="mb-6"
-    title="Editar Organización"
+  <BreadCrumbLayout
+    :items="items"
   >
     <OrganizationForm :id="id" />
-  </VCard>
+  </BreadCrumbLayout>
 </template>

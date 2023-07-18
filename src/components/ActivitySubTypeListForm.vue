@@ -1,8 +1,6 @@
 <script setup>
-import ActivitySubTypeRow from "@/components/ActivitySubTypeRow.vue"
-import { useActivityWeekStore } from "@/stores/activity-week"
-import { requiredValidator } from '@validators'
-import { computed, onBeforeMount } from 'vue'
+import ActivitySubTypeRow from "@/components/ActivitySubTypeRow.vue";
+import { computed } from 'vue';
 
 const props = defineProps({
   activitySubTypes: {
@@ -107,7 +105,7 @@ function deleteRecord(index) {
           colspan="8"
           class="text-center text-body-1"
         >
-          No data available
+          No hay datos disponibles
         </td>
       </tr>
     </tfoot>

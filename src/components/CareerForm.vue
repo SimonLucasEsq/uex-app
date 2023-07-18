@@ -55,8 +55,8 @@ onMounted(async () => {
           <VTextField
             id="name"
             v-model="career.name"
-            label="Nombre"
-            placeholder="Nombre"
+            label="Nombre de la Carrera"
+            placeholder="Nombre de la Carrera"
             :rules="[requiredValidator]"
           />
         </VCol>

@@ -1,16 +1,30 @@
 <script setup>
+import BreadCrumbLayout from "@/components/BreadCrumbLayout.vue";
 import ProfessorForm from "@/components/ProfessorForm.vue";
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
 const id = route.params.id
+
+const items = [
+  {
+    text: 'Docentes',
+    color: 'primary',
+    disabled: false,
+    to: '/professors',
+  },
+  {
+    text: 'Editar Docente',
+    disabled: true,
+    to: '/professors',
+  },
+]
 </script>
 
 <template>
-  <VCard
-    class="mb-6"
-    title="Editar Docente"
+  <BreadCrumbLayout
+    :items="items"
   >
     <ProfessorForm :id="id" />
-  </VCard>
-</template> 
+  </BreadCrumbLayout>
+</template>
