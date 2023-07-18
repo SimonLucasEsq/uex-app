@@ -6,19 +6,23 @@ import { useCareerStore } from "@/stores/career"
 import { useStudentStore } from "@/stores/student"
 import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
+import { useStudentStatus } from "@/composables/student-status"
 
 const store = useStudentStore()
 const students = ref([])
 const careers = ref([])
 const filteredCareer = ref(null)
+const filteredStatus = ref(null)
 const paginationData = computed(() => store.data.recordList.meta)
 const searchQuery = ref('')
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const isDialogVisible = ref(false)
 const isImportVisible = ref(false)
-const studentToDelete = ref(null)
+const isUpdateStatusVisible = ref(false)
+const selectedStudent = ref(null)
 const csvImportRoute = '/api/students/import_csv'
+const { statusLabel, statusColor, statusOptions } = useStudentStatus()
 
 const debounceSearch = debounce(async function() {
   loadStudents()
@@ -30,7 +34,7 @@ onMounted(async () => {
 })
 
 async function deleteStudent() {
-  store.api.delete(studentToDelete.value.id).then(() => {
+  store.api.delete(selectedStudent.value.id).then(() => {
     loadStudents()
   })
   isDialogVisible.value = false
@@ -42,6 +46,7 @@ async function loadStudents() {
     page: currentPage.value,
     per_page: rowPerPage.value,
     career_id: filteredCareer.value,
+    status: filteredStatus.value,
   }).then(records => {
     students.value = records
   })
@@ -56,7 +61,12 @@ async function loadCareers() {
 
 function showModal(student) {
   isDialogVisible.value = true
-  studentToDelete.value = student
+  selectedStudent.value = student
+}
+
+function showUpdateStatusModal(student) {
+  isUpdateStatusVisible.value = true
+  selectedStudent.value = student
 }
 
 function showImport() {
@@ -65,6 +75,13 @@ function showImport() {
 
 function exportData(student) {
   store.api.exportStudentData(student.id)
+}
+
+function submitStudent(student) {
+  store.api.updateStatus(selectedStudent.value.id, { status: "submitted" }).then(load => {
+    loadStudents()
+    isUpdateStatusVisible.value = false
+  })
 }
 
 // Computing pagination text
@@ -104,6 +121,17 @@ const paginationText = computed(() => {
           persistent-hint
           @update:model-value="loadStudents"
         />
+        <VSelect
+          id="status"
+          v-model="filteredStatus"
+          class="filter"
+          label="Estado de Extensión"
+          :items="statusOptions()"
+          item-title="name"
+          item-value="value"
+          persistent-hint
+          @update:model-value="loadStudents"
+        />
       </div>
       <VSpacer />
       <div class="me-3">
@@ -114,8 +142,8 @@ const paginationText = computed(() => {
           >
             <VBtn
               prepend-icon="tabler-file-upload"
-              @click="showImport"
               color="secondary"
+              @click="showImport"
             >
               Importar
             </VBtn>
@@ -151,6 +179,12 @@ const paginationText = computed(() => {
           <th
             scope="col"
           >
+            Estado de Extensión
+          </th>
+
+          <th
+            scope="col"
+          >
             Correo Electrónico
           </th>
 
@@ -173,6 +207,14 @@ const paginationText = computed(() => {
             </RouterLink>
           </td>
           <td>{{ student.hours }}</td>
+          <td>
+            <VChip
+              label
+              :color="statusColor(student.status)"
+            >
+              {{ statusLabel(student.status) }}
+            </VChip>
+          </td>
           <td>{{ student.person.email }}</td>
           <td>
             <VBtn
@@ -219,6 +261,19 @@ const paginationText = computed(() => {
                       />
                     </template>
                     <VListItemTitle>Eliminar</VListItemTitle>
+                  </VListItem>
+                  <VListItem
+                    v-if="student.status == 'to_be_submitted'"
+                    @click="showUpdateStatusModal(student)"
+                  >
+                    <template #prepend>
+                      <VIcon
+                        size="24"
+                        class="me-3"
+                        icon="tabler-send"
+                      />
+                    </template>
+                    <VListItemTitle>Remitir</VListItemTitle>
                   </VListItem>
                 </VList>
               </VMenu>
@@ -280,14 +335,21 @@ const paginationText = computed(() => {
     <!-- Confirmation Dialog -->
     <ConfirmModal
       v-model:isDialogVisible="isDialogVisible"
-      :title="`Eliminar Alumno ${studentToDelete?.person.firstName}?`"
+      :title="`Eliminar Alumno ${selectedStudent?.person.firstName}?`"
       body="Solo podrá ser eliminado si no se encuentra asociado a ninguna actividad"
-      @onConfirm="deleteStudent"
+      @on-confirm="deleteStudent"
     />
     <ImportCsv
       v-model:isDialogVisible="isImportVisible"
       v-model:csvImportRoute="csvImportRoute"
       @imported="loadStudents"
+    />
+    <ConfirmModal
+      v-model:isDialogVisible="isUpdateStatusVisible"
+      :title="`Remitir alumno ${selectedStudent?.person.firstName}?`"
+      submit-color="primary"
+      submit-text="Remitir"
+      @on-confirm="submitStudent"
     />
   </VCard>
 </template>

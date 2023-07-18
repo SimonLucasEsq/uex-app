@@ -51,7 +51,7 @@ onMounted(async () => {
       >
         <StudentActivitiesShow
           v-if="student.id"
-          :student="student"
+          v-model:student="student"
         />
       </VCol>
     </VRow>
