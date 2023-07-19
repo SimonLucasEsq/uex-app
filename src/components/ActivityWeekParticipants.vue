@@ -1,8 +1,8 @@
 <script setup>
-import { useActivityWeekStore } from "@/stores/activity-week";
-import { useActivityWeekParticipantStore } from "@/stores/activity-week-participant";
-import { computed, onBeforeMount } from 'vue';
-import ActivityWeekParticipantList from "./ActivityWeekParticipantList.vue";
+import { useActivityWeekStore } from "@/stores/activity-week"
+import { useActivityWeekParticipantStore } from "@/stores/activity-week-participant"
+import { computed, onBeforeMount } from 'vue'
+import ActivityWeekParticipantList from "./ActivityWeekParticipantList.vue"
 
 const props = defineProps({
   activityWeekId: {

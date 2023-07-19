@@ -12,6 +12,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  submitColor: {
+    type: String,
+    default: () => "error",
+  },
+  submitText: {
+    type: String,
+    default: () => "Eliminar",
+  },
 })
 
 const emit = defineEmits(['update:isDialogVisible', 'onConfirm'])
@@ -51,10 +59,10 @@ const isDialogVisible = computed({
           Cancelar
         </VBtn>
         <VBtn
-          color="error"
+          :color="submitColor"
           @click="emit('onConfirm')"
         >
-          Eliminar
+          {{ submitText }}
         </VBtn>
       </VCardText>
     </VCard>
