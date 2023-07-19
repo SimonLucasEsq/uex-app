@@ -12,7 +12,7 @@ const items = [
   {
     text: 'Crear Usuario',
     disabled: true,
-    to: '/users',
+    to: '#',
   },
 ]
 </script>

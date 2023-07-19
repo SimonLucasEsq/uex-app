@@ -16,7 +16,7 @@ const items = [
   {
     text: 'Editar Alumno',
     disabled: true,
-    to: '/students',
+    to: '#',
   },
 ]
 </script>

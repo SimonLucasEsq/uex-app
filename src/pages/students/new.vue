@@ -12,7 +12,7 @@ const items = [
   {
     text: 'Crear Nuevo Alumno',
     disabled: true,
-    to: '/students',
+    to: '#',
   },
 ]
 </script>

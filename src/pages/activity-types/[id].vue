@@ -16,7 +16,7 @@ const items = [
   {
     text: 'Editar Tipo de Actividad',
     disabled: true,
-    to: '/activity-types',
+    to: '#',
   },
 ]
 </script>

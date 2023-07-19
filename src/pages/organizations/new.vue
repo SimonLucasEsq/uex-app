@@ -12,7 +12,7 @@ const items = [
   {
     text: 'Crear Organización',
     disabled: true,
-    to: '/organizations',
+    to: '#',
   },
 ]
 </script>

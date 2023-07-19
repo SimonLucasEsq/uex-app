@@ -25,7 +25,7 @@ const items = [
   {
     text: 'Ver Docente',
     disabled: true,
-    to: '/professors',
+    to: '#',
   },
 ]
 </script>

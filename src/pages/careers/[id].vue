@@ -17,7 +17,7 @@ const items = [
   {
     text: 'Editar Carrera',
     disabled: true,
-    to: '/careers',
+    to: '#',
   },
 ]
 </script>

@@ -12,7 +12,7 @@ const items = [
   {
     text: 'Crear Actividad',
     disabled: true,
-    to: '/activities',
+    to: '#',
   },
 ]
 </script>

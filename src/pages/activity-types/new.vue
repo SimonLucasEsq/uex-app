@@ -12,7 +12,7 @@ const items = [
   {
     text: 'Crear Tipo de Carrera',
     disabled: true,
-    to: '/activity-types',
+    to: '#',
   },
 ]
 </script>

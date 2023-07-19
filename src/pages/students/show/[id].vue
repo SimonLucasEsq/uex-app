@@ -19,7 +19,7 @@ const items = [
   {
     text: 'Ver Alumno',
     disabled: true,
-    to: '/students',
+    to: '#',
   },
 ]
 

@@ -16,7 +16,7 @@ const items = [
   {
     text: 'Editar Docente',
     disabled: true,
-    to: '/professors',
+    to: '#',
   },
 ]
 </script>

@@ -56,7 +56,7 @@ const items = [
   {
     text: 'Editar Actividad',
     disabled: true,
-    to: '/activities',
+    to: '#',
   },
 ]
 </script>

@@ -12,7 +12,7 @@ const items = [
   {
     text: 'Crear Carrera',
     disabled: true,
-    to: '/careers',
+    to: '#',
   },
 ]
 </script>

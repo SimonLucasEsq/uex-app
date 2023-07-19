@@ -16,7 +16,7 @@ const items = [
   {
     text: 'Editar Usuario',
     disabled: true,
-    to: '/users',
+    to: '#',
   },
 ]
 </script>

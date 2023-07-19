@@ -12,7 +12,7 @@ const items = [
   {
     text: 'Crear Nuevo Docente',
     disabled: true,
-    to: '/professors',
+    to: '#',
   },
 ]
 </script>
