@@ -89,7 +89,7 @@ const paginationText = computed(() => {
             Usuario
           </th>
           <th scope="col">
-            Correo electronico
+            Correo electrónico
           </th>
         </tr>
       </thead>

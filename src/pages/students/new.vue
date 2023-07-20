@@ -1,12 +1,26 @@
 <script setup>
+import BreadCrumbLayout from "@/components/BreadCrumbLayout.vue";
 import StudentForm from "@/components/StudentForm.vue";
+
+const items = [
+  {
+    text: 'Alumnos',
+    color: 'primary',
+    disabled: false,
+    to: '/students',
+  },
+  {
+    text: 'Crear Nuevo Alumno',
+    disabled: true,
+    to: '#',
+  },
+]
 </script>
 
 <template>
-  <VCard
-    class="mb-6"
-    title="Nuevo Tipo de Actividad"
+  <BreadCrumbLayout
+    :items="items"
   >
     <StudentForm />
-  </VCard>
+  </BreadCrumbLayout>
 </template>

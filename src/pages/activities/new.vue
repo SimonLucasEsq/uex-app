@@ -1,12 +1,26 @@
 <script setup>
 import ActivityForm from "@/components/ActivityForm.vue";
+import BreadCrumbLayout from "@/components/BreadCrumbLayout.vue";
+
+const items = [
+  {
+    text: 'Actividades',
+    color: 'primary',
+    disabled: false,
+    to: '/activities',
+  },
+  {
+    text: 'Crear Actividad',
+    disabled: true,
+    to: '#',
+  },
+]
 </script>
 
 <template>
-  <VCard
-    class="mb-6"
-    title="Nueva Actividad"
+  <BreadCrumbLayout
+    :items="items"
   >
     <ActivityForm />
-  </VCard>
+  </BreadCrumbLayout>
 </template>

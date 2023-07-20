@@ -47,7 +47,7 @@ onBeforeMount(async () => {
       @submit.prevent="() => {}"
     >
       <VRow>
-        <VCol cols="12 text-subtitle-1">
+        <VCol cols="12 text-h6">
           Datos Personales
         </VCol>
         <VCol cols="12">
@@ -92,7 +92,7 @@ onBeforeMount(async () => {
             :rules="[requiredValidator]"
           />
         </VCol>
-        <VCol cols="12 text-subtitle-1">
+        <VCol cols="12 text-h6">
           Datos de Contacto
         </VCol>
         <VCol cols="12">
@@ -122,18 +122,18 @@ onBeforeMount(async () => {
             placeholder="Dirección"
           />
         </VCol>
-        <VCol cols="12 text-subtitle-1">
-          Datos Academicos
+        <VCol cols="12 text-h6">
+          Datos Académicos
         </VCol>
 
         <VCol cols="12">
           <VSelect
             id="career_id"
             v-model="student.career"
+            label="Carrera"
             :items="Array.from(careers.values())"
             item-title="name"
             item-value="id"
-            label="Carrera"
             persistent-hint
             return-object
             single-line

@@ -1,12 +1,26 @@
 <script setup>
+import BreadCrumbLayout from "@/components/BreadCrumbLayout.vue";
 import OrganizationForm from "@/components/OrganizationForm.vue";
+
+const items = [
+  {
+    text: 'Organizaciones',
+    color: 'primary',
+    disabled: false,
+    to: '/organizations',
+  },
+  {
+    text: 'Crear Organización',
+    disabled: true,
+    to: '#',
+  },
+]
 </script>
 
 <template>
-  <VCard
-    class="mb-6"
-    title="Nueva Organización"
+  <BreadCrumbLayout
+    :items="items"
   >
     <OrganizationForm />
-  </VCard>
+  </BreadCrumbLayout>
 </template>

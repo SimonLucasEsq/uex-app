@@ -51,6 +51,12 @@ onMounted(async () => {
       @submit.prevent="() => {}"
     >
       <VRow>
+        <VCol
+          class="text-h6"
+          cols="12"
+        >
+          Datos de la Organización
+        </VCol>
         <VCol cols="12">
           <VTextField
             id="name"
@@ -76,7 +82,10 @@ onMounted(async () => {
             label="Convenio Vigente"
           />
         </VCol>
-        <VCol cols="12 text-subtitle-1">
+        <VCol
+          class="text-h6"
+          cols="12"
+        >
           Datos de Contacto
         </VCol>
         <VCol cols="12">
@@ -91,8 +100,8 @@ onMounted(async () => {
           <VTextField
             id="contactEmail"
             v-model="organization.contactEmail"
-            label="Correo electronico"
-            placeholder="Correo electronico"
+            label="Correo electrónico"
+            placeholder="Correo electrónico"
             :rules="[requiredValidator]"
           />
         </VCol>
