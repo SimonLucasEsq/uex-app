@@ -16,6 +16,9 @@ const props = defineProps({
 
 const emit = defineEmits(['addNewRow', 'deleteRow'])
 const activitySubType = ref(props.activitySubType)
+function resetHours() {
+  activitySubType.value.hours = null
+}
 </script>
 
 <template>
@@ -47,12 +50,14 @@ const activitySubType = ref(props.activitySubType)
     <td>
       <VCheckbox
         v-model="activitySubType.unlimitedHours"
+        @click="resetHours"
       />
     </td>
     <td>
       <VTextField
         v-model="activitySubType.hours"
         type="number"
+        :disabled="activitySubType.unlimitedHours"
       />
     </td>
     <td>

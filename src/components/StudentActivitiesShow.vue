@@ -78,7 +78,7 @@ function submitStudent() {
               prepend-icon="tabler-download"
               @click="exportData"
             >
-              Exportar
+              Exportar Ficha
             </VBtn>
           </div>
         </VCardText>

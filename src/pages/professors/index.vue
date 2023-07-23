@@ -114,8 +114,8 @@ const paginationText = computed(() => {
           >
             <VBtn
               prepend-icon="tabler-file-upload"
-              @click="showImport"
               color="secondary"
+              @click="showImport"
             >
               Importar
             </VBtn>
@@ -145,12 +145,6 @@ const paginationText = computed(() => {
           <th
             scope="col"
           >
-            Horas
-          </th>
-
-          <th
-            scope="col"
-          >
             Correo Electrónico
           </th>
 
@@ -172,7 +166,6 @@ const paginationText = computed(() => {
               {{ professor.person.firstName }} {{ professor.person.lastName }}
             </RouterLink>
           </td>
-          <td>{{ professor.hours }}</td>
           <td>{{ professor.person.email }}</td>
           <td>
             <VBtn
@@ -208,7 +201,7 @@ const paginationText = computed(() => {
                         icon="tabler-download"
                       />
                     </template>
-                    <VListItemTitle>Exportar</VListItemTitle>
+                    <VListItemTitle>Exportar Ficha</VListItemTitle>
                   </VListItem>
                   <VListItem @click="showModal(professor)">
                     <template #prepend>

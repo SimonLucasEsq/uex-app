@@ -64,7 +64,7 @@ const currentTab = ref(0)
           v-model="currentTab"
           direction="vertical"
         >
-          <VTab>
+          <VTab class="pr-0">
             <VIcon
               start
               icon="tabler-users"
@@ -72,7 +72,7 @@ const currentTab = ref(0)
             Alumnos
           </VTab>
 
-          <VTab>
+          <VTab class="pr-0">
             <VIcon
               start
               icon="tabler-school"
@@ -82,7 +82,7 @@ const currentTab = ref(0)
         </VTabs>
       </div>
 
-      <VCardText>
+      <VCardText class="pl-0">
         <VWindow
           v-model="currentTab"
           class="ms-3"

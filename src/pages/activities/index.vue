@@ -7,6 +7,7 @@ import { useActivityStore } from "@/stores/activity"
 import { useCareerStore } from "@/stores/career"
 import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
+import { useActivityStatus } from '@/composables/activity-status'
 
 const store = useActivityStore()
 const activities = ref([])
@@ -20,6 +21,7 @@ const isDialogVisible = ref(false)
 const activityToDelete = ref(null)
 const isProjectReportVisible = ref(false)
 const { formatRecordsByAttribute } = useTextUtil()
+const { statusLabel, statusColor } = useActivityStatus()
 
 const items = [
   {
@@ -189,6 +191,12 @@ const paginationText = computed(() => {
             Horas de Extensión
           </th>
 
+          <th
+            scope="col"
+          >
+            Estado
+          </th>
+
           <th scope="col">
             Acciones
           </th>
@@ -218,6 +226,14 @@ const paginationText = computed(() => {
           <td>{{ activity.startDate }}</td>
           <td>
             {{ activity.hours }}
+          </td>
+          <td>
+            <VChip
+              label
+              :color="statusColor(activity.status)"
+            >
+              {{ statusLabel(activity.status) }}
+            </VChip>
           </td>
           <td>
             <VBtn

@@ -250,7 +250,7 @@ const paginationText = computed(() => {
                         icon="tabler-download"
                       />
                     </template>
-                    <VListItemTitle>Exportar</VListItemTitle>
+                    <VListItemTitle>Exportar Ficha</VListItemTitle>
                   </VListItem>
                   <VListItem @click="showModal(student)">
                     <template #prepend>

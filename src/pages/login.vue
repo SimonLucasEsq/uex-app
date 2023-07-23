@@ -10,8 +10,8 @@ import authV2MaskDark from '@images/pages/misc-mask-dark.png'
 import authV2MaskLight from '@images/pages/misc-mask-light.png'
 import { themeConfig } from '@themeConfig'
 import {
-emailValidator,
-requiredValidator
+  emailValidator,
+  requiredValidator,
 } from '@validators'
 import { onBeforeMount } from "vue"
 
@@ -22,8 +22,8 @@ onBeforeMount(() => {
 const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 const isPasswordVisible = ref(false)
-const email = ref('admin@demo.com')
-const password = ref('demo')
+const email = ref(localStorage.last_user_email)
+const password = ref('')
 const errorMessage = ref('')
 function singin() {
   axios.post('/signin', { email: email.value, password: password.value })
@@ -39,6 +39,7 @@ function signinSuccessful(response) {
   }
   localStorage.csrf = response.data.csrf
   localStorage.user_id = response.data.user_id
+  localStorage.last_user_email = email.value
   localStorage.signedIn = true
   router.push({ name: 'activities' })
 }

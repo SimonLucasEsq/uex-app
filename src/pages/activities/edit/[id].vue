@@ -11,7 +11,7 @@ const route = useRoute()
 const id = route.params.id
 const tab = ref("form")
 const showNewForm = ref(false)
-const activityWeeks = computed(() => useActivityWeekStore().data.recordList.records)
+const activityWeeks = ref([])
 const activityWeekToDelete = ref(null)
 const isVisibleDeleteDialog = ref(false)
 const selectedActivityWeekId = ref(null)
@@ -43,7 +43,9 @@ function onLeaveActivityWeekForm() {
 }
 
 onBeforeMount(async () => {
-  await useActivityWeekStore().api.query({ activity_id: id })
+  await useActivityWeekStore().api.query({ activity_id: id }).then(records => {
+    activityWeeks.value = records
+  })
 })
 
 const items = [

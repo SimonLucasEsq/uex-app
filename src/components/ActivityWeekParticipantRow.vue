@@ -1,8 +1,8 @@
 <script setup>
-import { useActivitySubTypeStore } from "@/stores/activity-sub-type";
-import { useProfessorStore } from "@/stores/professor";
-import { useStudentStore } from "@/stores/student";
-import { debounce } from 'vue-debounce';
+import { useActivitySubTypeStore } from "@/stores/activity-sub-type"
+import { useProfessorStore } from "@/stores/professor"
+import { useStudentStore } from "@/stores/student"
+import { debounce } from 'vue-debounce'
 
 const props = defineProps({
   participant: {
@@ -32,6 +32,10 @@ const participableType = participant.value.participableType?.toLowerCase()
 const participableStore = availableParticipableStores[participableType]
 const professors = ref([])
 const activitySubTypes = ref([])
+
+const isStudent = computed(() => {
+  return participableType === "student"
+})
 
 const participantCareers = computed(() => {
   if (participableType === "student") {
@@ -66,7 +70,7 @@ const fullName = computed(() => {
 </script>
 
 <template>
-  <td class="pa-0">
+  <td class="pa-0 pr-1">
     <VBtn
       v-if="props.showAddButton"
       icon
@@ -82,9 +86,10 @@ const fullName = computed(() => {
       />
     </VBtn>
   </td>
-  <td class="pl-1">
+  <td class="pr-0 w-25">
     <VAutocomplete
       v-model="participant.participable"
+      single-line
       :item-title="fullName"
       item-value="id"
       :items="professors"
@@ -94,13 +99,19 @@ const fullName = computed(() => {
       @update:search="professorSearch($event)"
     />
   </td>
-  <td>{{ participantCareers }}</td>
-  <td>{{ participant.participable?.person?.email }}</td>
+  <td class="pr-0">
+    {{ participantCareers }}
+  </td>
+  <td class="pr-0">
+    {{ participant.participable?.person?.email }}
+  </td>
   <td
-    class="p1-1"
+    class="pr-0"
   >
     <VAutocomplete
       v-model="participant.activitySubType"
+      single-line
+      class="app-autocomplete flex-grow-1"
       item-title="name"
       item-value="id"
       :items="activitySubTypes"
@@ -110,7 +121,20 @@ const fullName = computed(() => {
       @update:search="activitySubTypeSearch($event)"
     />
   </td>
-  <td>
+  <td
+    v-if="isStudent"
+    class="pr-0 w-25"
+  >
+    <VTextField
+      v-model="participant.description"
+      label="Descripción"
+      placeholder="Descripción"
+    />
+  </td>
+  <td
+    v-if="isStudent"
+    class="pr-0"
+  >
     <VTextField
       v-model="participant.hours"
       label="Créditos"
@@ -118,7 +142,10 @@ const fullName = computed(() => {
       type="number"
     />
   </td>
-  <td>
+  <td
+    v-if="isStudent"
+    class="pr-0"
+  >
     <VTextField
       v-model="participant.evaluation"
       label="Evaluación"
@@ -126,7 +153,7 @@ const fullName = computed(() => {
       type="number"
     />
   </td>
-  <td>
+  <td class="pr-0">
     <VBtn
       icon
       variant="text"

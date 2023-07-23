@@ -5,7 +5,6 @@ import ActivityWeekParticipantsShow from '@/components/ActivityWeekParticipantsS
 import { useActivityStatus } from "@/composables/activity-status"
 import { useActivityStore } from '@/stores/activity'
 import { useActivityWeekStore } from '@/stores/activity-week'
-import { format } from 'date-fns'
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -58,7 +57,7 @@ onMounted(async () => {
               :key="week.id"
               :value="`activity-week-${week.id}`"
             >
-              {{ format(new Date(week.startDate), 'MM/dd/yyyy') }} - {{ format(new Date(week.endDate), 'MM/dd/yyyy') }}
+              {{ week.startDate }} - {{ week.endDate }}
             </VTab>
           </VTabs>
           <VDivider />

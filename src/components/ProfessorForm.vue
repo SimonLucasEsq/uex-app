@@ -141,7 +141,6 @@ function onCancel() {
             v-model="professor.person.phoneNumber"
             label="Celular"
             placeholder="Celular"
-            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -151,7 +150,6 @@ function onCancel() {
             v-model="professor.person.address"
             label="Dirección"
             placeholder="Dirección"
-            :rules="[requiredValidator]"
           />
         </VCol>
         <VCol cols="12 text-h6">
