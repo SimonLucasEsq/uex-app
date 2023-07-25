@@ -210,7 +210,6 @@ function onCancel(){
             label="Vinculación ODS"
             placeholder="Vinculación ODS"
             type="number"
-            :rules="[requiredValidator]"
           />
         </VCol>
 

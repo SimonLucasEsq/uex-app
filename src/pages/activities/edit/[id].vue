@@ -40,12 +40,19 @@ function editActivityWeek(activityWeek) {
 function onLeaveActivityWeekForm() {
   selectedActivityWeekId.value = null
   toggleShwoNewForm()
+
+  // It should reload data from store
+  loadActivityWeeks()
 }
 
-onBeforeMount(async () => {
-  await useActivityWeekStore().api.query({ activity_id: id }).then(records => {
+function loadActivityWeeks() {
+  useActivityWeekStore().api.query({ activity_id: id }).then(records => {
     activityWeeks.value = records
   })
+}
+
+onBeforeMount(() => {
+  loadActivityWeeks()
 })
 
 const items = [

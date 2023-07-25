@@ -137,7 +137,7 @@ const { formatRecordsByAttribute } = useTextUtil()
           Coordinador:
         </div>
         <p class="description">
-          {{ props.activity.professor.name }}
+          {{ props.activity.professor.person.firstName }} {{ props.activity.professor.person.lastName }}
         </p>
       </div>
       <div class="container">
