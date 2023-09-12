@@ -1,5 +1,5 @@
 <script setup>
-import { usePerson } from '@/composables/person';
+import { usePerson } from '@/composables/person'
 
 const props = defineProps({
   professor: {
@@ -21,102 +21,107 @@ const careersText = props.professor.professorCareers.reduce(
       <VCard>
         <!-- 👉 Details -->
         <VCardText>
-          <VList class="card-list">
-            <!-- 👉 Personal Details -->
-            <p class="text-h6">
-              Datos Personales
-            </p>
-            <VDivider />
+          <VList
+            class="card-list"
+            aria-label="Datos del Docente"
+          >
+            <VListItem>
+              <!-- 👉 Personal Details -->
+              <p class="text-h6">
+                Datos Personales
+              </p>
+              <VDivider />
+            </VListItem>
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Nombres:
                   <span class="text-body-2">
                     {{ props.professor.person.firstName }}
                   </span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Apellidos:
                   <span class="text-body-2">{{ props.professor.person.lastName }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Sexo:
                   <span class="text-body-2">{{ usePerson().sexEnum[props.professor.person.sex] }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   N° C.I.:
                   <span class="text-body-2">{{ props.professor.person.idCard }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <!-- !SECTION -->
-
-            <VDivider />
-            <!-- 👉 Contact Details -->
-            <p class="text-h6 mt-3">
-              Datos de Contacto
-            </p>
-            <VDivider />
+            <VListItem>
+              <VDivider />
+              <!-- 👉 Contact Details -->
+              <p class="text-h6 mt-3">
+                Datos de Contacto
+              </p>
+              <VDivider />
+            </VListItem>
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Correo Electrónico:
                   <span class="text-body-2">{{ props.professor.person.email }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Celular:
                   <span class="text-body-2">{{ props.professor.person.phoneNumber }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Dirección:
                   <span class="text-body-2">{{ props.professor.person.address }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
             <!-- !SECTION -->
-
-            <VDivider />
-            <!-- 👉 Academic Details -->
-            <p class="text-h6 mt-3">
-              Datos Académicos
-            </p>
-
-            <VDivider />
+            <VListItem>
+              <VDivider />
+              <!-- 👉 Academic Details -->
+              <p class="text-h6 mt-3">
+                Datos Académicos
+              </p>
+              <VDivider />
+            </VListItem>
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Carreras:
                   <span class="text-body-2">{{ careersText }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
-            <!-- !SECTION -->
           </VList>
         </VCardText>
 
@@ -149,5 +154,9 @@ const careersText = props.professor.professorCareers.reduce(
 <style lang="scss" scoped>
 .card-list {
   --v-card-list-gap: 0.7rem;
+}
+
+.v-list-item-title p {
+  margin: 0;
 }
 </style>

@@ -96,12 +96,17 @@ const paginationText = computed(() => {
     title="Actividades"
   >
     <VCardText class="d-flex align-center flex-wrap gap-4">
-      <div class="d-flex align-center flex-wrap gap-4">
+      <div
+        class="d-flex align-center flex-wrap gap-4"
+        aria-label="Sección de filtros"
+      >
         <!-- 👉 Search  -->
         <VTextField
           v-model="searchQuery"
           class="filter"
           placeholder="Buscar"
+          aria-label="Buscar Actividad"
+          role="textbox"
           density="compact"
           @update:model-value="debounceSearch"
         />
@@ -115,6 +120,7 @@ const paginationText = computed(() => {
           item-title="name"
           item-value="id"
           persistent-hint
+          aria-label="Filtrar por carrera"
           @update:model-value="loadActivities"
         />
       </div>
@@ -242,6 +248,7 @@ const paginationText = computed(() => {
               color="default"
               size="x-small"
               :to="{ name: 'activities-edit-id', params: { id: activity.id }}"
+              aria-label="Editar Actividad"
             >
               <VIcon
                 :size="22"
@@ -254,10 +261,12 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              aria-label="dropdown"
             >
               <VIcon
                 :size="22"
                 icon="tabler-dots-vertical"
+                aria-label="dropdown"
               />
               <VMenu activator="parent">
                 <VList>
@@ -305,10 +314,11 @@ const paginationText = computed(() => {
         <span class="text-no-wrap me-3">Mostrar:</span>
         <VSelect
           v-model="rowPerPage"
-          density="compact"
           :items="[10, 20, 30, 50]"
-          @update:modelValue="loadActivities"
-        />
+          aria-label="Seleccionar número de filas por página"
+        >
+          >
+        </VSelect>
       </div>
       <!-- 👉 Pagination meta -->
       <span class="text-sm text-disabled">

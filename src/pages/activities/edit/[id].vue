@@ -94,6 +94,7 @@ const items = [
             variant="text"
             color="default"
             size="x-small"
+            :aria-label="`Opciones de fecha ${week.startDate} a ${week.endDate}`"
           >
             <VIcon
               :size="22"
@@ -101,7 +102,10 @@ const items = [
             />
             <VMenu activator="parent">
               <VList>
-                <VListItem @click="editActivityWeek(week)">
+                <VListItem
+                  :aria-label="`Editar fecha ${week.startDate} a ${week.endDate}`"
+                  @click="editActivityWeek(week)"
+                >
                   <template #prepend>
                     <VIcon
                       size="24"
@@ -132,6 +136,7 @@ const items = [
         size="small"
         class="ma-2 pa-2"
         variant="tonal"
+        aria-label="Nueva Fecha"
         @click="toggleShwoNewForm"
       >
         <VIcon

@@ -1,8 +1,8 @@
 <script setup>
-import ConfirmModal from "@/components/ConfirmModal.vue";
-import { useOrganizationStore } from "@/stores/organization";
-import { computed, onMounted } from "vue";
-import { debounce } from 'vue-debounce';
+import ConfirmModal from "@/components/ConfirmModal.vue"
+import { useOrganizationStore } from "@/stores/organization"
+import { computed, onMounted } from "vue"
+import { debounce } from 'vue-debounce'
 
 const store = useOrganizationStore()
 const organizations = ref([])
@@ -65,6 +65,7 @@ const paginationText = computed(() => {
           <VTextField
             v-model="searchQuery"
             placeholder="Buscar"
+            aria-label="Buscar organización"
             density="compact"
             @update:modelValue="debounceSearch"
           />
@@ -120,6 +121,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Editar organización ${organization.name}`"
               :to="{ name: 'organizations-id', params: { id: organization.id }}"
             >
               <VIcon
@@ -133,6 +135,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Acciones sobre organización ${organization.name}`"
             >
               <VIcon
                 :size="22"
@@ -140,7 +143,10 @@ const paginationText = computed(() => {
               />
               <VMenu activator="parent">
                 <VList>
-                  <VListItem @click="showModal(organization)">
+                  <VListItem
+                    :aria-label="`Eliminar organización ${organization.name}`"
+                    @click="showModal(organization)"
+                  >
                     <template #prepend>
                       <VIcon
                         size="24"
@@ -185,6 +191,7 @@ const paginationText = computed(() => {
         <VSelect
           v-model="rowPerPage"
           density="compact"
+          aria-label="Seleccionar número de filas por página"
           :items="[10, 20, 30, 50]"
           @update:modelValue="loadOrganizations"
         />

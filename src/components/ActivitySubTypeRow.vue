@@ -26,7 +26,10 @@ function resetHours() {
     v-if="!activitySubType['_destroy']"
     style="height: 3.75rem;"
   >
-    <td class="pa-0">
+    <td
+      scope="col"
+      class="pa-0"
+    >
       <VBtn
         v-if="props.showAddButton"
         icon
@@ -34,6 +37,7 @@ function resetHours() {
         size="small"
         variant="tonal"
         color="default"
+        aria-label="Agregar subtipo de actividad"
         @click="emit('addNewRow')"
       >
         <VIcon
@@ -45,11 +49,15 @@ function resetHours() {
     <td class="pa-0">
       <VTextField
         v-model="activitySubType.name"
+        label="Nombre"
+        placeholder="Nombre"
       />
     </td>
     <td>
       <VCheckbox
         v-model="activitySubType.unlimitedHours"
+        label="Sin Límites"
+        placeholder="Sin Límites"
         @click="resetHours"
       />
     </td>
@@ -57,6 +65,8 @@ function resetHours() {
       <VTextField
         v-model="activitySubType.hours"
         type="number"
+        label="Horas de extensión"
+        placeholder="Horas de extensión"
         :disabled="activitySubType.unlimitedHours"
       />
     </td>
@@ -66,6 +76,7 @@ function resetHours() {
         variant="text"
         color="default"
         size="x-small"
+        :aria-label="`Eliminar tipo de actividad ${activitySubType.name}`"
         @click="emit('deleteRow')"
       >
         <VIcon

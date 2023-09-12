@@ -117,6 +117,7 @@ function checkSignedIn() {
                 <VTextField
                   v-model="email"
                   label="Correo"
+                  aria-label="Correo"
                   type="email"
                   :rules="[requiredValidator, emailValidator]"
                 />
