@@ -2,6 +2,7 @@
 import ActivityShow from '@/components/ActivityShow.vue'
 import ActivityStatusForm from '@/components/ActivityStatusForm.vue'
 import ActivityWeekParticipantsShow from '@/components/ActivityWeekParticipantsShow.vue'
+import BreadCrumbLayout from "@/components/BreadCrumbLayout.vue"
 import { useActivityStatus } from "@/composables/activity-status"
 import { useActivityStore } from '@/stores/activity'
 import { useActivityWeekStore } from '@/stores/activity-week'
@@ -31,10 +32,26 @@ onMounted(async () => {
   activityWeeks.value = await useActivityWeekStore().api.query({ activity_id: id })
   tab.value = `activity-week-${activityWeeks.value.entries().next().value[0]}`
 })
+
+const items = [
+  {
+    text: 'Actividades',
+    color: 'primary',
+    disabled: false,
+    to: '/activities',
+  },
+  {
+    text: 'Ver Actividad',
+    disabled: true,
+    to: '#',
+  },
+]
 </script>
 
 <template>
-  <section>
+  <BreadCrumbLayout
+    :items="items"
+  >
     <VRow>
       <VCol
         cols="12"
@@ -130,5 +147,5 @@ onMounted(async () => {
       :activity="activity"
       :status="updateStatusTo"
     />
-  </section>
+  </BreadCrumbLayout>
 </template>
