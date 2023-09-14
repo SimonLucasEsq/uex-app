@@ -173,6 +173,10 @@ const paginationText = computed(() => {
             Nombre
           </th>
 
+          <th scope="col">
+            Carrera
+          </th>
+
           <th
             scope="col"
           >
@@ -209,6 +213,7 @@ const paginationText = computed(() => {
               {{ student.person.firstName }} {{ student.person.lastName }}
             </RouterLink>
           </td>
+          <td>{{ student.career.name }}</td>
           <td>{{ student.hours }}</td>
           <td>
             <VChip

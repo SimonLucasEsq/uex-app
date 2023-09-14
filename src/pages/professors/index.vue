@@ -67,6 +67,13 @@ function showImport() {
   isImportVisible.value = true
 }
 
+const careersText = function(professor) {
+  return professor.professorCareers.reduce(
+    (acumulator, currentItem) => {
+      return !acumulator ? currentItem.careerName : `${acumulator}, ${currentItem.careerName}`
+    }, '')
+}
+
 // Computing pagination text
 const paginationText = computed(() => {
   const firstIndex = professors.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
@@ -144,6 +151,10 @@ const paginationText = computed(() => {
             Nombre
           </th>
 
+          <th scope="col">
+            Carrera
+          </th>
+
           <th
             scope="col"
           >
@@ -171,6 +182,7 @@ const paginationText = computed(() => {
               {{ professor.person.firstName }} {{ professor.person.lastName }}
             </RouterLink>
           </td>
+          <td>{{ careersText(professor) }}</td>
           <td>{{ professor.person.email }}</td>
           <td>
             <VBtn
