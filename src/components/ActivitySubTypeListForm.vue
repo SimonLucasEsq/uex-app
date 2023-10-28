@@ -1,6 +1,6 @@
 <script setup>
-import ActivitySubTypeRow from "@/components/ActivitySubTypeRow.vue";
-import { computed } from 'vue';
+import ActivitySubTypeRow from "@/components/ActivitySubTypeRow.vue"
+import { computed } from 'vue'
 
 const props = defineProps({
   activitySubTypes: {
@@ -46,6 +46,7 @@ function deleteRecord(index) {
       size="small"
       variant="tonal"
       color="default"
+      aria-label="Agregar subtipo de actividad"
       @click="addNewActivitySubType"
     >
       <VIcon

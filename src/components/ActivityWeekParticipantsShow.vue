@@ -1,6 +1,6 @@
 <script setup>
-import { useActivityWeekParticipantStore } from "@/stores/activity-week-participant";
-import { onBeforeMount } from 'vue';
+import { useActivityWeekParticipantStore } from "@/stores/activity-week-participant"
+import { onBeforeMount } from 'vue'
 
 const props = defineProps({
   activityWeekId: {
@@ -31,9 +31,9 @@ async function loadParticipants() {
   <VCard>
     <div class="d-flex">
       <VCardText>
-        <h6 class="font-weight-bold text-xl">
+        <p class="text-h6 font-weight-bold text-xl">
           Estdiantes Extensionistas
-        </h6>
+        </p>
         <VTable class="text-no-wrap">
           <!-- 👉 Table head -->
           <thead class="text-uppercase">
@@ -112,9 +112,9 @@ async function loadParticipants() {
           </tfoot>
         </VTable>
 
-        <h6 class="font-weight-bold text-xl mt-5">
+        <p class="text-h6 font-weight-bold text-xl mt-5">
           Docentes Extensionistas
-        </h6>
+        </p>
         <VTable class="text-no-wrap">
           <!-- 👉 Table head -->
           <thead class="text-uppercase">

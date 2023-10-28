@@ -7,6 +7,7 @@ import { useActivityStore } from "@/stores/activity"
 import { useCareerStore } from "@/stores/career"
 import { computed, onMounted } from "vue"
 import { debounce } from 'vue-debounce'
+import { useActivityStatus } from '@/composables/activity-status'
 
 const store = useActivityStore()
 const activities = ref([])
@@ -20,6 +21,7 @@ const isDialogVisible = ref(false)
 const activityToDelete = ref(null)
 const isProjectReportVisible = ref(false)
 const { formatRecordsByAttribute } = useTextUtil()
+const { statusLabel, statusColor } = useActivityStatus()
 
 const items = [
   {
@@ -94,12 +96,17 @@ const paginationText = computed(() => {
     title="Actividades"
   >
     <VCardText class="d-flex align-center flex-wrap gap-4">
-      <div class="d-flex align-center flex-wrap gap-4">
+      <div
+        class="d-flex align-center flex-wrap gap-4"
+        aria-label="Sección de filtros"
+      >
         <!-- 👉 Search  -->
         <VTextField
           v-model="searchQuery"
           class="filter"
           placeholder="Buscar"
+          aria-label="Buscar Actividad"
+          role="textbox"
           density="compact"
           @update:model-value="debounceSearch"
         />
@@ -113,6 +120,7 @@ const paginationText = computed(() => {
           item-title="name"
           item-value="id"
           persistent-hint
+          aria-label="Filtrar por carrera"
           @update:model-value="loadActivities"
         />
       </div>
@@ -189,6 +197,12 @@ const paginationText = computed(() => {
             Horas de Extensión
           </th>
 
+          <th
+            scope="col"
+          >
+            Estado
+          </th>
+
           <th scope="col">
             Acciones
           </th>
@@ -220,12 +234,21 @@ const paginationText = computed(() => {
             {{ activity.hours }}
           </td>
           <td>
+            <VChip
+              label
+              :color="statusColor(activity.status)"
+            >
+              {{ statusLabel(activity.status) }}
+            </VChip>
+          </td>
+          <td>
             <VBtn
               icon
               variant="text"
               color="default"
               size="x-small"
               :to="{ name: 'activities-edit-id', params: { id: activity.id }}"
+              aria-label="Editar Actividad"
             >
               <VIcon
                 :size="22"
@@ -238,10 +261,12 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              aria-label="dropdown"
             >
               <VIcon
                 :size="22"
                 icon="tabler-dots-vertical"
+                aria-label="dropdown"
               />
               <VMenu activator="parent">
                 <VList>
@@ -289,10 +314,11 @@ const paginationText = computed(() => {
         <span class="text-no-wrap me-3">Mostrar:</span>
         <VSelect
           v-model="rowPerPage"
-          density="compact"
           :items="[10, 20, 30, 50]"
-          @update:modelValue="loadActivities"
-        />
+          aria-label="Seleccionar número de filas por página"
+        >
+          >
+        </VSelect>
       </div>
       <!-- 👉 Pagination meta -->
       <span class="text-sm text-disabled">

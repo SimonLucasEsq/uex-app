@@ -1,7 +1,7 @@
 <script setup>
-import { useActivityWeekStore } from "@/stores/activity-week";
-import { requiredValidator } from '@validators';
-import { computed, onBeforeMount } from 'vue';
+import { useActivityWeekStore } from "@/stores/activity-week"
+import { requiredValidator } from '@validators'
+import { computed, onBeforeMount } from 'vue'
 
 const props = defineProps({
   id: {
@@ -104,7 +104,7 @@ const title = `${store.isNew ? "Crear" : "Editar"} Fecha`
                 label="Fecha de inicio de la actividad"
                 placeholder="Fecha de inicio de la actividad"
                 :config="{dateFormat: 'd/m/Y'}"
-                :rules="[startDateLessthanEndDate, requiredValidator]"
+                :rules="[requiredValidator]"
               />
             </VCol>
 
@@ -114,7 +114,7 @@ const title = `${store.isNew ? "Crear" : "Editar"} Fecha`
                 label="Fecha de culminación de la actividad"
                 placeholder="Fecha de culminación de la actividad"
                 :config="{dateFormat: 'd/m/Y'}"
-                :rules="[endDateGreaterThanStartDate, requiredValidator]"
+                :rules="[requiredValidator]"
               />
             </VCol>
           </VRow>

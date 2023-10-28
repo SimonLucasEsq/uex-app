@@ -210,7 +210,6 @@ function onCancel(){
             label="Vinculación ODS"
             placeholder="Vinculación ODS"
             type="number"
-            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -281,6 +280,7 @@ function onCancel(){
             item-title="careerName"
             item-value="careerId"
             label="Carrera"
+            aria-label="Elegir Carrera"
             multiple
             chips
             filled

@@ -37,6 +37,7 @@ watch(theme, val => {
     variant="text"
     color="default"
     size="small"
+    aria-label="theme"
     @click="changeTheme"
   >
     <VIcon

@@ -21,9 +21,9 @@ const { formatRecordsByAttribute } = useTextUtil()
       <div class="my-2 mr-sm-4 w-75">
         <div class="d-flex align-center mb-6">
           <!-- 👉 Title -->
-          <h6 class="font-weight-bold text-xl">
+          <p class="text-h6 font-weight-bold text-xl">
             {{ props.activity.name }}
-          </h6>
+          </p>
         </div>
 
         <!-- 👉 Hours -->
@@ -137,7 +137,7 @@ const { formatRecordsByAttribute } = useTextUtil()
           Coordinador:
         </div>
         <p class="description">
-          {{ props.activity.professor.name }}
+          {{ props.activity.professor.person.firstName }} {{ props.activity.professor.person.lastName }}
         </p>
       </div>
       <div class="container">

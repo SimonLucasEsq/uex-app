@@ -11,7 +11,7 @@ const route = useRoute()
 const id = route.params.id
 const tab = ref("form")
 const showNewForm = ref(false)
-const activityWeeks = computed(() => useActivityWeekStore().data.recordList.records)
+const activityWeeks = ref([])
 const activityWeekToDelete = ref(null)
 const isVisibleDeleteDialog = ref(false)
 const selectedActivityWeekId = ref(null)
@@ -40,10 +40,19 @@ function editActivityWeek(activityWeek) {
 function onLeaveActivityWeekForm() {
   selectedActivityWeekId.value = null
   toggleShwoNewForm()
+
+  // It should reload data from store
+  loadActivityWeeks()
 }
 
-onBeforeMount(async () => {
-  await useActivityWeekStore().api.query({ activity_id: id })
+function loadActivityWeeks() {
+  useActivityWeekStore().api.query({ activity_id: id }).then(records => {
+    activityWeeks.value = records
+  })
+}
+
+onBeforeMount(() => {
+  loadActivityWeeks()
 })
 
 const items = [
@@ -85,6 +94,7 @@ const items = [
             variant="text"
             color="default"
             size="x-small"
+            :aria-label="`Opciones de fecha ${week.startDate} a ${week.endDate}`"
           >
             <VIcon
               :size="22"
@@ -92,7 +102,10 @@ const items = [
             />
             <VMenu activator="parent">
               <VList>
-                <VListItem @click="editActivityWeek(week)">
+                <VListItem
+                  :aria-label="`Editar fecha ${week.startDate} a ${week.endDate}`"
+                  @click="editActivityWeek(week)"
+                >
                   <template #prepend>
                     <VIcon
                       size="24"
@@ -123,6 +136,7 @@ const items = [
         size="small"
         class="ma-2 pa-2"
         variant="tonal"
+        aria-label="Nueva Fecha"
         @click="toggleShwoNewForm"
       >
         <VIcon

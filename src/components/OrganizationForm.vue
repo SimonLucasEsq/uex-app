@@ -1,8 +1,8 @@
 <script setup>
-import { useOrganizationStore } from "@/stores/organization";
-import { requiredValidator } from '@validators';
-import { computed, onMounted } from 'vue';
-import router from "../router";
+import { useOrganizationStore } from "@/stores/organization"
+import { requiredValidator } from '@validators'
+import { computed, onMounted } from 'vue'
+import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
@@ -94,6 +94,7 @@ onMounted(async () => {
             v-model="organization.contactName"
             label="Encargado"
             placeholder="Encargado"
+            :rules="[requiredValidator]"
           />
         </VCol>
         <VCol cols="12">
@@ -102,7 +103,6 @@ onMounted(async () => {
             v-model="organization.contactEmail"
             label="Correo electrónico"
             placeholder="Correo electrónico"
-            :rules="[requiredValidator]"
           />
         </VCol>
         <VCol cols="12">
@@ -111,7 +111,6 @@ onMounted(async () => {
             v-model="organization.contactPhonenumber"
             label="Celular"
             placeholder="Celular"
-            :rules="[requiredValidator]"
           />
         </VCol>
 

@@ -106,6 +106,7 @@ const paginationText = computed(() => {
           v-model="searchQuery"
           class="filter"
           placeholder="Buscar"
+          aria-label="Buscar alumno"
           density="compact"
           @update:model-value="debounceSearch"
         />
@@ -118,6 +119,7 @@ const paginationText = computed(() => {
           :items="Array.from(careers.values())"
           item-title="name"
           item-value="id"
+          aria-label="Filtrar por carrera"
           persistent-hint
           @update:model-value="loadStudents"
         />
@@ -129,6 +131,7 @@ const paginationText = computed(() => {
           :items="statusOptions()"
           item-title="name"
           item-value="value"
+          aria-label="Filtrar por estado"
           persistent-hint
           @update:model-value="loadStudents"
         />
@@ -170,6 +173,10 @@ const paginationText = computed(() => {
             Nombre
           </th>
 
+          <th scope="col">
+            Carrera
+          </th>
+
           <th
             scope="col"
           >
@@ -206,6 +213,7 @@ const paginationText = computed(() => {
               {{ student.person.firstName }} {{ student.person.lastName }}
             </RouterLink>
           </td>
+          <td>{{ student.career.name }}</td>
           <td>{{ student.hours }}</td>
           <td>
             <VChip
@@ -222,6 +230,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Editar alumno ${student.person.firstName} ${student.person.lastName}`"
               :to="{ name: 'students-edit-id', params: { id: student.id }}"
             >
               <VIcon
@@ -235,6 +244,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Acciones sobre alumno ${student.person.firstName} ${student.person.lastName}`"
             >
               <VIcon
                 :size="22"
@@ -242,7 +252,10 @@ const paginationText = computed(() => {
               />
               <VMenu activator="parent">
                 <VList>
-                  <VListItem @click="exportData(student)">
+                  <VListItem
+                    :aria-label="`Exportar Ficha de ${student.person.firstName} ${student.person.lastName}`"
+                    @click="exportData(student)"
+                  >
                     <template #prepend>
                       <VIcon
                         size="24"
@@ -250,9 +263,12 @@ const paginationText = computed(() => {
                         icon="tabler-download"
                       />
                     </template>
-                    <VListItemTitle>Exportar</VListItemTitle>
+                    <VListItemTitle>Exportar Ficha</VListItemTitle>
                   </VListItem>
-                  <VListItem @click="showModal(student)">
+                  <VListItem
+                    :aria-label="`Eliminar alumno ${student.person.firstName} ${student.person.lastName}`"
+                    @click="showModal(student)"
+                  >
                     <template #prepend>
                       <VIcon
                         size="24"
@@ -311,6 +327,7 @@ const paginationText = computed(() => {
           v-model="rowPerPage"
           density="compact"
           :items="[10, 20, 30, 50]"
+          aria-label="Seleccionar número de filas por página"
           @update:modelValue="loadStudents"
         />
       </div>

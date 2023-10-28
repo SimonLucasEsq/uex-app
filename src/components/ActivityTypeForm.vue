@@ -68,7 +68,7 @@ onMounted(async () => {
         <VDivider />
 
         <VCol cols="12 text-h6">
-          Subtipos de actividades
+          Subtipos de Actividades
         </VCol>
 
         <ActivitySubTypeListForm

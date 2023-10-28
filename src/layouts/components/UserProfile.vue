@@ -1,8 +1,8 @@
 <script setup>
-import router from "@/router";
-import { useUserStore } from "@/stores/user";
-import { securedAxiosInstance as axios } from '@axios';
-import { onMounted } from "vue";
+import router from "@/router"
+import { useUserStore } from "@/stores/user"
+import { securedAxiosInstance as axios } from '@axios'
+import { onMounted } from "vue"
 
 const store = useUserStore()
 const currentUser = ref({})
@@ -32,14 +32,16 @@ async function loadCurrentUser() {
     <VAvatar
       class="cursor-pointer"
       color="secondary"
+      role="button"
+      aria-label="Abrir menú de usuario"
     >
       <VIcon
         color="white"
         size="25"
         icon="tabler-user"
+        aria-hidden="true"
       />
 
-      <!-- SECTION Menu -->
       <VMenu
         activator="parent"
         width="230"
@@ -47,10 +49,13 @@ async function loadCurrentUser() {
         offset="14px"
       >
         <VList>
-          <!-- 👉 User Avatar & Name -->
           <VListItem>
             <template #prepend>
-              <VListItemAction start>
+              <VListItemAction
+                aria-expanded="false"
+                aria-controls="user-menu"
+                start
+              >
                 <VBadge
                   dot
                   location="bottom right"
@@ -63,6 +68,7 @@ async function loadCurrentUser() {
                       color="white"
                       size="25"
                       icon="tabler-user"
+                      aria-hidden="true"
                     />
                   </VAvatar>
                 </VBadge>
@@ -76,7 +82,6 @@ async function loadCurrentUser() {
 
           <VDivider class="my-2" />
 
-          <!-- 👉 Usuarios -->
           <VListItem
             link
             :to="{ name: 'users' }"
@@ -86,22 +91,26 @@ async function loadCurrentUser() {
                 class="me-2"
                 icon="tabler-user"
                 size="22"
+                aria-hidden="true"
               />
             </template>
 
             <VListItemTitle>Usuarios</VListItemTitle>
           </VListItem>
 
-          <!-- Divider -->
           <VDivider class="my-2" />
 
-          <!-- 👉 Logout -->
-          <VListItem @click="logout">
+          <VListItem
+            role="button"
+            aria-label="Cerrar Sesión"
+            @click="logout"
+          >
             <template #prepend>
               <VIcon
                 class="me-2"
                 icon="tabler-logout"
                 size="22"
+                aria-hidden="true"
               />
             </template>
 
@@ -109,7 +118,6 @@ async function loadCurrentUser() {
           </VListItem>
         </VList>
       </VMenu>
-      <!-- !SECTION -->
     </VAvatar>
   </VBadge>
 </template>
