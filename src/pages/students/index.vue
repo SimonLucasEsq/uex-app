@@ -207,9 +207,14 @@ const paginationText = computed(() => {
           :key="student.id"
           style="height: 3.75rem;"
         >
-          <td>{{ student.person.idCard }}</td>
+          <td :aria-label="`Cédula número ${student.person.idCard}`">
+            {{ student.person.idCard }}
+          </td>
           <td>
-            <RouterLink :to="{ name: 'students-show-id', params: { id: student.id }}">
+            <RouterLink
+              :to="{ name: 'students-show-id', params: { id: student.id }}"
+              :aria-label="`Ver alumno ${student.person.firstName} ${student.person.lastName}`"
+            >
               {{ student.person.firstName }} {{ student.person.lastName }}
             </RouterLink>
           </td>
@@ -280,6 +285,7 @@ const paginationText = computed(() => {
                   </VListItem>
                   <VListItem
                     v-if="student.status == 'to_be_submitted'"
+                    :aria-label="`Remitir alumno ${student.person.firstName} ${student.person.lastName}`"
                     @click="showUpdateStatusModal(student)"
                   >
                     <template #prepend>
