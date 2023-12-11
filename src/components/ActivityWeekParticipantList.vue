@@ -30,6 +30,7 @@ const titleHash = {
 const searchQuery = ref('')
 
 const participants = ref(props.participants)
+const isStudent = computed(() => props.participableType == "Student")
 
 const filteredParticipants = computed(() => {
   return participants.value.filter(
@@ -101,7 +102,6 @@ function autoCompleate(){
   <VCard
     id="activity-list"
     class="mb-6"
-    :title="titleHash[props.participableType]"
   >
     <VCardText class="d-flex align-center flex-wrap gap-4 pr-2">
       <div class="d-flex justify-start flex-wrap gap-4 me-auto">
@@ -117,7 +117,7 @@ function autoCompleate(){
 
       <div class="d-flex justify-end align-center">
         <VBtn
-          v-if="!registeredHours"
+          v-if="!registeredHours && isStudent"
           @click="registerHours"
         >
           Registrar
@@ -126,7 +126,7 @@ function autoCompleate(){
 
       <div class="d-flex justify-end align-center">
         <VBtn
-          v-if="!registeredHours"
+          v-if="!registeredHours && isStudent"
           prepend-icon="tabler-arrow-autofit-down"
           variant="tonal"
           color="default"
@@ -155,46 +155,64 @@ function autoCompleate(){
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-          <th class="pa-0" />
+          <th class="pa-0 pr-1" />
 
           <th
-            class="pl-1 w-25"
+            class="pr-0 w-25"
             scope="col"
           >
             Nombre
           </th>
 
           <th
+            class="pr-0"
             scope="col"
           >
             Carrera
           </th>
 
           <th
+            class="pr-0"
             scope="col"
           >
             Correo electrónico
           </th>
 
           <th
+            class="pr-0"
             scope="col"
           >
             Tipo de Actividad
           </th>
 
           <th
+            v-if="isStudent"
+            class="pr-0"
+            scope="col"
+          >
+            Descripción
+          </th>
+
+          <th
+            v-if="isStudent"
+            class="pr-0"
             scope="col"
           >
             Créditos
           </th>
 
           <th
+            v-if="isStudent"
+            class="pr-0"
             scope="col"
           >
             Evaluación
           </th>
 
-          <th scope="col">
+          <th
+            class="pr-0"
+            scope="col"
+          >
             Acciones
           </th>
         </tr>
@@ -235,7 +253,7 @@ function autoCompleate(){
         type="submit"
         @click="save"
       >
-        {{ registeredHours ? "Corregir" : "Guardar" }}
+        {{ registeredHours && isStudent ? "Corregir" : "Guardar" }}
       </VBtn>
     </VCol>
   </VCard>
@@ -247,5 +265,9 @@ function autoCompleate(){
   .filter {
     inline-size: 15rem;
   }
+}
+
+th {
+  padding-inline-start: 0;
 }
 </style>

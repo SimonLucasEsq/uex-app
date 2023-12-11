@@ -9,6 +9,7 @@ class ActivityWeekApi extends Api {
       .then(response => {
         this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {} }
         this.data.recordList.records.set(this.data.record.id, this.data.record)
+        this.showAlert('update', 'success')
 
         return this.data.record
       }).catch(error => {
@@ -17,6 +18,7 @@ class ActivityWeekApi extends Api {
           this.data.record.errors = errors
         }
 
+        this.showAlert('update', 'error')
         console.log(`Fallo al actualizar ${this.recordKey}`)
       })
   }

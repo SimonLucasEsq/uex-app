@@ -41,7 +41,7 @@ onMounted(async () => {
   >
     Ops! Error al crear el usuario
     <div v-if="user.errors.email">
-      Correo electronico
+      Correo electrónico
       <VList :items="user.errors.email" />
     </div>
   </VAlert>
@@ -56,8 +56,8 @@ onMounted(async () => {
           <VTextField
             id="username"
             v-model="user.username"
-            label="Usuario"
-            placeholder="Usuario"
+            label="Nombre de usuario"
+            placeholder="Nombre de usuario"
             :rules="[requiredValidator]"
           />
         </VCol>
@@ -65,8 +65,8 @@ onMounted(async () => {
           <VTextField
             id="email"
             v-model="user.email"
-            label="Correo electronico"
-            placeholder="Correo electronico"
+            label="Correo electrónico"
+            placeholder="Correo electrónico"
             :rules="[requiredValidator]"
           />
         </VCol>

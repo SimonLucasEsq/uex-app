@@ -110,6 +110,7 @@ const emitModelValue = val => {
               v-if="!isInlinePicker"
               v-bind="compAttrs"
               ref="refFlatPicker"
+              aria-hidden="true"
               :model-value="modelValue"
               class="flat-picker-custom-style"
               :disabled="isReadonly.value"

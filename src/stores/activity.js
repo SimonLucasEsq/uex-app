@@ -10,6 +10,7 @@ class ActivityApi extends Api {
       .then(response => {
         this.data.record = { ...this.toCamelCaseRecord(response.data[this.recordKey]), errors: {} }
         this.data.recordList.records.set(this.data.record.id, this.data.record)
+        this.showAlert('update', 'success')
 
         return this.data.record
       }).catch(error => {
@@ -17,7 +18,7 @@ class ActivityApi extends Api {
         if (errors) {
           this.data.record.errors = errors
         }
-
+        this.showAlert('update', 'error')
         console.log(`Fallo al actualizar ${this.recordKey}`)
       })
   }
@@ -71,7 +72,7 @@ export const useActivityStore = defineStore('activities', () => {
     hours: 0,
     odsVinculation: null,
     institutionalProgram: null,
-    institutionalExtensionLine: 0,
+    institutionalExtensionLine: null,
     startDate: null,
     endDate: null,
     objective: null,

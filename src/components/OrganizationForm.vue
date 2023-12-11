@@ -1,8 +1,8 @@
 <script setup>
-import { useOrganizationStore } from "@/stores/organization";
-import { requiredValidator } from '@validators';
-import { computed, onMounted } from 'vue';
-import router from "../router";
+import { useOrganizationStore } from "@/stores/organization"
+import { requiredValidator } from '@validators'
+import { computed, onMounted } from 'vue'
+import router from "../router"
 
 const props = defineProps(['id'])
 const refForm = ref()
@@ -51,6 +51,12 @@ onMounted(async () => {
       @submit.prevent="() => {}"
     >
       <VRow>
+        <VCol
+          class="text-h6"
+          cols="12"
+        >
+          Datos de la Organización
+        </VCol>
         <VCol cols="12">
           <VTextField
             id="name"
@@ -76,7 +82,10 @@ onMounted(async () => {
             label="Convenio Vigente"
           />
         </VCol>
-        <VCol cols="12 text-subtitle-1">
+        <VCol
+          class="text-h6"
+          cols="12"
+        >
           Datos de Contacto
         </VCol>
         <VCol cols="12">
@@ -85,15 +94,15 @@ onMounted(async () => {
             v-model="organization.contactName"
             label="Encargado"
             placeholder="Encargado"
+            :rules="[requiredValidator]"
           />
         </VCol>
         <VCol cols="12">
           <VTextField
             id="contactEmail"
             v-model="organization.contactEmail"
-            label="Correo electronico"
-            placeholder="Correo electronico"
-            :rules="[requiredValidator]"
+            label="Correo electrónico"
+            placeholder="Correo electrónico"
           />
         </VCol>
         <VCol cols="12">
@@ -102,7 +111,6 @@ onMounted(async () => {
             v-model="organization.contactPhonenumber"
             label="Celular"
             placeholder="Celular"
-            :rules="[requiredValidator]"
           />
         </VCol>
 

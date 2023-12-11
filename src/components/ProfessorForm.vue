@@ -77,7 +77,7 @@ function onCancel() {
       @submit.prevent="() => {}"
     >
       <VRow>
-        <VCol cols="12 text-subtitle-1">
+        <VCol cols="12 text-h6">
           Datos Personales
         </VCol>
         <VCol cols="12">
@@ -122,7 +122,7 @@ function onCancel() {
             :rules="[requiredValidator]"
           />
         </VCol>
-        <VCol cols="12 text-subtitle-1">
+        <VCol cols="12 text-h6">
           Datos de Contacto
         </VCol>
         <VCol cols="12">
@@ -141,7 +141,6 @@ function onCancel() {
             v-model="professor.person.phoneNumber"
             label="Celular"
             placeholder="Celular"
-            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -151,11 +150,10 @@ function onCancel() {
             v-model="professor.person.address"
             label="Dirección"
             placeholder="Dirección"
-            :rules="[requiredValidator]"
           />
         </VCol>
-        <VCol cols="12 text-subtitle-1">
-          Datos Academicos
+        <VCol cols="12 text-h6">
+          Datos Académicos
         </VCol>
 
         <VCol cols="12">
@@ -165,7 +163,7 @@ function onCancel() {
             closable-chips
             item-title="careerName"
             item-value="careerId"
-            label="Carrera"
+            label="Carreras"
             multiple
             chips
             filled

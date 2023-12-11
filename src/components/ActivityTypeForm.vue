@@ -41,7 +41,7 @@ onMounted(async () => {
       @submit.prevent="() => {}"
     >
       <VRow>
-        <VCol cols="12 text-subtitle-1">
+        <VCol cols="12 text-h6">
           Tipo de Actividad de Extensión Universitaria
         </VCol>
 
@@ -64,9 +64,11 @@ onMounted(async () => {
             :rules="[requiredValidator]"
           />
         </VCol>
+        <VCol cols="12" />
+        <VDivider />
 
-        <VCol cols="12 text-subtitle-1">
-          Subtipos de actividades
+        <VCol cols="12 text-h6">
+          Subtipos de Actividades
         </VCol>
 
         <ActivitySubTypeListForm

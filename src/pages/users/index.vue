@@ -1,8 +1,8 @@
 <script setup>
-import ConfirmModal from "@/components/ConfirmModal.vue";
-import { useUserStore } from "@/stores/user";
-import { computed, onMounted } from "vue";
-import { debounce } from 'vue-debounce';
+import ConfirmModal from "@/components/ConfirmModal.vue"
+import { useUserStore } from "@/stores/user"
+import { computed, onMounted } from "vue"
+import { debounce } from 'vue-debounce'
 
 const store = useUserStore()
 const users = ref([])
@@ -65,6 +65,7 @@ const paginationText = computed(() => {
           <VTextField
             v-model="searchQuery"
             placeholder="Buscar"
+            aria-label="Buscar organización"
             density="compact"
             @update:modelValue="debounceSearch"
           />
@@ -89,7 +90,10 @@ const paginationText = computed(() => {
             Usuario
           </th>
           <th scope="col">
-            Correo electronico
+            Correo electrónico
+          </th>
+          <th scope="col">
+            Acciones
           </th>
         </tr>
       </thead>
@@ -108,6 +112,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Editar usuario ${user.username}`"
               :to="{ name: 'users-id', params: { id: user.id }}"
             >
               <VIcon
@@ -121,6 +126,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Acciones sobre usuario ${user.username}`"
             >
               <VIcon
                 :size="22"
@@ -128,7 +134,10 @@ const paginationText = computed(() => {
               />
               <VMenu activator="parent">
                 <VList>
-                  <VListItem @click="showModal(user)">
+                  <VListItem
+                    :aria-label="`Eliminar usuario ${user.username}`"
+                    @click="showModal(user)"
+                  >
                     <template #prepend>
                       <VIcon
                         size="24"
@@ -173,6 +182,7 @@ const paginationText = computed(() => {
         <VSelect
           v-model="rowPerPage"
           density="compact"
+          aria-label="Seleccionar número de filas por página"
           :items="[10, 20, 30, 50]"
           @update:modelValue="loadUsers"
         />

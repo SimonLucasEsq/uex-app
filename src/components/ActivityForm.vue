@@ -129,7 +129,7 @@ function onCancel(){
       @submit.prevent="() => {}"
     >
       <VRow>
-        <VCol cols="12 text-subtitle-1">
+        <VCol cols="12 text-h6">
           Descripción del Proyecto
         </VCol>
 
@@ -210,7 +210,6 @@ function onCancel(){
             label="Vinculación ODS"
             placeholder="Vinculación ODS"
             type="number"
-            :rules="[requiredValidator]"
           />
         </VCol>
 
@@ -269,7 +268,7 @@ function onCancel(){
           <VLabel>Total:</VLabel> {{ store.totalBeneficiaries }}
         </VCol>
 
-        <VCol cols="12 text-subtitle-1">
+        <VCol cols="12 text-h6">
           Identificación General
         </VCol>
 
@@ -281,6 +280,7 @@ function onCancel(){
             item-title="careerName"
             item-value="careerId"
             label="Carrera"
+            aria-label="Elegir Carrera"
             multiple
             chips
             filled

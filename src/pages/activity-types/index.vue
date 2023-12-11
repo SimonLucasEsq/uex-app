@@ -65,6 +65,7 @@ const paginationText = computed(() => {
           <VTextField
             v-model="searchQuery"
             placeholder="Buscar"
+            aria-label="Buscar Tipo de actividad"
             density="compact"
             @update:modelValue="debounceSearch"
           />
@@ -119,6 +120,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Editar tipo de actividad ${activityType.name}`"
               :to="{ name: 'activity-types-id', params: { id: activityType.id }}"
             >
               <VIcon
@@ -132,6 +134,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Acciones sobre tipo de actividad ${activityType.name}`"
             >
               <VIcon
                 :size="22"
@@ -139,7 +142,10 @@ const paginationText = computed(() => {
               />
               <VMenu activator="parent">
                 <VList>
-                  <VListItem @click="showModal(activityType)">
+                  <VListItem
+                    :aria-label="`Eliminar tipo de actividad ${activityType.name}`"
+                    @click="showModal(activityType)"
+                  >
                     <template #prepend>
                       <VIcon
                         size="24"
@@ -185,6 +191,7 @@ const paginationText = computed(() => {
           v-model="rowPerPage"
           density="compact"
           :items="[10, 20, 30, 50]"
+          aria-label="Seleccionar número de filas por página"
           @update:modelValue="loadActivities"
         />
       </div>

@@ -1,16 +1,30 @@
 <script setup>
+import BreadCrumbLayout from "@/components/BreadCrumbLayout.vue";
 import StudentForm from "@/components/StudentForm.vue";
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
 const id = route.params.id
+
+const items = [
+  {
+    text: 'Alumnos',
+    color: 'primary',
+    disabled: false,
+    to: '/students',
+  },
+  {
+    text: 'Editar Alumno',
+    disabled: true,
+    to: '#',
+  },
+]
 </script>
 
 <template>
-  <VCard
-    class="mb-6"
-    title="Editar Alumno"
+  <BreadCrumbLayout
+    :items="items"
   >
     <StudentForm :id="id" />
-  </VCard>
+  </BreadCrumbLayout>
 </template>

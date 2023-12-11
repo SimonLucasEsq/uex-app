@@ -16,7 +16,10 @@ const props = defineProps({
       <VCard>
         <!-- 👉 Details -->
         <VCardText>
-          <VList class="card-list">
+          <VList
+            class="card-list"
+            aria-label="Datos del Alumno"
+          >
             <!-- 👉 Personal Details -->
             <p class="text-h6">
               Datos Personales
@@ -24,39 +27,39 @@ const props = defineProps({
             <VDivider />
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Nombres:
                   <span class="text-body-2">
                     {{ props.student.person.firstName }}
                   </span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Apellidos:
                   <span class="text-body-2">{{ props.student.person.lastName }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Sexo:
                   <span class="text-body-2">{{ usePerson().sexEnum[props.student.person.sex] }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   N° C.I.:
                   <span class="text-body-2">{{ props.student.person.idCard }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
@@ -70,28 +73,28 @@ const props = defineProps({
             
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Correo Electrónico:
                   <span class="text-body-2">{{ props.student.person.email }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Celular:
                   <span class="text-body-2">{{ props.student.person.phoneNumber }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Dirección:
                   <span class="text-body-2">{{ props.student.person.address }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
             <!-- !SECTION -->
@@ -105,19 +108,19 @@ const props = defineProps({
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Carreras:
                   <span class="text-body-2">{{ student.career.name }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
               <VListItemTitle>
-                <h6 class="text-base font-weight-semibold">
+                <p class="text-base font-weight-semibold">
                   Año de Ingreso:
                   <span class="text-body-2">{{ student.admissionYear }}</span>
-                </h6>
+                </p>
               </VListItemTitle>
             </VListItem>
             <VDivider />
@@ -154,5 +157,9 @@ const props = defineProps({
 <style lang="scss" scoped>
 .card-list {
   --v-card-list-gap: 0.7rem;
+}
+
+.v-list-item-title p {
+  margin: 0;
 }
 </style>

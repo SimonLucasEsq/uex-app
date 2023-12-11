@@ -67,6 +67,13 @@ function showImport() {
   isImportVisible.value = true
 }
 
+const careersText = function(professor) {
+  return professor.professorCareers.reduce(
+    (acumulator, currentItem) => {
+      return !acumulator ? currentItem.careerName : `${acumulator}, ${currentItem.careerName}`
+    }, '')
+}
+
 // Computing pagination text
 const paginationText = computed(() => {
   const firstIndex = professors.value.size ? (currentPage.value - 1) * rowPerPage.value + 1 : 0
@@ -90,6 +97,7 @@ const paginationText = computed(() => {
           class="filter"
           placeholder="Buscar"
           density="compact"
+          aria-label="Buscar docente"
           @update:model-value="debounceSearch"
         />
 
@@ -98,6 +106,7 @@ const paginationText = computed(() => {
           v-model="filteredCareer"
           class="filter"
           label="Carrera"
+          aria-label="Filtrar por carrera"
           :items="Array.from(careers.values())"
           item-title="name"
           item-value="id"
@@ -114,8 +123,8 @@ const paginationText = computed(() => {
           >
             <VBtn
               prepend-icon="tabler-file-upload"
-              @click="showImport"
               color="secondary"
+              @click="showImport"
             >
               Importar
             </VBtn>
@@ -142,10 +151,8 @@ const paginationText = computed(() => {
             Nombre
           </th>
 
-          <th
-            scope="col"
-          >
-            Horas
+          <th scope="col">
+            Carrera
           </th>
 
           <th
@@ -168,15 +175,19 @@ const paginationText = computed(() => {
         >
           <td>{{ professor.person.idCard }}</td>
           <td>
-            <RouterLink :to="{ name: 'professors-show-id', params: { id: professor.id }}">
+            <RouterLink
+              :to="{ name: 'professors-show-id', params: { id: professor.id }}"
+              :aria-label="`Ver docente ${professor.person.firstName} ${professor.person.lastName}`"
+            >
               {{ professor.person.firstName }} {{ professor.person.lastName }}
             </RouterLink>
           </td>
-          <td>{{ professor.hours }}</td>
+          <td>{{ careersText(professor) }}</td>
           <td>{{ professor.person.email }}</td>
           <td>
             <VBtn
               icon
+              :aria-label="`Editar docente ${professor.person.firstName} ${professor.person.lastName}`"
               variant="text"
               color="default"
               size="x-small"
@@ -193,6 +204,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Acciones sobre docente ${professor.person.firstName} ${professor.person.lastName}`"
             >
               <VIcon
                 :size="22"
@@ -200,7 +212,10 @@ const paginationText = computed(() => {
               />
               <VMenu activator="parent">
                 <VList>
-                  <VListItem @click="exportData(professor)">
+                  <VListItem
+                    :aria-label="`Exportar Ficha de ${professor.person.firstName} ${professor.person.lastName}`"
+                    @click="exportData(professor)"
+                  >
                     <template #prepend>
                       <VIcon
                         size="24"
@@ -208,9 +223,12 @@ const paginationText = computed(() => {
                         icon="tabler-download"
                       />
                     </template>
-                    <VListItemTitle>Exportar</VListItemTitle>
+                    <VListItemTitle>Exportar Ficha</VListItemTitle>
                   </VListItem>
-                  <VListItem @click="showModal(professor)">
+                  <VListItem
+                    :aria-label="`Eliminar alumno ${professor.person.firstName} ${professor.person.lastName}`"
+                    @click="showModal(professor)"
+                  >
                     <template #prepend>
                       <VIcon
                         size="24"
@@ -254,6 +272,7 @@ const paginationText = computed(() => {
         <span class="text-no-wrap me-3">Mostrar:</span>
         <VSelect
           v-model="rowPerPage"
+          aria-label="Seleccionar número de filas por página"
           density="compact"
           :items="[10, 20, 30, 50]"
           @update:modelValue="loadProfessors"

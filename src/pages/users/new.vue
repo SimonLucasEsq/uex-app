@@ -1,12 +1,26 @@
 <script setup>
+import BreadCrumbLayout from "@/components/BreadCrumbLayout.vue";
 import UserForm from "@/components/UserForm.vue";
+
+const items = [
+  {
+    text: 'Usuarios',
+    color: 'primary',
+    disabled: false,
+    to: '/users',
+  },
+  {
+    text: 'Crear Usuario',
+    disabled: true,
+    to: '#',
+  },
+]
 </script>
 
 <template>
-  <VCard
-    class="mb-6"
-    title="Nuevo Usuario"
+  <BreadCrumbLayout
+    :items="items"
   >
     <UserForm />
-  </VCard>
+  </BreadCrumbLayout>
 </template>

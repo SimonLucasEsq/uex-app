@@ -1,5 +1,5 @@
 <script setup>
-import { useProfessorStore } from "@/stores/professor";
+import { useProfessorStore } from "@/stores/professor"
 
 const props = defineProps({
   professor: {
@@ -28,7 +28,7 @@ function exportData() {
               prepend-icon="tabler-download"
               @click="exportData"
             >
-              Exportar
+              Exportar Ficha
             </VBtn>
           </div>
         </VCardText>

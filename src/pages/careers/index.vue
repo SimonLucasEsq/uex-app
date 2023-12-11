@@ -66,6 +66,7 @@ const paginationText = computed(() => {
             v-model="searchQuery"
             placeholder="Buscar"
             density="compact"
+            aria-label="Buscar carrera"
             @update:modelValue="debounceSearch"
           />
         </div>
@@ -86,7 +87,7 @@ const paginationText = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            {{$t('store.attributes.career.name')}}
+            {{ $t('store.attributes.career.name') }}
           </th>
 
           <th scope="col">
@@ -108,6 +109,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Eliminar carrera ${career.name}`"
               :to="{ name: 'careers-id', params: { id: career.id }}"
             >
               <VIcon
@@ -120,6 +122,7 @@ const paginationText = computed(() => {
               variant="text"
               color="default"
               size="x-small"
+              :aria-label="`Acciones sobre carrera ${career.name}`"
             >
               <VIcon
                 :size="22"
@@ -127,7 +130,10 @@ const paginationText = computed(() => {
               />
               <VMenu activator="parent">
                 <VList>
-                  <VListItem @click="showModal(career)">
+                  <VListItem
+                    :aria-label="`Eliminar carrera ${career.name}`"
+                    @click="showModal(career)"
+                  >
                     <template #prepend>
                       <VIcon
                         size="24"
@@ -172,6 +178,7 @@ const paginationText = computed(() => {
         <VSelect
           v-model="rowPerPage"
           density="compact"
+          aria-label="Seleccionar número de filas por página"
           :items="[10, 20, 30, 50]"
           @update:modelValue="loadCareers"
         />
