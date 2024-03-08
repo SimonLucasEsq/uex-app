@@ -10,9 +10,9 @@ export function useSelect() {
   ]
 
   const semesterOptions = [
-    { name: "Ambos", value: "0" },
-    { name: "Primer Semestre", value: "1" },
-    { name: "Segundo Semestre", value: "2" },
+    { name: "Ambos", value: "" },
+    { name: "Primer Semestre", value: "first_semester" },
+    { name: "Segundo Semestre", value: "second_semester" },
   ]
 
   function includeBlankOptionObject(records, options = {}) {

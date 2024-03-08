@@ -19,15 +19,9 @@ const semester = ref()
 const year = ref()
 const { semesterOptions, yearOptions } = useSelect()
 const careers = ref([])
-const filteredCareer = ref(null)
+const filteredCareer = ref("")
 const currentDate = new Date()
 const currentYear= currentDate.getFullYear()
-
-const semesterDates = {
-  "0": [`01/01/${currentYear}`, `31/12/${currentYear}`],
-  "1": [`01/01/${currentYear}`, `31/07/${currentYear}`],
-  "2": [`01/08/${currentYear}`, `31/12/${currentYear}`],
-}
 
 onMounted(async () => {
   loadCareers()
@@ -46,8 +40,8 @@ const updateModelValue = val => {
 function exportData() {
   let params = {
     career_id: filteredCareer.value,
-    semester_start_date: semesterDates[semester.value][0],
-    semester_end_date: semesterDates[semester.value][1],
+    semester: semester.value.value,
+    year: year.value,
   }
   useActivityStore().api.exportStatisticalReport(params).then(() => {
     updateModelValue(false)
@@ -105,7 +99,6 @@ function exportData() {
             item-title="name"
             item-value="id"
             persistent-hint
-            :rules="[requiredValidator]"
           />
         </VCol>
         <VCardText class="d-flex justify-end flex-wrap gap-3">
