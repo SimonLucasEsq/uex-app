@@ -9,6 +9,12 @@ export function useSelect() {
     { name: "Femenino", value: "female" },
   ]
 
+  const semesterOptions = [
+    { name: "Ambos", value: "" },
+    { name: "Primer Semestre", value: "first_semester" },
+    { name: "Segundo Semestre", value: "second_semester" },
+  ]
+
   function includeBlankOptionObject(records, options = {}) {
     let blankOption = {}
 
@@ -19,7 +25,7 @@ export function useSelect() {
     if (options["valueKey"]){
       blankOption[options["valueKey"]] = options["value"] || defaultValue
     }
-    
+
     return [blankOption].concat(records)
   }
 
@@ -29,11 +35,11 @@ export function useSelect() {
 
   function yearOptions() {
     let initialYear = 1996
-    const currentDate = new Date() 
+    const currentDate = new Date()
     let currentYear= currentDate.getFullYear()
-    
-    return useArrayUtils().range(initialYear, currentYear)
+
+    return useArrayUtils().range(initialYear, currentYear).reverse()
   }
 
-  return { sexOptions, includeBlankOption, includeBlankOptionObject, yearOptions }
+  return { sexOptions, semesterOptions, includeBlankOption, includeBlankOptionObject, yearOptions }
 }

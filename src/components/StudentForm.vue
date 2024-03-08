@@ -148,6 +148,7 @@ onBeforeMount(async () => {
             :items="yearOptions()"
             label="Año de Ingreso"
             persistent-hint
+            :menu-props="{ maxHeight: '300' }"
             :rules="[requiredValidator]"
           />
         </VCol>

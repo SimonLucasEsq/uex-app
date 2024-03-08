@@ -1,6 +1,7 @@
 <script setup>
 import ConfirmModal from "@/components/ConfirmModal.vue"
 import ProjectReportModal from "@/components/ProjectReportModal.vue"
+import StatisticalReportModal from "@/components/StatisticalReportModal.vue"
 import { useSelect } from "@/composables/select"
 import { useTextUtil } from "@/composables/text-utils"
 import { useActivityStore } from "@/stores/activity"
@@ -20,6 +21,7 @@ const currentPage = ref(1)
 const isDialogVisible = ref(false)
 const activityToDelete = ref(null)
 const isProjectReportVisible = ref(false)
+const isReportVisible = ref(false)
 const { formatRecordsByAttribute } = useTextUtil()
 const { statusLabel, statusColor } = useActivityStatus()
 
@@ -28,7 +30,7 @@ const items = [
     title: 'Reporte Estadístico',
     value: 'Reporte Estadístico',
     prependIcon: 'tabler-file-analytics',
-    modalName: showReportModal,
+    modalName: showStatisticalReport,
   },
   {
     title: 'Listado de proyectos',
@@ -75,6 +77,9 @@ async function loadCareers() {
 function showModal(activity) {
   isDialogVisible.value = true
   activityToDelete.value = activity
+}
+function showStatisticalReport() {
+  isReportVisible.value = true
 }
 function showReportModal() {
   isProjectReportVisible.value = true
@@ -347,6 +352,9 @@ const paginationText = computed(() => {
     />
     <ProjectReportModal
       v-model:isProjectReportVisible="isProjectReportVisible"
+    />
+    <StatisticalReportModal
+      v-model:isReportVisible="isReportVisible"
     />
   </VCard>
 </template>

@@ -57,14 +57,15 @@ function exportData() {
           />
         </VCol>
         <VCol cols="12">
-          <VTextField
-            v-model="endDate"
-            label="Año de finalización de la actividad"
-            placeholder="Año de finalización de la actividad"
-            type="number"
+          <AppDateTimePicker
+            v-model="approvedAt"
+            label="Fecha de culminación"
+            placeholder="Fecha de culminación"
+            :config="{ mode: 'range' , dateFormat: 'd/m/Y'}"
             :rules="[requiredValidator]"
           />
         </VCol>
+
         <VCardText class="d-flex justify-end flex-wrap gap-3">
           <VBtn
             type="submit"

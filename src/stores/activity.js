@@ -30,6 +30,14 @@ class ActivityApi extends Api {
         downloadFile(data, headers['content-disposition'])
       })
   }
+  async exportStatisticalReport(params) {
+    return await this.axios.get(`/api/${this.endpoint}/export_statistical_report`, { params: this.toSnakeCase(params) , responseType: 'blob' }).then(
+      ({ data, headers }) => {
+        const { downloadFile } = useDownloadFile()
+
+        downloadFile(data, headers['content-disposition'])
+      })
+  }
 }
 
 export const useActivityStore = defineStore('activities', () => {
